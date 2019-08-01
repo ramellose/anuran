@@ -55,6 +55,9 @@ For a complete explanation of all the parameters, run:
 numma -h
 ```
 
+The demo data for _numma_ was downloaded from the following publication:
+Meyer, K. M., Memiaghe, H., Korte, L., Kenfack, D., Alonso, A., & Bohannan, B. J. (2018).
+Why do microbes exhibit weak biogeographic patterns?. The ISME journal, 12(6), 1404.
 
 To run the demo, run _numma_ as follows:
 ```

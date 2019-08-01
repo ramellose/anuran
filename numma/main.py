@@ -11,6 +11,9 @@ numma uses the file extension to import networks.
 Generation of null models is done on the adjacency matrix for speed;
 the NetworkX representation is unfortunately slower.
 
+The demo data for numma was downloaded from the following publication:
+Meyer, K. M., Memiaghe, H., Korte, L., Kenfack, D., Alonso, A., & Bohannan, B. J. (2018).
+Why do microbes exhibit weak biogeographic patterns?. The ISME journal, 12(6), 1404.
 """
 
 __author__ = 'Lisa Rottjers'
@@ -105,8 +108,13 @@ def set_numma():
                         dest='sample',
                         required=False,
                         help='Resamples your networks to generate a figure demonstrating changes in the set sizes \n'
-                             'when you increase the network number up until the total.'
+                             'when you increase the network number up until the total.',
                         default=False)
+    parser.add_argument('-perm', '--permutations',
+                        dest='perm',
+                        required=False,
+                        help='Number of null models to generate. ',
+                        default=20)
     parser.add_argument('-v', '--verbose',
                         dest='verbose',
                         required=False,
@@ -148,6 +156,7 @@ def main():
             except Exception:
                 logger.error('Could not import network file!', exc_info=True)
                 exit()
+
         logger.info('Wrote clustered network to ' + args['fp'] + '.')
     exit(0)
 
