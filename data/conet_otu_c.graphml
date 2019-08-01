@@ -1,0 +1,4816 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key attr.name="weight" attr.type="string" for="edge" id="d8"/>
+<key attr.name="source" attr.type="string" for="edge" id="d7"/>
+<key attr.name="Species" attr.type="string" for="node" id="d6"/>
+<key attr.name="Genus" attr.type="string" for="node" id="d5"/>
+<key attr.name="Family" attr.type="string" for="node" id="d4"/>
+<key attr.name="Order" attr.type="string" for="node" id="d3"/>
+<key attr.name="Class" attr.type="string" for="node" id="d2"/>
+<key attr.name="Phylum" attr.type="string" for="node" id="d1"/>
+<key attr.name="Kingdom" attr.type="string" for="node" id="d0"/>
+<graph edgedefault="undirected"><node id="OTU_1468">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_1">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Enterobacteriaceae</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Enterobacteriales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_146">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+</node>
+<node id="OTU_1299">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_1114">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Thermogemmatisporaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Thermogemmatisporales</data>
+</node>
+<node id="OTU_1081">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_3636">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_3635">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_3416">
+  <data key="d0">c__Betaproteobacteria</data>
+  <data key="d1">f__Burkholderiaceae</data>
+  <data key="d2">g__Burkholderia</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Burkholderiales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_2683">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_253">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Xanthomonadaceae</data>
+  <data key="d2">g__Dyella</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Xanthomonadales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_1656">
+  <data key="d0">c__Thermoleophilia</data>
+  <data key="d1">f__Conexibacteraceae</data>
+  <data key="d2">g__Conexibacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Solirubrobacterales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_1677">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Isosphaeraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_441">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Enterobacteriaceae</data>
+  <data key="d2">g__Erwinia</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Enterobacteriales</data>
+  <data key="d5">p__Proteobacteria</data>
+  <data key="d6">s__dispersa</data>
+</node>
+<node id="OTU_10">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Enterobacteriaceae</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Enterobacteriales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_681">
+  <data key="d0">c__4C0d-2</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_937">
+  <data key="d0">c__Chlamydiia</data>
+  <data key="d1">f__Parachlamydiaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Chlamydiales</data>
+</node>
+<node id="OTU_455">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d5">p__Chloroflexi</data>
+</node>
+<node id="OTU_384">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_2752">
+  <data key="d0">c__4C0d-2</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_3">
+  <data key="d0">c__Bacilli</data>
+  <data key="d1">f__Planococcaceae</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Bacillales</data>
+  <data key="d5">p__Firmicutes</data>
+</node>
+<node id="OTU_2582">
+  <data key="d0">c__Chlamydiia</data>
+  <data key="d1">f__Parachlamydiaceae</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Chlamydiales</data>
+  <data key="d5">p__Chlamydiae</data>
+</node>
+<node id="OTU_2372">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_2071">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Ktedonobacteraceae</data>
+  <data key="d2">g__FFCH10602</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Ktedonobacterales</data>
+  <data key="d5">p__Chloroflexi</data>
+</node>
+<node id="OTU_2090">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_1073">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_878">
+  <data key="d0">c__Bacilli</data>
+  <data key="d1">f__Thermoactinomycetaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Bacillales</data>
+</node>
+<node id="OTU_803">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Ktedonobacteraceae</data>
+  <data key="d2">g__FFCH10602</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Ktedonobacterales</data>
+  <data key="d5">p__Chloroflexi</data>
+</node>
+<node id="OTU_823">
+  <data key="d0">c__Acidobacteriia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_649">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_597">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_566">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_469">
+  <data key="d0">c__Armatimonadia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_429">
+  <data key="d0">c__</data>
+  <data key="d1">f__</data>
+</node>
+<node id="OTU_2687">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Coxiellaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Legionellales</data>
+</node>
+<node id="OTU_325">
+  <data key="d0">c__Acidobacteriia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_3367">
+  <data key="d0">c__Chlamydiia</data>
+  <data key="d1">f__Rhabdochlamydiaceae</data>
+  <data key="d2">g__Candidatus Rhabdochlamydia</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Chlamydiales</data>
+  <data key="d5">p__Chlamydiae</data>
+</node>
+<node id="OTU_1283">
+  <data key="d0">c__Chlamydiia</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d5">p__Chlamydiae</data>
+</node>
+<node id="OTU_1484">
+  <data key="d0">c__Chlamydiia</data>
+  <data key="d1">f__Parachlamydiaceae</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Chlamydiales</data>
+  <data key="d5">p__Chlamydiae</data>
+</node>
+<node id="OTU_1849">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d1">f__Actinospicaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+</node>
+<node id="OTU_711">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Enterobacteriaceae</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Enterobacteriales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_785">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Xanthomonadaceae</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Xanthomonadales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_1140">
+  <data key="d0">c__Betaproteobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_774">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Thermogemmatisporaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Thermogemmatisporales</data>
+</node>
+<node id="OTU_646">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_1246">
+  <data key="d0">c__Betaproteobacteria</data>
+  <data key="d1">f__Burkholderiaceae</data>
+  <data key="d2">g__Burkholderia</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Burkholderiales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_372">
+  <data key="d0">c__4C0d-2</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_691">
+  <data key="d0">c__Acidobacteriia</data>
+  <data key="d1">f__Acidobacteriaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Acidobacteriales</data>
+</node>
+<node id="OTU_1255">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_596">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d5">p__Chloroflexi</data>
+</node>
+<node id="OTU_262">
+  <data key="d0">c__Acidimicrobiia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_3548">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Acetobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_106">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Solibacterales</data>
+  <data key="d5">p__Acidobacteria</data>
+</node>
+<node id="OTU_207">
+  <data key="d0">c__TM1</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+</node>
+<node id="OTU_674">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Ktedonobacteraceae</data>
+  <data key="d2">g__FFCH10602</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Ktedonobacterales</data>
+  <data key="d5">p__Chloroflexi</data>
+</node>
+<node id="OTU_548">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_576">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_300">
+  <data key="d0">c__Acidobacteria-6</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_2327">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Thermogemmatisporaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Thermogemmatisporales</data>
+</node>
+<node id="OTU_933">
+  <data key="d0">c__4C0d-2</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_655">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_458">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_707">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_561">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Myxococcales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_1241">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Isosphaeraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_895">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Moraxellaceae</data>
+  <data key="d2">g__Acinetobacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Pseudomonadales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_1977">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_1836">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+</node>
+<node id="OTU_1787">
+  <data key="d0">c__Elusimicrobia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_1820">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_2">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Pseudomonadaceae</data>
+  <data key="d2">g__Pseudomonas</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Pseudomonadales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_239">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_689">
+  <data key="d0">c__Armatimonadia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_171">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_3549">
+  <data key="d0">c__Acidobacteriia</data>
+  <data key="d1">f__Koribacteraceae</data>
+  <data key="d2">g__Candidatus Koribacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Acidobacteriales</data>
+  <data key="d5">p__Acidobacteria</data>
+</node>
+<node id="OTU_752">
+  <data key="d0">c__Thermoleophilia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_1725">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Acetobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_243">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Moraxellaceae</data>
+  <data key="d2">g__Acinetobacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Pseudomonadales</data>
+  <data key="d5">p__Proteobacteria</data>
+  <data key="d6">s__rhizosphaerae</data>
+</node>
+<node id="OTU_3490">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d1">f__Bdellovibrionaceae</data>
+  <data key="d2">g__Bdellovibrio</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Bdellovibrionales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_808">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_3451">
+  <data key="d0">c__[Spartobacteria]</data>
+  <data key="d1">f__[Chthoniobacteraceae]</data>
+  <data key="d2">g__Candidatus Xiphinematobacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__[Chthoniobacterales]</data>
+  <data key="d5">p__Verrucomicrobia</data>
+</node>
+<node id="OTU_1734">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d1">f__Mycobacteriaceae</data>
+  <data key="d2">g__Mycobacterium</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_2938">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Acetobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_36">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Methylocystaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhizobiales</data>
+</node>
+<node id="OTU_58">
+  <data key="d0">c__Bacilli</data>
+  <data key="d1">f__Bacillaceae</data>
+  <data key="d2">g__Bacillus</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Bacillales</data>
+  <data key="d5">p__Firmicutes</data>
+</node>
+<node id="OTU_96">
+  <data key="d0">c__</data>
+  <data key="d1">f__</data>
+</node>
+<node id="OTU_2575">
+  <data key="d0">c__Thermoleophilia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_744">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d1">f__Syntrophobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Syntrophobacterales</data>
+</node>
+<node id="OTU_341">
+  <data key="d0">c__</data>
+  <data key="d1">f__</data>
+</node>
+<node id="OTU_520">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_83">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_2345">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_181">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Methylocystaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhizobiales</data>
+</node>
+<node id="OTU_1830">
+  <data key="d0">c__4C0d-2</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_202">
+  <data key="d0">c__[Spartobacteria]</data>
+  <data key="d1">f__[Chthoniobacteraceae]</data>
+  <data key="d2">g__DA101</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__[Chthoniobacterales]</data>
+  <data key="d5">p__Verrucomicrobia</data>
+</node>
+<node id="OTU_283">
+  <data key="d0">c__[Pedosphaerae]</data>
+  <data key="d1">f__Ellin515</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__[Pedosphaerales]</data>
+</node>
+<node id="OTU_1834">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_2274">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Thermogemmatisporaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Thermogemmatisporales</data>
+</node>
+<node id="OTU_189">
+  <data key="d0">c__TK10</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__B07_WMSP1</data>
+  <data key="d5">p__Chloroflexi</data>
+</node>
+<node id="OTU_436">
+  <data key="d0">c__TK10</data>
+  <data key="d1">f__FFCH4570</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__B07_WMSP1</data>
+</node>
+<node id="OTU_174">
+  <data key="d0">c__Gemmatimonadetes</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+</node>
+<node id="OTU_230">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_541">
+  <data key="d0">c__[Spartobacteria]</data>
+  <data key="d1">f__[Chthoniobacteraceae]</data>
+  <data key="d2">g__DA101</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__[Chthoniobacterales]</data>
+  <data key="d5">p__Verrucomicrobia</data>
+</node>
+<node id="OTU_250">
+  <data key="d0">c__JG37-AG-4</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+</node>
+<node id="OTU_211">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_1897">
+  <data key="d0">c__</data>
+  <data key="d1">f__</data>
+</node>
+<node id="OTU_439">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_18">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d1">f__Streptomycetaceae</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_3626">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_87">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_415">
+  <data key="d0">c__Acidobacteriia</data>
+  <data key="d1">f__Koribacteraceae</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Acidobacteriales</data>
+  <data key="d5">p__Acidobacteria</data>
+</node>
+<node id="OTU_405">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d1">f__Solibacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Solibacterales</data>
+</node>
+<node id="OTU_165">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Caulobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Caulobacterales</data>
+</node>
+<node id="OTU_170">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_166">
+  <data key="d0">c__Acidimicrobiia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_318">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_748">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__mitochondria</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rickettsiales</data>
+</node>
+<node id="OTU_164">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_3522">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_76">
+  <data key="d0">c__</data>
+  <data key="d1">f__</data>
+</node>
+<node id="OTU_30">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_446">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_1791">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_1942">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_1682">
+  <data key="d0">c__Clostridia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_169">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_215">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_595">
+  <data key="d0">c__Acidobacteria-6</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_57">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_454">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Acetobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_3280">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d1">f__Solibacteraceae</data>
+  <data key="d2">g__Candidatus Solibacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Solibacterales</data>
+  <data key="d5">p__Acidobacteria</data>
+</node>
+<node id="OTU_362">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Thermogemmatisporaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Thermogemmatisporales</data>
+</node>
+<node id="OTU_278">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_2874">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_65">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_2554">
+  <data key="d0">c__Acidobacteriia</data>
+  <data key="d1">f__Acidobacteriaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Acidobacteriales</data>
+</node>
+<node id="OTU_254">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_257">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_2458">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Sinobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Xanthomonadales</data>
+</node>
+<node id="OTU_397">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_45">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Acetobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_501">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Thermogemmatisporaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Thermogemmatisporales</data>
+</node>
+<node id="OTU_526">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_348">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_35">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_78">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_314">
+  <data key="d0">c__MB-A2-108</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_700">
+  <data key="d0">c__Bacilli</data>
+  <data key="d1">f__Paenibacillaceae</data>
+  <data key="d2">g__Cohnella</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Bacillales</data>
+  <data key="d5">p__Firmicutes</data>
+</node>
+<node id="OTU_3428">
+  <data key="d0">c__Opitutae</data>
+  <data key="d1">f__Opitutaceae</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Opitutales</data>
+  <data key="d5">p__Verrucomicrobia</data>
+</node>
+<node id="OTU_310">
+  <data key="d0">c__[Fimbriimonadia]</data>
+  <data key="d1">f__[Fimbriimonadaceae]</data>
+  <data key="d2">g__Fimbriimonas</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__[Fimbriimonadales]</data>
+  <data key="d5">p__Armatimonadetes</data>
+</node>
+<node id="OTU_54">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d1">f__Mycobacteriaceae</data>
+  <data key="d2">g__Mycobacterium</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_94">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Isosphaeraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_373">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Isosphaeraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_293">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_393">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d1">f__Solibacteraceae</data>
+  <data key="d2">g__Candidatus Solibacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Solibacterales</data>
+  <data key="d5">p__Acidobacteria</data>
+</node>
+<node id="OTU_547">
+  <data key="d0">c__Acidobacteria-6</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_2966">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_425">
+  <data key="d0">c__Acidobacteriia</data>
+  <data key="d1">f__Koribacteraceae</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Acidobacteriales</data>
+  <data key="d5">p__Acidobacteria</data>
+</node>
+<node id="OTU_877">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Sinobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Xanthomonadales</data>
+</node>
+<node id="OTU_713">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Ktedonobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Ktedonobacterales</data>
+</node>
+<node id="OTU_2833">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_382">
+  <data key="d0">c__[Spartobacteria]</data>
+  <data key="d1">f__[Chthoniobacteraceae]</data>
+  <data key="d2">g__Candidatus Xiphinematobacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__[Chthoniobacterales]</data>
+  <data key="d5">p__Verrucomicrobia</data>
+</node>
+<node id="OTU_196">
+  <data key="d0">c__[Spartobacteria]</data>
+  <data key="d1">f__[Chthoniobacteraceae]</data>
+  <data key="d2">g__Candidatus Xiphinematobacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__[Chthoniobacterales]</data>
+  <data key="d5">p__Verrucomicrobia</data>
+</node>
+<node id="OTU_780">
+  <data key="d0">c__[Spartobacteria]</data>
+  <data key="d1">f__[Chthoniobacteraceae]</data>
+  <data key="d2">g__DA101</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__[Chthoniobacterales]</data>
+  <data key="d5">p__Verrucomicrobia</data>
+</node>
+<node id="OTU_316">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Isosphaeraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_217">
+  <data key="d0">c__[Spartobacteria]</data>
+  <data key="d1">f__[Chthoniobacteraceae]</data>
+  <data key="d2">g__DA101</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__[Chthoniobacterales]</data>
+  <data key="d5">p__Verrucomicrobia</data>
+</node>
+<node id="OTU_48">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_6">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Hyphomicrobiaceae</data>
+  <data key="d2">g__Rhodoplanes</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhizobiales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_1914">
+  <data key="d0">c__Acidobacteriia</data>
+  <data key="d1">f__Koribacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Acidobacteriales</data>
+</node>
+<node id="OTU_960">
+  <data key="d0">c__4C0d-2</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_673">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_460">
+  <data key="d0">c__Acidobacteriia</data>
+  <data key="d1">f__Koribacteraceae</data>
+  <data key="d2">g__Candidatus Koribacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Acidobacteriales</data>
+  <data key="d5">p__Acidobacteria</data>
+</node>
+<node id="OTU_637">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_270">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_236">
+  <data key="d0">c__Thermoleophilia</data>
+  <data key="d1">f__Conexibacteraceae</data>
+  <data key="d2">g__Conexibacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Solirubrobacterales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_85">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_234">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d1">f__Solibacteraceae</data>
+  <data key="d2">g__Candidatus Solibacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Solibacterales</data>
+  <data key="d5">p__Acidobacteria</data>
+</node>
+<node id="OTU_407">
+  <data key="d3">k__Bacteria</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_420">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_91">
+  <data key="d0">c__Acidimicrobiia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_39">
+  <data key="d0">c__</data>
+  <data key="d1">f__</data>
+</node>
+<node id="OTU_227">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_364">
+  <data key="d0">c__Betaproteobacteria</data>
+  <data key="d1">f__Alcaligenaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Burkholderiales</data>
+</node>
+<node id="OTU_281">
+  <data key="d0">c__JG37-AG-4</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+</node>
+<node id="OTU_693">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d5">p__Chloroflexi</data>
+</node>
+<node id="OTU_817">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d1">f__Syntrophobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Syntrophobacterales</data>
+</node>
+<node id="OTU_205">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_2047">
+  <data key="d0">c__[Pedosphaerae]</data>
+  <data key="d1">f__Ellin515</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__[Pedosphaerales]</data>
+</node>
+<node id="OTU_3062">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Ktedonobacteraceae</data>
+  <data key="d2">g__FFCH10602</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Ktedonobacterales</data>
+  <data key="d5">p__Chloroflexi</data>
+</node>
+<node id="OTU_60">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_5">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Pseudomonadaceae</data>
+  <data key="d2">g__Pseudomonas</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Pseudomonadales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_23">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Pseudomonadaceae</data>
+  <data key="d2">g__Pseudomonas</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Pseudomonadales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_968">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_767">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Coxiellaceae</data>
+  <data key="d2">g__Aquicella</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Legionellales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_42">
+  <data key="d0">c__Acidobacteriia</data>
+  <data key="d1">f__Koribacteraceae</data>
+  <data key="d2">g__Candidatus Koribacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Acidobacteriales</data>
+  <data key="d5">p__Acidobacteria</data>
+</node>
+<node id="OTU_99">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_38">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_976">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_351">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+</node>
+<node id="OTU_603">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_90">
+  <data key="d0">c__[Pedosphaerae]</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_939">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Sinobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Xanthomonadales</data>
+</node>
+<node id="OTU_756">
+  <data key="d0">c__[Spartobacteria]</data>
+  <data key="d1">f__[Chthoniobacteraceae]</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__[Chthoniobacterales]</data>
+  <data key="d5">p__Verrucomicrobia</data>
+</node>
+<node id="OTU_1262">
+  <data key="d0">c__Bacilli</data>
+  <data key="d1">f__Alicyclobacillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Bacillales</data>
+</node>
+<node id="OTU_1383">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Thermogemmatisporaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Thermogemmatisporales</data>
+</node>
+<node id="OTU_1183">
+  <data key="d0">c__Gemmatimonadetes</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+</node>
+<node id="OTU_176">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+</node>
+<node id="OTU_134">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_185">
+  <data key="d0">c__[Pedosphaerae]</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_1243">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Ktedonobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Ktedonobacterales</data>
+</node>
+<node id="OTU_480">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_3779">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_116">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_1687">
+  <data key="d0">c__Acidobacteriia</data>
+  <data key="d1">f__Koribacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Acidobacteriales</data>
+</node>
+<node id="OTU_26">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_312">
+  <data key="d0">c__Gemmatimonadetes</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d5">p__Gemmatimonadetes</data>
+</node>
+<node id="OTU_400">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Thermogemmatisporaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Thermogemmatisporales</data>
+</node>
+<node id="OTU_28">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_199">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_25">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_806">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_1338">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_522">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_442">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Thermogemmatisporaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Thermogemmatisporales</data>
+</node>
+<node id="OTU_390">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_210">
+  <data key="d0">c__TM1</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+</node>
+<node id="OTU_1217">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_12">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_907">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Thermogemmatisporaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Thermogemmatisporales</data>
+</node>
+<node id="OTU_766">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Thermogemmatisporaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Thermogemmatisporales</data>
+</node>
+<node id="OTU_3419">
+  <data key="d3">k__Bacteria</data>
+  <data key="d5">p__Acidobacteria</data>
+</node>
+<node id="OTU_2804">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_139">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_1454">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Thermogemmatisporaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Thermogemmatisporales</data>
+</node>
+<node id="OTU_4">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Enterobacteriaceae</data>
+  <data key="d2">g__Serratia</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Enterobacteriales</data>
+  <data key="d5">p__Proteobacteria</data>
+  <data key="d6">s__marcescens</data>
+</node>
+<node id="OTU_9">
+  <data key="d0">c__Bacilli</data>
+  <data key="d1">f__Bacillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Bacillales</data>
+</node>
+<node id="OTU_517">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_771">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Acetobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_1303">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Isosphaeraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_3686">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_1212">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_399">
+  <data key="d0">c__TM1</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+</node>
+<node id="OTU_2344">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Sinobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Xanthomonadales</data>
+</node>
+<node id="OTU_231">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Thermogemmatisporaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Thermogemmatisporales</data>
+</node>
+<node id="OTU_2053">
+  <data key="d0">c__[Pedosphaerae]</data>
+  <data key="d1">f__[Pedosphaeraceae]</data>
+  <data key="d2">g__Pedosphaera</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__[Pedosphaerales]</data>
+  <data key="d5">p__Verrucomicrobia</data>
+</node>
+<node id="OTU_897">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_734">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_1244">
+  <data key="d0">c__JG37-AG-4</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+</node>
+<node id="OTU_444">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_213">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Hyphomicrobiaceae</data>
+  <data key="d2">g__Rhodoplanes</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhizobiales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_575">
+  <data key="d0">c__Acidobacteria-6</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_1376">
+  <data key="d0">c__Acidobacteria-6</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_1388">
+  <data key="d0">c__Sva0725</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_132">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d1">f__Syntrophobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Syntrophobacterales</data>
+</node>
+<node id="OTU_3026">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d1">f__Solibacteraceae</data>
+  <data key="d2">g__Candidatus Solibacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Solibacterales</data>
+  <data key="d5">p__Acidobacteria</data>
+</node>
+<node id="OTU_472">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Thermogemmatisporaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Thermogemmatisporales</data>
+</node>
+<node id="OTU_191">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Shewanellaceae</data>
+  <data key="d2">g__Shewanella</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Alteromonadales</data>
+  <data key="d5">p__Proteobacteria</data>
+  <data key="d6">s__algae</data>
+</node>
+<node id="OTU_1256">
+  <data key="d0">c__Elusimicrobia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_72">
+  <data key="d0">c__Acidobacteriia</data>
+  <data key="d1">f__Acidobacteriaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Acidobacteriales</data>
+</node>
+<node id="OTU_92">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Halomonadaceae</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Oceanospirillales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_999">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_1296">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_656">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_59">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_626">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_150">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Acetobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_636">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_284">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_47">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Sinobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Xanthomonadales</data>
+</node>
+<node id="OTU_720">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Sinobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Xanthomonadales</data>
+</node>
+<node id="OTU_1366">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Sinobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Xanthomonadales</data>
+</node>
+<node id="OTU_157">
+  <data key="d0">c__Thermoleophilia</data>
+  <data key="d1">f__Gaiellaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gaiellales</data>
+</node>
+<node id="OTU_267">
+  <data key="d0">c__Acidobacteriia</data>
+  <data key="d1">f__Koribacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Acidobacteriales</data>
+</node>
+<node id="OTU_32">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Caulobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Caulobacterales</data>
+</node>
+<node id="OTU_133">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_136">
+  <data key="d0">c__Acidimicrobiia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_7">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_89">
+  <data key="d0">c__Thermoleophilia</data>
+  <data key="d1">f__Conexibacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Solirubrobacterales</data>
+</node>
+<node id="OTU_183">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_1444">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_708">
+  <data key="d0">c__</data>
+  <data key="d1">f__</data>
+</node>
+<node id="OTU_81">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_2810">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d1">f__Solibacteraceae</data>
+  <data key="d2">g__Candidatus Solibacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Solibacterales</data>
+  <data key="d5">p__Acidobacteria</data>
+</node>
+<node id="OTU_1449">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Ktedonobacteraceae</data>
+  <data key="d2">g__FFCH10602</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Ktedonobacterales</data>
+  <data key="d5">p__Chloroflexi</data>
+</node>
+<node id="OTU_2388">
+  <data key="d0">c__Thermoleophilia</data>
+  <data key="d1">f__Conexibacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Solirubrobacterales</data>
+</node>
+<node id="OTU_3738">
+  <data key="d0">c__Acidobacteria-6</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_98">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Hyphomicrobiaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhizobiales</data>
+</node>
+<node id="OTU_2093">
+  <data key="d0">c__Acidobacteria-5</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+</node>
+<node id="OTU_1421">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_224">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Hyphomicrobiaceae</data>
+  <data key="d2">g__Rhodoplanes</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhizobiales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_1940">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Hyphomicrobiaceae</data>
+  <data key="d2">g__Rhodoplanes</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhizobiales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_197">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d1">f__Syntrophobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Syntrophobacterales</data>
+</node>
+<node id="OTU_296">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_497">
+  <data key="d0">c__Thermoleophilia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_545">
+  <data key="d0">c__Thermoleophilia</data>
+  <data key="d1">f__Conexibacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Solirubrobacterales</data>
+</node>
+<node id="OTU_86">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d1">f__Mycobacteriaceae</data>
+  <data key="d2">g__Mycobacterium</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+  <data key="d6">s__celatum</data>
+</node>
+<node id="OTU_24">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhizobiales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_265">
+  <data key="d0">c__Acidimicrobiia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_1636">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Isosphaeraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_966">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Coxiellaceae</data>
+  <data key="d2">g__Aquicella</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Legionellales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_3383">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_158">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Acetobacteraceae</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_1638">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_84">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_17">
+  <data key="d0">c__Acidimicrobiia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_46">
+  <data key="d0">c__</data>
+  <data key="d1">f__</data>
+</node>
+<node id="OTU_1654">
+  <data key="d0">c__Armatimonadia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_15">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Bradyrhizobiaceae</data>
+  <data key="d2">g__Bradyrhizobium</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhizobiales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_229">
+  <data key="d0">c__</data>
+  <data key="d1">f__</data>
+</node>
+<node id="OTU_232">
+  <data key="d0">c__Acidobacteriia</data>
+  <data key="d1">f__Koribacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Acidobacteriales</data>
+</node>
+<node id="OTU_187">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_1522">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Hyphomicrobiaceae</data>
+  <data key="d2">g__Rhodoplanes</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhizobiales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_22">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhizobiales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_1044">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_3007">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_2475">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_131">
+  <data key="d0">c__Acidobacteria-6</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_101">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d1">f__Solibacteraceae</data>
+  <data key="d2">g__Candidatus Solibacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Solibacterales</data>
+  <data key="d5">p__Acidobacteria</data>
+</node>
+<node id="OTU_2996">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d1">f__Syntrophobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Syntrophobacterales</data>
+</node>
+<node id="OTU_41">
+  <data key="d0">c__Acidimicrobiia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_100">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d1">f__Syntrophobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Syntrophobacterales</data>
+</node>
+<node id="OTU_129">
+  <data key="d0">c__Acidimicrobiia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_79">
+  <data key="d0">c__Nitrospira</data>
+  <data key="d1">f__Nitrospiraceae</data>
+  <data key="d2">g__Nitrospira</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Nitrospirales</data>
+  <data key="d5">p__Nitrospirae</data>
+</node>
+<node id="OTU_381">
+  <data key="d0">c__Acidobacteria-6</data>
+  <data key="d1">f__RB40</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__iii1-15</data>
+</node>
+<node id="OTU_141">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_37">
+  <data key="d0">c__Acidimicrobiia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_201">
+  <data key="d0">c__Acidobacteriia</data>
+  <data key="d1">f__Koribacteraceae</data>
+  <data key="d2">g__Candidatus Koribacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Acidobacteriales</data>
+  <data key="d5">p__Acidobacteria</data>
+</node>
+<node id="OTU_103">
+  <data key="d0">c__Acidimicrobiia</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_104">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_62">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_11">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_1075">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d1">f__Syntrophobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Syntrophobacterales</data>
+</node>
+<node id="OTU_2358">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_833">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_1041">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_584">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_327">
+  <data key="d0">c__Betaproteobacteria</data>
+  <data key="d1">f__Burkholderiaceae</data>
+  <data key="d2">g__Salinispora</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Burkholderiales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_349">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d1">f__JTB36</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Sva0853</data>
+</node>
+<node id="OTU_652">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Thermogemmatisporaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Thermogemmatisporales</data>
+</node>
+<node id="OTU_886">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_105">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Sinobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Xanthomonadales</data>
+</node>
+<node id="OTU_66">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_593">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d1">f__Solibacteraceae</data>
+  <data key="d2">g__Candidatus Solibacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Solibacterales</data>
+  <data key="d5">p__Acidobacteria</data>
+</node>
+<node id="OTU_276">
+  <data key="d0">c__Acidobacteriia</data>
+  <data key="d1">f__Acidobacteriaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Acidobacteriales</data>
+</node>
+<node id="OTU_117">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_358">
+  <data key="d0">c__[Pedosphaerae]</data>
+  <data key="d1">f__Ellin515</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__[Pedosphaerales]</data>
+</node>
+<node id="OTU_1970">
+  <data key="d0">c__[Pedosphaerae]</data>
+  <data key="d1">f__auto67_4W</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__[Pedosphaerales]</data>
+</node>
+<node id="OTU_1053">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__Ktedonobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Ktedonobacterales</data>
+</node>
+<node id="OTU_404">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_3155">
+  <data key="d0">c__Thermoleophilia</data>
+  <data key="d1">f__Conexibacteraceae</data>
+  <data key="d2">g__Conexibacter</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Solirubrobacterales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_204">
+  <data key="d0">c__Acidimicrobiia</data>
+  <data key="d1">f__EB1017</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Acidimicrobiales</data>
+</node>
+<node id="OTU_184">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_107">
+  <data key="d0">c__Acidobacteriia</data>
+  <data key="d1">f__Acidobacteriaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Acidobacteriales</data>
+</node>
+<node id="OTU_2734">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_758">
+  <data key="d0">c__EC1113</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+</node>
+<node id="OTU_1280">
+  <data key="d0">c__</data>
+  <data key="d1">f__</data>
+</node>
+<node id="OTU_387">
+  <data key="d0">c__[Pedosphaerae]</data>
+  <data key="d1">f__[Pedosphaeraceae]</data>
+  <data key="d2">g__Pedosphaera</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__[Pedosphaerales]</data>
+  <data key="d5">p__Verrucomicrobia</data>
+</node>
+<node id="OTU_1328">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Isosphaeraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_704">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Isosphaeraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_194">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Isosphaeraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_869">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Isosphaeraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_3065">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d1">f__Streptomycetaceae</data>
+  <data key="d2">g__Streptomyces</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_1269">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_1862">
+  <data key="d0">c__[Pedosphaerae]</data>
+  <data key="d1">f__[Pedosphaeraceae]</data>
+  <data key="d2">g__Pedosphaera</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__[Pedosphaerales]</data>
+  <data key="d5">p__Verrucomicrobia</data>
+</node>
+<node id="OTU_1281">
+  <data key="d0">c__Betaproteobacteria</data>
+  <data key="d1">f__EB1003</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__A21b</data>
+</node>
+<node id="OTU_1110">
+  <data key="d0">c__[Pedosphaerae]</data>
+  <data key="d1">f__auto67_4W</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__[Pedosphaerales]</data>
+</node>
+<node id="OTU_51">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_110">
+  <data key="d0">c__TM1</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+</node>
+<node id="OTU_1133">
+  <data key="d0">c__Ktedonobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_333">
+  <data key="d0">c__Solibacteres</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_109">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_773">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_2015">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+  <data key="d5">p__Actinobacteria</data>
+</node>
+<node id="OTU_1082">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_152">
+  <data key="d0">c__Deltaproteobacteria</data>
+  <data key="d1">f__Syntrophobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Syntrophobacterales</data>
+</node>
+<node id="OTU_525">
+  <data key="d0">c__DA052</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_1917">
+  <data key="d0">c__Actinobacteria</data>
+  <data key="d1">f__Actinospicaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Actinomycetales</data>
+</node>
+<node id="OTU_337">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Rhodospirillaceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<node id="OTU_1723">
+  <data key="d0">c__Planctomycetia</data>
+  <data key="d1">f__Gemmataceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Gemmatales</data>
+</node>
+<node id="OTU_1275">
+  <data key="d0">c__Acidobacteria-6</data>
+  <data key="d1">f__</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+</node>
+<node id="OTU_77">
+  <data key="d0">c__Gammaproteobacteria</data>
+  <data key="d1">f__Enterobacteriaceae</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Enterobacteriales</data>
+  <data key="d5">p__Proteobacteria</data>
+</node>
+<node id="OTU_237">
+  <data key="d0">c__Alphaproteobacteria</data>
+  <data key="d1">f__Acetobacteraceae</data>
+  <data key="d2">g__</data>
+  <data key="d3">k__Bacteria</data>
+  <data key="d4">o__Rhodospirillales</data>
+</node>
+<edge id="0" source="OTU_1468" target="OTU_1">
+  <data key="d7">{'conet_otu_all', 'conet_otu_c'}</data>
+  <data key="d8">{'-1.0'}</data>
+</edge>
+<edge id="0" source="OTU_1468" target="OTU_458">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1468" target="OTU_707">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1468" target="OTU_596">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1468" target="OTU_561">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1468" target="OTU_1241">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1468" target="OTU_1977">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1468" target="OTU_1836">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1468" target="OTU_1787">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1" target="OTU_146">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1" target="OTU_1299">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1" target="OTU_1114">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1" target="OTU_1081">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1" target="OTU_3636">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1" target="OTU_3635">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1" target="OTU_3416">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1" target="OTU_2683">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1" target="OTU_253">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1" target="OTU_1656">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1" target="OTU_785">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1" target="OTU_878">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1" target="OTU_548">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1" target="OTU_596">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1" target="OTU_576">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1" target="OTU_689">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_146" target="OTU_711">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1299" target="OTU_895">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1299" target="OTU_1255">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1299" target="OTU_441">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1299" target="OTU_711">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1114" target="OTU_10">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1114" target="OTU_441">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1081" target="OTU_937">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1081" target="OTU_1283">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1081" target="OTU_1820">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1081" target="OTU_2">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1081" target="OTU_239">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1081" target="OTU_566">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1081" target="OTU_711">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1081" target="OTU_10">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1081" target="OTU_1255">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_3635" target="OTU_711">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_3635" target="OTU_10">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2683" target="OTU_823">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1656" target="OTU_300">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1656" target="OTU_566">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1656" target="OTU_2327">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1656" target="OTU_933">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1656" target="OTU_655">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1677" target="OTU_441">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1677" target="OTU_10">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1677" target="OTU_711">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_441" target="OTU_785">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_441" target="OTU_774">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_441" target="OTU_691">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_441" target="OTU_2582">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_441" target="OTU_869">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_441" target="OTU_3065">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_441" target="OTU_2687">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_441" target="OTU_1269">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_10" target="OTU_681">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_10" target="OTU_937">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_10" target="OTU_455">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_10" target="OTU_384">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_10" target="OTU_2752">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_10" target="OTU_3">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_10" target="OTU_2582">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_10" target="OTU_2372">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_10" target="OTU_2071">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_10" target="OTU_2090">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_10" target="OTU_1073">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_10" target="OTU_596">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_10" target="OTU_576">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_681" target="OTU_808">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_681" target="OTU_4">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_937" target="OTU_803">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_937" target="OTU_1044">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_937" target="OTU_400">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_937" target="OTU_522">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_937" target="OTU_79">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_937" target="OTU_1725">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_937" target="OTU_217">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_937" target="OTU_381">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_455" target="OTU_878">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_455" target="OTU_823">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_455" target="OTU_808">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_455" target="OTU_4">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_455" target="OTU_3007">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_455" target="OTU_2475">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_455" target="OTU_207">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_455" target="OTU_1255">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_384" target="OTU_22">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2752" target="OTU_2687">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_3" target="OTU_4">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_3" target="OTU_382">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2582" target="OTU_711">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2582" target="OTU_4">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2582" target="OTU_243">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2372" target="OTU_707">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2372" target="OTU_808">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_803" target="OTU_823">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_803" target="OTU_649">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_803" target="OTU_597">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_803" target="OTU_566">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_803" target="OTU_469">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_803" target="OTU_429">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_803" target="OTU_2687">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_803" target="OTU_325">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_803" target="OTU_3367">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_803" target="OTU_1283">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_803" target="OTU_1484">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_803" target="OTU_1849">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_803" target="OTU_1140">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_823" target="OTU_1262">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_823" target="OTU_1383">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_823" target="OTU_1183">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_823" target="OTU_400">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_823" target="OTU_907">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_823" target="OTU_707">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_823" target="OTU_766">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_823" target="OTU_3419">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_823" target="OTU_2804">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_823" target="OTU_1977">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_823" target="OTU_1836">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_823" target="OTU_139">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_823" target="OTU_1454">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_649" target="OTU_400">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_597" target="OTU_400">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_597" target="OTU_4">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_597" target="OTU_231">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_566" target="OTU_400">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_566" target="OTU_960">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_566" target="OTU_79">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_469" target="OTU_400">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_429" target="OTU_400">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_429" target="OTU_1383">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2687" target="OTU_400">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2687" target="OTU_4">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2687" target="OTU_399">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2687" target="OTU_2344">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2687" target="OTU_231">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2687" target="OTU_1244">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2687" target="OTU_1255">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2687" target="OTU_3007">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2687" target="OTU_1787">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2687" target="OTU_711">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_325" target="OTU_400">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_3367" target="OTU_400">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_3367" target="OTU_711">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1283" target="OTU_79">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1283" target="OTU_237">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1283" target="OTU_400">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1283" target="OTU_381">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1484" target="OTU_400">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1484" target="OTU_231">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1484" target="OTU_2053">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1484" target="OTU_1255">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1484" target="OTU_3007">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1849" target="OTU_400">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1849" target="OTU_4">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1849" target="OTU_72">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1849" target="OTU_231">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1849" target="OTU_1255">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1849" target="OTU_3007">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_711" target="OTU_785">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_711" target="OTU_691">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_711" target="OTU_596">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_711" target="OTU_548">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_711" target="OTU_525">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_711" target="OTU_3065">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_711" target="OTU_337">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_711" target="OTU_1269">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_711" target="OTU_1723">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_785" target="OTU_1246">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1140" target="OTU_400">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1140" target="OTU_387">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_774" target="OTU_646">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_774" target="OTU_372">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_646" target="OTU_1075">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_646" target="OTU_2358">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_646" target="OTU_758">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_646" target="OTU_968">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_646" target="OTU_1280">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_646" target="OTU_1820">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_691" target="OTU_1255">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1255" target="OTU_1183">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1255" target="OTU_1044">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1255" target="OTU_1977">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1255" target="OTU_191">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1255" target="OTU_3419">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1255" target="OTU_327">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1255" target="OTU_1454">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1255" target="OTU_1262">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1255" target="OTU_1836">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1255" target="OTU_652">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1255" target="OTU_707">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1255" target="OTU_886">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1255" target="OTU_907">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1255" target="OTU_999">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_596" target="OTU_262">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_596" target="OTU_3548">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_596" target="OTU_106">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_596" target="OTU_207">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_262" target="OTU_3549">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_262" target="OTU_446">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_262" target="OTU_164">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_3548" target="OTU_734">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_3548" target="OTU_407">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_3548" target="OTU_1241">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_106" target="OTU_100">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_207" target="OTU_707">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_207" target="OTU_458">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_207" target="OTU_213">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_207" target="OTU_693">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_207" target="OTU_561">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_207" target="OTU_575">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_207" target="OTU_1241">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_207" target="OTU_1836">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_207" target="OTU_1977">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_207" target="OTU_1376">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_207" target="OTU_1388">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_207" target="OTU_1787">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_674" target="OTU_548">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_674" target="OTU_132">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_674" target="OTU_250">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_674" target="OTU_446">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_674" target="OTU_3026">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2327" target="OTU_3626">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2327" target="OTU_382">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2327" target="OTU_1296">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2327" target="OTU_79">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_933" target="OTU_3626">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_933" target="OTU_748">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_458" target="OTU_561">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_707" target="OTU_1977">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_707" target="OTU_808">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_707" target="OTU_3007">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1977" target="OTU_808">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1977" target="OTU_3007">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1836" target="OTU_808">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1836" target="OTU_3007">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1836" target="OTU_1970">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1787" target="OTU_1075">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1787" target="OTU_2358">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1787" target="OTU_1820">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2" target="OTU_1275">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2" target="OTU_382">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2" target="OTU_5">
+  <data key="d7">['conet_otu_all', 'conet_otu_b', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2" target="OTU_77">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_171" target="OTU_3549">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_171" target="OTU_3026">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_752" target="OTU_1725">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_752" target="OTU_243">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_752" target="OTU_3490">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_752" target="OTU_808">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_243" target="OTU_1830">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_808" target="OTU_202">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_808" target="OTU_2274">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_808" target="OTU_637">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_3451" target="OTU_1734">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2938" target="OTU_36">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2938" target="OTU_169">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2938" target="OTU_17">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_36" target="OTU_57">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_36" target="OTU_454">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_58" target="OTU_96">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_58" target="OTU_526">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_58" target="OTU_348">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_96" target="OTU_169">
+  <data key="d7">['conet_otu_a', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_96" target="OTU_62">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2575" target="OTU_744">
+  <data key="d7">['conet_otu_b', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2575" target="OTU_170">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2575" target="OTU_1970">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_2575" target="OTU_2015">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_744" target="OTU_520">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_744" target="OTU_318">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_744" target="OTU_170">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_744" target="OTU_28">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_744" target="OTU_41">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_744" target="OTU_2015">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_341" target="OTU_520">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_520" target="OTU_83">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_520" target="OTU_170">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_83" target="OTU_60">
+  <data key="d7">['conet_otu_a', 'conet_otu_all', 'conet_otu_b', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_83" target="OTU_773">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_83" target="OTU_2015">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2345" target="OTU_181">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1830" target="OTU_4">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_202" target="OTU_382">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_202" target="OTU_231">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_283" target="OTU_1834">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2274" target="OTU_4">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_189" target="OTU_436">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_189" target="OTU_541">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_189" target="OTU_176">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_174" target="OTU_230">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_230" target="OTU_1940">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_541" target="OTU_673">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_541" target="OTU_196">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_541" target="OTU_460">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_250" target="OTU_211">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_250" target="OTU_281">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_211" target="OTU_1791">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1897" target="OTU_439">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1897" target="OTU_18">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_18" target="OTU_32">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_87" target="OTU_415">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_87" target="OTU_164">
+  <data key="d7">['conet_otu_a', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_87" target="OTU_30">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_87" target="OTU_41">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_405" target="OTU_165">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_170" target="OTU_166">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_170" target="OTU_2015">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_166" target="OTU_318">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_166" target="OTU_595">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_318" target="OTU_806">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_318" target="OTU_4">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_318" target="OTU_210">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_164" target="OTU_3522">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_164" target="OTU_76">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_164" target="OTU_1654">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_164" target="OTU_41">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_76" target="OTU_41">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_30" target="OTU_425">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_446" target="OTU_3280">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_446" target="OTU_362">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_446" target="OTU_3026">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1791" target="OTU_1942">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1791" target="OTU_1682">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1942" target="OTU_1682">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_169" target="OTU_215">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_169" target="OTU_62">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_57" target="OTU_454">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_57" target="OTU_66">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_57" target="OTU_276">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_454" target="OTU_278">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_454" target="OTU_877">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_454" target="OTU_3779">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_454" target="OTU_66">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_3280" target="OTU_257">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_3280" target="OTU_3026">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_278" target="OTU_66">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_278" target="OTU_276">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2874" target="OTU_65">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2874" target="OTU_501">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_65" target="OTU_25">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_65" target="OTU_472">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2554" target="OTU_254">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_254" target="OTU_593">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2458" target="OTU_397">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2458" target="OTU_270">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_397" target="OTU_45">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_45" target="OTU_35">
+  <data key="d7">['conet_otu_all', 'conet_otu_b', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_501" target="OTU_25">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_35" target="OTU_78">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_35" target="OTU_89">
+  <data key="d7">['conet_otu_all', 'conet_otu_b', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_35" target="OTU_7">
+  <data key="d7">['conet_otu_a', 'conet_otu_all', 'conet_otu_b', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_78" target="OTU_89">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_78" target="OTU_7">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_314" target="OTU_700">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_3428" target="OTU_310">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_54" target="OTU_94">
+  <data key="d7">['conet_otu_a', 'conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_94" target="OTU_373">
+  <data key="d7">['conet_otu_a', 'conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_94" target="OTU_316">
+  <data key="d7">['conet_otu_a', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_94" target="OTU_86">
+  <data key="d7">['conet_otu_a', 'conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_293" target="OTU_393">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_393" target="OTU_47">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_547" target="OTU_2966">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_877" target="OTU_66">
+  <data key="d7">['conet_otu_b', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_713" target="OTU_2833">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_713" target="OTU_472">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_382" target="OTU_5">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_382" target="OTU_4">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_382" target="OTU_2358">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_196" target="OTU_780">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_196" target="OTU_217">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_316" target="OTU_48">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_316" target="OTU_6">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_316" target="OTU_1940">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_48" target="OTU_1940">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_6" target="OTU_1940">
+  <data key="d7">['conet_otu_a', 'conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_6" target="OTU_224">
+  <data key="d7">['conet_otu_a', 'conet_otu_all', 'conet_otu_b', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1914" target="OTU_960">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_960" target="OTU_4">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_673" target="OTU_205">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_270" target="OTU_24">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_236" target="OTU_85">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_236" target="OTU_32">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_234" target="OTU_407">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_420" target="OTU_91">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_91" target="OTU_39">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_91" target="OTU_708">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_91" target="OTU_231">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_39" target="OTU_708">
+  <data key="d7">['conet_otu_a', 'conet_otu_all', 'conet_otu_b', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_227" target="OTU_364">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_693" target="OTU_817">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2047" target="OTU_3062">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_5" target="OTU_23">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_968" target="OTU_767">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_42" target="OTU_99">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_38" target="OTU_976">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_351" target="OTU_603">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_90" target="OTU_939">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_90" target="OTU_756">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1262" target="OTU_4">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1262" target="OTU_1970">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1183" target="OTU_176">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_134" target="OTU_185">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_134" target="OTU_117">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1243" target="OTU_480">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1243" target="OTU_117">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_3779" target="OTU_66">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_3779" target="OTU_117">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_3779" target="OTU_276">
+  <data key="d7">['conet_otu_all', 'conet_otu_b', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_116" target="OTU_1687">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_116" target="OTU_312">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1687" target="OTU_26">
+  <data key="d7">['conet_otu_b', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_28" target="OTU_199">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_28" target="OTU_25">
+  <data key="d7">['conet_otu_a', 'conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_28" target="OTU_1338">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_28" target="OTU_1217">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_28" target="OTU_12">
+  <data key="d7">['conet_otu_a', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_28" target="OTU_806">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_199" target="OTU_25">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_199" target="OTU_12">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_25" target="OTU_12">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_806" target="OTU_1338">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_806" target="OTU_1217">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_806" target="OTU_210">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_806" target="OTU_390">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1338" target="OTU_522">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1338" target="OTU_442">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1338" target="OTU_390">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1338" target="OTU_210">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1338" target="OTU_1217">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1338" target="OTU_12">
+  <data key="d7">['conet_otu_all', 'conet_otu_b', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_442" target="OTU_390">
+  <data key="d7">['conet_otu_a', 'conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_210" target="OTU_267">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1217" target="OTU_12">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_907" target="OTU_4">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_3419" target="OTU_2804">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_139" target="OTU_98">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1454" target="OTU_4">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1454" target="OTU_897">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1454" target="OTU_1970">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_4" target="OTU_9">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_4" target="OTU_517">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_4" target="OTU_771">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_4" target="OTU_1303">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_4" target="OTU_1212">
+  <data key="d7">['conet_otu_a', 'conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_4" target="OTU_3155">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_4" target="OTU_652">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_771" target="OTU_231">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_3686" target="OTU_1212">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1244" target="OTU_444">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_575" target="OTU_150">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_575" target="OTU_1376">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1376" target="OTU_150">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1388" target="OTU_3738">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_132" target="OTU_3026">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_472" target="OTU_1328">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_191" target="OTU_1256">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_191" target="OTU_92">
+  <data key="d7">['conet_otu_a', 'conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1256" target="OTU_999">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_72" target="OTU_66">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_999" target="OTU_3007">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1296" target="OTU_2358">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_656" target="OTU_59">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_656" target="OTU_626">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_656" target="OTU_136">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_626" target="OTU_284">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_626" target="OTU_136">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_150" target="OTU_636">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_150" target="OTU_136">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_47" target="OTU_720">
+  <data key="d7">['conet_otu_a', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_47" target="OTU_1366">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_720" target="OTU_1366">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_720" target="OTU_66">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1366" target="OTU_157">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1366" target="OTU_201">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_32" target="OTU_133">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_7" target="OTU_89">
+  <data key="d7">['conet_otu_all', 'conet_otu_b', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_7" target="OTU_1421">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_7" target="OTU_497">
+  <data key="d7">['conet_otu_a', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_89" target="OTU_1421">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_89" target="OTU_3155">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_183" target="OTU_1444">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1444" target="OTU_708">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1444" target="OTU_81">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_708" target="OTU_81">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2810" target="OTU_1449">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2810" target="OTU_2388">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_3738" target="OTU_2093">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1421" target="OTU_141">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_224" target="OTU_1940">
+  <data key="d7">['conet_otu_a', 'conet_otu_all', 'conet_otu_b', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_224" target="OTU_15">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_224" target="OTU_86">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_224" target="OTU_24">
+  <data key="d7">['conet_otu_a', 'conet_otu_all', 'conet_otu_b', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1940" target="OTU_197">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1940" target="OTU_296">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1940" target="OTU_141">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_545" target="OTU_86">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_86" target="OTU_265">
+  <data key="d7">['conet_otu_b', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_86" target="OTU_15">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_86" target="OTU_194">
+  <data key="d7">['conet_otu_a', 'conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_24" target="OTU_15">
+  <data key="d7">['conet_otu_a', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1636" target="OTU_966">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_3383" target="OTU_158">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1638" target="OTU_84">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1638" target="OTU_17">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1638" target="OTU_46">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_15" target="OTU_229">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_229" target="OTU_232">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_229" target="OTU_187">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_229" target="OTU_1522">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1044" target="OTU_2358">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1044" target="OTU_3007">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1044" target="OTU_1075">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_3007" target="OTU_327">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_3007" target="OTU_886">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_131" target="OTU_101">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_131" target="OTU_11">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_101" target="OTU_2996">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_101" target="OTU_41">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_101" target="OTU_129">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_79" target="OTU_1075">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_79" target="OTU_2358">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_141" target="OTU_104">
+  <data key="d7">['conet_otu_a', 'conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_37" target="OTU_201">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_37" target="OTU_103">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_201" target="OTU_51">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_201" target="OTU_110">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_104" target="OTU_62">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_62" target="OTU_584">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2358" target="OTU_349">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_833" target="OTU_1041">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_652" target="OTU_1970">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_652" target="OTU_1133">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_105" target="OTU_66">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_105" target="OTU_593">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_66" target="OTU_276">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_66" target="OTU_117">
+  <data key="d7">['conet_otu_all', 'conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_66" target="OTU_593">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_593" target="OTU_358">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_276" target="OTU_107">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_276" target="OTU_2734">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_117" target="OTU_184">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_117" target="OTU_107">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1970" target="OTU_1053">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1053" target="OTU_404">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1053" target="OTU_3155">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_404" target="OTU_204">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1328" target="OTU_704">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1328" target="OTU_1133">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_704" target="OTU_1133">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_194" target="OTU_1133">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1862" target="OTU_1281">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_1281" target="OTU_1110">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['-1.0']</data>
+</edge>
+<edge id="0" source="OTU_51" target="OTU_110">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1133" target="OTU_109">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_333" target="OTU_109">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_773" target="OTU_2015">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_773" target="OTU_1082">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2015" target="OTU_1082">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_2015" target="OTU_152">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+<edge id="0" source="OTU_1082" target="OTU_1917">
+  <data key="d7">['conet_otu_c']</data>
+  <data key="d8">['1.0']</data>
+</edge>
+</graph></graphml>

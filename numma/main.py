@@ -26,6 +26,11 @@ import sys
 import os
 import argparse
 import numpy as np
+import pandas as pd
+import numma
+from numma.nullmodels import generate_random, generate_degree
+from numma.set import generate_sizes
+from numma.resample import generate_sample_sizes, draw_samples
 import logging.handlers
 from pbr.version import VersionInfo
 
@@ -96,7 +101,7 @@ def set_numma():
                         dest='size',
                         required=False,
                         help='If specified, associations only shared by a number of networks are included. \n'
-                             'You can specify multiple numbers. ')
+                             'You can specify multiple numbers. By default, the full intersection is calculated.')
     parser.add_argument('-sign', '--edge_sign',
                         dest='sign',
                         required=False,
@@ -113,8 +118,18 @@ def set_numma():
     parser.add_argument('-perm', '--permutations',
                         dest='perm',
                         required=False,
-                        help='Number of null models to generate. ',
-                        default=20)
+                        help='Number of null models to generate for each input network. \n'
+                             'Default: 10. ',
+                        default=None)
+    parser.add_argument('-nperm', '--permutationsets',
+                        dest='nperm',
+                        required=False,
+                        help='Number of sets to calculate from the null models. \n'
+                             'The total number of possible sets is equal to \n'
+                             'the number of null models raised to the number of networks.\n '
+                             'This value becomes huge quickly, so a random subset of possible sets is taken.\n '
+                             'Default: 50. ',
+                        default=None)
     parser.add_argument('-v', '--verbose',
                         dest='verbose',
                         required=False,
@@ -156,8 +171,41 @@ def main():
             except Exception:
                 logger.error('Could not import network file!', exc_info=True)
                 exit()
-
-        logger.info('Wrote clustered network to ' + args['fp'] + '.')
+    elif args['graph'] == 'demo':
+        path = os.path.dirname(numma.__file__)
+        networks.append(nx.read_graphml(path + 'conet_otu_a.graphml'))
+        networks.append(nx.read_graphml(path + 'conet_otu_b.graphml'))
+        networks.append(nx.read_graphml(path + 'conet_otu_c.graphml'))
+    # first generate null models
+    random = []
+    degree = []
+    if 'random' in args['null']:
+        try:
+            random = generate_random(networks)
+        except Exception:
+            logger.error('Could not generate randomized null models!', exc_info=True)
+            exit()
+    if 'degree' in args['null']:
+        try:
+            degree = generate_degree(networks)
+        except Exception:
+            logger.error('Could not generate degree-preserving null models!', exc_info=True)
+            exit()
+    try:
+        set_sizes = generate_sizes(networks, random, degree, args['nperm'], args['size'])
+        set_sizes.to_csv(args['fp'] + '_sets.csv')
+    except Exception:
+        logger.error('Failed to calculate set sizes!', exc_info=True)
+        exit()
+    if args['sample']:
+        try:
+            samples = generate_sample_sizes(networks, random, degree, args['nperm'], args['size'])
+            samples.to_csv(args['fp'] + '_subsampled_sets.csv')
+            draw_samples(samples)
+        except Exception:
+            logger.error('Failed to subsample networks!', exc_info=True)
+            exit()
+    logger.info('numma completed all tasks.')
     exit(0)
 
 
