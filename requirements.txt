@@ -1,0 +1,3 @@
+networkx>=2.1
+numpy>=1.15.1
+pbr>=5.0.0
