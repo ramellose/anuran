@@ -10,9 +10,8 @@ __license__ = 'Apache 2.0'
 
 import unittest
 import networkx as nx
-from scipy.special import binom
 import numpy as np
-from numma.nullmodels import generate_random, generate_degree, randomize_network, randomize_dyads
+from numma.nullmodels import generate_null, randomize_network, randomize_dyads
 from numma.set import generate_sizes, difference, intersection
 from numma.resample import generate_sample_sizes, draw_samples
 
@@ -58,6 +57,7 @@ nx.set_edge_attributes(c, values=weights, name='weight')
 c = c.to_undirected()
 
 networks = [a, b, c]
+
 
 class TestMain(unittest.TestCase):
     """"
@@ -137,6 +137,7 @@ class TestMain(unittest.TestCase):
         results = generate_sample_sizes(networks, random, degree)
         num = 23 * (len(networks) - 1)
         self.assertEqual(len(results['Networks']), num)
+
 
 if __name__ == '__main__':
     unittest.main()

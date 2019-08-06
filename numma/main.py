@@ -28,7 +28,7 @@ import argparse
 import numpy as np
 import pandas as pd
 import numma
-from numma.nullmodels import generate_random, generate_degree
+from numma.nullmodels import generate_null
 from numma.set import generate_sizes
 from numma.resample import generate_sample_sizes, draw_samples
 import logging.handlers
@@ -100,6 +100,7 @@ def set_numma():
     parser.add_argument('-size', '--intersection_size',
                         dest='size',
                         required=False,
+                        nargs='+',
                         help='If specified, associations only shared by a number of networks are included. \n'
                              'You can specify multiple numbers. By default, the full intersection is calculated.')
     parser.add_argument('-sign', '--edge_sign',
@@ -115,6 +116,13 @@ def set_numma():
                         help='Resamples your networks to generate a figure demonstrating changes in the set sizes \n'
                              'when you increase the network number up until the total.',
                         default=False)
+    parser.add_argument('-share', '--shared_interactions',
+                        dest='share',
+                        required=False,
+                        nargs='+',
+                        default=None,
+                        help='If specified, null models include a set fraction of shared interactions. \n'
+                             'You can specify multiple fractions. By default, null models have no shared interactions.')
     parser.add_argument('-perm', '--permutations',
                         dest='perm',
                         required=False,
@@ -181,18 +189,21 @@ def main():
     degree = []
     if 'random' in args['null']:
         try:
-            random = generate_random(networks)
+            for frac in args['share']:
+                    random.append(generate_null(networks, n=args['perm'], share=frac, mode='random'))
         except Exception:
             logger.error('Could not generate randomized null models!', exc_info=True)
             exit()
     if 'degree' in args['null']:
         try:
-            degree = generate_degree(networks)
+            for frac in args['share']:
+                degree.append(generate_null(networks, n=args['perm'], share=frac, mode='degree'))
         except Exception:
             logger.error('Could not generate degree-preserving null models!', exc_info=True)
             exit()
     try:
-        set_sizes = generate_sizes(networks, random, degree, args['nperm'], args['size'])
+        set_sizes = generate_sizes(networks, random, degree,
+                                   fractions=args['share'], perm=args['nperm'], size=args['size'])
         set_sizes.to_csv(args['fp'] + '_sets.csv')
     except Exception:
         logger.error('Failed to calculate set sizes!', exc_info=True)
