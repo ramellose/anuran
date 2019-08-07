@@ -13,10 +13,10 @@ __license__ = 'Apache 2.0'
 
 import networkx as nx
 from scipy.special import binom
-import logging
 import sys
 import os
 from random import sample
+import logging.handlers
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -61,12 +61,11 @@ def generate_null(networks, n, share, mode):
     for i in range(len(networks)):
         network = networks[i]
         nulls.append(list())
-        shared_models = list()
         if share:
             # all null models need to preserve the same edges
             keep = sample(network.edges, int(len(network.edges) * share))
         else:
-            keep = None
+            keep = []
         for j in range(n):
             if mode == 'random':
                 nulls[i].append(randomize_network(network, keep))
@@ -136,8 +135,14 @@ def randomize_dyads(network, keep):
             dyadset = sample(swappable_deg, 1)[0]
             # samples two nodes that could have edges swapped
             dyad = sample(dyadset, 2)
-            edge_0 = sample(list(nx.neighbors(null, dyad[0])), 1)[0]
-            edge_1 = sample(list(nx.neighbors(null, dyad[1])), 1)[0]
+            n0 = list(nx.neighbors(null, dyad[0]))
+            n1 = list(nx.neighbors(null, dyad[0]))
+            if dyad[1] in n0:
+                n0.remove(dyad[1])
+            if dyad[0] in n1:
+                n1.remove(dyad[0])
+            edge_0 = sample(n0, 1)[0]
+            edge_1 = sample(n1, 1)[0]
             if (edge_0, dyad[0]) in keep or (dyad[0], edge_0) in keep:
                 break
             elif (edge_1, dyad[1]) in keep or (dyad[1], edge_1) in keep:
@@ -146,6 +151,8 @@ def randomize_dyads(network, keep):
             elif (edge_1, dyad[0]) in null.edges:
                 break
             elif (edge_0, dyad[1]) in null.edges:
+                break
+            elif edge_0 == edge_1:
                 break
             else:
                 null.remove_edge(edge_0, dyad[0])

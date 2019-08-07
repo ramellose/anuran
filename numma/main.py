@@ -29,8 +29,8 @@ import numpy as np
 import pandas as pd
 import numma
 from numma.nullmodels import generate_null
-from numma.set import generate_sizes
-from numma.resample import generate_sample_sizes, draw_samples
+from numma.set import generate_sizes, generate_sample_sizes
+from numma.setviz import draw_sets, draw_samples
 import logging.handlers
 from pbr.version import VersionInfo
 
@@ -101,6 +101,7 @@ def set_numma():
                         dest='size',
                         required=False,
                         nargs='+',
+                        default=[1],
                         help='If specified, associations only shared by a number of networks are included. \n'
                              'You can specify multiple numbers. By default, the full intersection is calculated.')
     parser.add_argument('-sign', '--edge_sign',
@@ -113,36 +114,42 @@ def set_numma():
     parser.add_argument('-sample', '--resample',
                         dest='sample',
                         required=False,
-                        help='Resamples your networks to generate a figure demonstrating changes in the set sizes \n'
-                             'when you increase the network number up until the total.',
+                        type=int,
+                        help='Resample your networks to generate changes in the set sizes \n'
+                             'when you increase the network number up until the total. \n'
+                             'Specify an upper limit of resamples. \n'
+                             'By default, this is equal to the binomial coefficient of the input networks. \n'
+                             'If the limit is higher than this coefficient, all possible combinations are resampled.',
                         default=False)
     parser.add_argument('-share', '--shared_interactions',
                         dest='share',
                         required=False,
                         nargs='+',
-                        default=None,
+                        default=[0],
                         help='If specified, null models include a set fraction of shared interactions. \n'
                              'You can specify multiple fractions. By default, null models have no shared interactions.')
     parser.add_argument('-perm', '--permutations',
                         dest='perm',
+                        type=int,
                         required=False,
                         help='Number of null models to generate for each input network. \n'
                              'Default: 10. ',
-                        default=None)
+                        default=10)
     parser.add_argument('-nperm', '--permutationsets',
                         dest='nperm',
                         required=False,
+                        type=int,
                         help='Number of sets to calculate from the null models. \n'
                              'The total number of possible sets is equal to \n'
                              'the number of null models raised to the number of networks.\n '
                              'This value becomes huge quickly, so a random subset of possible sets is taken.\n '
                              'Default: 50. ',
-                        default=None)
-    parser.add_argument('-v', '--verbose',
-                        dest='verbose',
+                        default=50)
+    parser.add_argument('-draw', '--draw_figures',
+                        dest='draw',
                         required=False,
+                        help='If flagged, draws figures showing the set sizes.',
                         action='store_true',
-                        help='If flagged, rovides additional details on progress. ',
                         default=False)
     parser.add_argument('-version', '--version',
                         dest='version',
@@ -184,6 +191,7 @@ def main():
         networks.append(nx.read_graphml(path + 'conet_otu_a.graphml'))
         networks.append(nx.read_graphml(path + 'conet_otu_b.graphml'))
         networks.append(nx.read_graphml(path + 'conet_otu_c.graphml'))
+    logger.info('Imported ' + len(networks) + ' networks.')
     # first generate null models
     random = []
     degree = []
@@ -191,6 +199,7 @@ def main():
         try:
             for frac in args['share']:
                     random.append(generate_null(networks, n=args['perm'], share=frac, mode='random'))
+            logger.info('Finished constructing all randomized networks.')
         except Exception:
             logger.error('Could not generate randomized null models!', exc_info=True)
             exit()
@@ -198,24 +207,31 @@ def main():
         try:
             for frac in args['share']:
                 degree.append(generate_null(networks, n=args['perm'], share=frac, mode='degree'))
+            logger.info('Finished constructing all degree-preserving randomized networks.')
         except Exception:
             logger.error('Could not generate degree-preserving null models!', exc_info=True)
             exit()
     try:
         set_sizes = generate_sizes(networks, random, degree,
-                                   fractions=args['share'], perm=args['nperm'], size=args['size'])
+                                   fractions=args['share'], perm=args['nperm'], sizes=args['size'])
         set_sizes.to_csv(args['fp'] + '_sets.csv')
+        logger.info('Set sizes exported to: ' + args['fp'] + '_sets.csv')
     except Exception:
         logger.error('Failed to calculate set sizes!', exc_info=True)
         exit()
     if args['sample']:
         try:
-            samples = generate_sample_sizes(networks, random, degree, args['nperm'], args['size'])
+            samples = generate_sample_sizes(networks, random, degree,
+                                            fractions=args['share'], perm=args['nperm'],
+                                            sizes=args['size'], limit=args['sample'])
             samples.to_csv(args['fp'] + '_subsampled_sets.csv')
-            draw_samples(samples)
         except Exception:
             logger.error('Failed to subsample networks!', exc_info=True)
             exit()
+    if args['draw']:
+        draw_sets(set_sizes, args['fp'])
+        if args['sample']:
+            draw_samples(samples, args['fp'])
     logger.info('numma completed all tasks.')
     exit(0)
 

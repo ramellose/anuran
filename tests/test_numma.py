@@ -12,8 +12,8 @@ import unittest
 import networkx as nx
 import numpy as np
 from numma.nullmodels import generate_null, randomize_network, randomize_dyads
-from numma.set import generate_sizes, difference, intersection
-from numma.resample import generate_sample_sizes, draw_samples
+from numma.set import generate_sizes, difference, intersection, generate_sample_sizes
+from scipy.special import binom
 
 # generate three alternative networks with first 4 edges conserved but rest random
 nodes = ["OTU_1", "OTU_2", "OTU_3", "OTU_4", "OTU_5"]
@@ -64,79 +64,64 @@ class TestMain(unittest.TestCase):
     Tests whether the main clustering function properly assigns cluster IDs.
     """
 
-    def generate_random(self):
+    def test_generate_null(self):
         """Checks whether the specified number of randomized models is returned.
          generate_random should generate a list of lists with each of the lists
          containing all permuted networks for one original network. """
         perm = 10
-        results = generate_random(networks, perm)
+        results = generate_null(networks, n=perm, share=0, mode='random')
         self.assertEqual(len(results[0]), perm)
-        self.assertEqual(len(results), networks)
+        self.assertEqual(len(results), len(networks))
 
-    def generate_random_distr(self):
-        """Checks whether the degree distribution of the random models is different. """
-        perm = 1
-        results = generate_random(networks, perm)
-        orig_deg = nx.degree(networks[0])
-        new_deg = nx.degree(results[0][0])
-        self.assertNotEqual(orig_deg, new_deg)
-
-    def generate_degree(self):
-        """Checks whether the specified number of randomized models is returned.
-         generate_random should generate a list of lists with each of the lists
-         containing all permuted networks for one original network. """
-        perm = 10
-        results = generate_degree(networks, perm)
-        self.assertEqual(len(results[0]), perm)
-        self.assertEqual(len(results), networks)
-
-    def randomize_network(self):
+    def test_randomize_network(self):
         """Checks whether a randomized network is returned. """
-        random = randomize_network(a)
+        random = randomize_network(a, keep=[])
         orig_deg = np.sort(nx.degree(a))
         new_deg = np.sort(nx.degree(random))
-        self.assertNotEqual(orig_deg, new_deg)
+        self.assertFalse((orig_deg == new_deg).all())
 
-    def randomize_dyads(self):
+    def test_randomize_dyads(self):
         """Checks whether a network with swapped dyads is returned. """
-        random = randomize_dyads(a)
+        random = randomize_dyads(a, keep=[])
         orig_deg = np.sort(nx.degree(a))
         new_deg = np.sort(nx.degree(random))
-        self.assertEqual(orig_deg, new_deg)
+        self.assertTrue((orig_deg == new_deg).all())
 
-    def generate_sizes(self):
+    def test_generate_sizes(self):
         """Checks whether the set sizes are correctly returned. """
         perm = 10
         nperm = 10
-        random = generate_random(networks, perm)
-        degree = generate_degree(networks, perm)
-        results = generate_sizes(networks, random, degree)
-        self.assertEqual(len(results['Type']), 23)
+        random = [generate_null(networks, n=perm, share=0, mode='random')]
+        degree = [generate_null(networks, n=perm, share=0, mode='degree')]
+        results = generate_sizes(networks, random=random, degree=degree, fractions=[0],
+                                 perm=nperm, sizes=[1])
+        self.assertEqual(len(results['Set type']), 42)
 
-    def intersection(self):
+    def test_intersection(self):
         """Checks whether the intersection set size is correctly returned. """
-        results = intersection(networks)
-        self.assertEqual(len(results['Type']), 23)
+        results = intersection(networks, size=1)
+        self.assertEqual(results, 4)
 
-    def intersection_size(self):
+    def test_intersection_size(self):
         """Checks whether the intersection set size is correctly returned. """
-        results = intersection(networks, 2)
-        self.assertEqual(len(results['Type']), 23)
+        results = intersection(networks, size=0.6)
+        self.assertEqual(results, 5)
 
-    def difference(self):
+    def test_difference(self):
         """Checks whether the difference set size is correctly returned. """
         results = difference(networks)
-        self.assertEqual(len(results['Type']), 23)
+        self.assertEqual(results, 4)
 
-    def generate_sample_sizes(self):
+    def test_generate_sample_sizes(self):
         """Checks whether the subsampled set sizes are correctly returned. """
         perm = 10
         nperm = 10
-        random = generate_random(networks, perm)
-        degree = generate_degree(networks, perm)
-        results = generate_sample_sizes(networks, random, degree)
-        num = 23 * (len(networks) - 1)
-        self.assertEqual(len(results['Networks']), num)
+        random = [generate_null(networks, n=perm, share=0, mode='random')]
+        degree = [generate_null(networks, n=perm, share=0, mode='degree')]
+        results = generate_sample_sizes(networks, random=random, degree=degree,
+                                        fractions=[0], perm=perm, sizes=[1], limit=False)
+        num = 42 * binom(3, 3) + 42 * binom(3, 2) + 42 * binom(3, 1)
+        self.assertEqual(len(results['Network']), num)
 
 
 if __name__ == '__main__':
