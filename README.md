@@ -1,4 +1,4 @@
-# numma  ![numma](https://github.com/ramellose/manta/blob/master/manta.png)
+# numma
 Toolbox for identification of non-random associations
 
 [![Build Status](https://travis-ci.com/ramellose/manta.svg?token=9mhqeTh13MErxyrk5zR8&branch=master)](https://travis-ci.com/ramellose/manta)
