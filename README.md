@@ -1,7 +1,7 @@
 # numma
 Toolbox for identification of non-random associations
 
-[![Build Status](https://travis-ci.com/ramellose/numma.svg?token=9mhqeTh13MErxyrk5zR8&branch=master)](https://travis-ci.com/ramellose/manta)
+[![Build Status](https://travis-ci.com/ramellose/numma.svg?token=9mhqeTh13MErxyrk5zR8&branch=master)](https://travis-ci.com/ramellose/numma)
 
 This toolbox is intended to identify conserved or unique associations across multiple networks.
 While carrying out set operations on such networks can help you find such associations,
