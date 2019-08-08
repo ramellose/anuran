@@ -99,11 +99,10 @@ def set_numma():
     parser.add_argument('-sample', '--resample',
                         dest='sample',
                         required=False,
-                        type=int,
                         help='Resample your networks to generate changes in the set sizes \n'
                              'when you increase the network number up until the total. \n'
-                             'Specify an upper limit of resamples. \n'
-                             'By default, this is equal to the binomial coefficient of the input networks. \n'
+                             'Specify an upper limit of resamples, or True if you want all possible resamples. \n'
+                             'By default, the upper limit equal to the binomial coefficient of the input networks. \n'
                              'If the limit is higher than this coefficient, all possible combinations are resampled.',
                         default=False)
     parser.add_argument('-share', '--shared_interactions',
