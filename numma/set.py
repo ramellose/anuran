@@ -15,6 +15,7 @@ from itertools import combinations
 from scipy.special import binom
 import numpy as np
 
+
 def generate_sizes(networks, random, degree, sign, fractions, perm, sizes):
     """
     This function carries out set operations on all networks provided in

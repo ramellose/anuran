@@ -44,21 +44,6 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 sh.setFormatter(formatter)
 logger.addHandler(sh)
 
-# handler to file
-# only handler with 'w' mode, rest is 'a'
-# once this handler is started, the file writing is cleared
-# other handlers append to the file
-logpath = "\\".join(os.getcwd().split("\\")[:-1]) + '\\numma.log'
-# filelog path is one folder above manta
-# pyinstaller creates a temporary folder, so log would be deleted
-fh = logging.handlers.RotatingFileHandler(maxBytes=500,
-                                          filename=logpath, mode='a')
-fh.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-fh.setFormatter(formatter)
-logger.addHandler(fh)
-
-
 def set_numma():
     """This parser gets input settings for running numma.
     It requires an input format that can be read by NetworkX.
