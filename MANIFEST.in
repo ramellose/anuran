@@ -1,3 +1,3 @@
-include data/conet_otu_a.graphml
-include data/conet_otu_b.graphml
-include data/conet_otu_c.graphml
+include numma/data/conet_otu_a.graphml
+include numma/data/conet_otu_b.graphml
+include numma/data/conet_otu_c.graphml
