@@ -13,20 +13,12 @@ __license__ = 'Apache 2.0'
 
 import networkx as nx
 from scipy.special import binom
-import sys
-import os
 from random import sample
 import logging.handlers
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-# handler to sys.stdout
-sh = logging.StreamHandler(sys.stdout)
-sh.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-sh.setFormatter(formatter)
-logger.addHandler(sh)
 
 def generate_null(networks, n, share, mode):
     """

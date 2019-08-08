@@ -25,8 +25,7 @@ import networkx as nx
 import sys
 import os
 import argparse
-import numpy as np
-import pandas as pd
+
 import numma
 from numma.nullmodels import generate_null
 from numma.set import generate_sizes, generate_sample_sizes
@@ -43,6 +42,7 @@ sh.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 sh.setFormatter(formatter)
 logger.addHandler(sh)
+
 
 def set_numma():
     """This parser gets input settings for running numma.
@@ -196,6 +196,7 @@ def main():
         except Exception:
             logger.error('Could not generate degree-preserving null models!', exc_info=True)
             exit()
+    set_sizes = None
     try:
         set_sizes = generate_sizes(networks, random, degree, sign=args['sign'],
                                    fractions=args['share'], perm=args['nperm'], sizes=args['size'])
@@ -204,6 +205,7 @@ def main():
     except Exception:
         logger.error('Failed to calculate set sizes!', exc_info=True)
         exit()
+    samples = None
     if args['sample']:
         try:
             samples = generate_sample_sizes(networks, random, degree, sign=args['sign'],
@@ -214,9 +216,13 @@ def main():
             logger.error('Failed to subsample networks!', exc_info=True)
             exit()
     if args['draw']:
-        draw_sets(set_sizes, args['fp'])
-        if args['sample']:
-            draw_samples(samples, args['fp'])
+        try:
+            draw_sets(set_sizes, args['fp'])
+            if args['sample']:
+                draw_samples(samples, args['fp'])
+        except Exception:
+            logger.error('Could not draw data!', exc_info=True)
+            exit()
     logger.info('numma completed all tasks.')
     exit(0)
 
