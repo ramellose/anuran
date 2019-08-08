@@ -168,7 +168,7 @@ def main():
         logger.info('Version ' + info.version_string())
         exit(0)
     networks = list()
-    if args['graph'] != 'demo':
+    if args['graph'] != ['demo']:
         for file in args['graph']:
             filename = file.split(sep=".")
             extension = filename[len(filename)-1]
@@ -186,7 +186,7 @@ def main():
             except Exception:
                 logger.error('Could not import network file!', exc_info=True)
                 exit()
-    elif args['graph'] == 'demo':
+    elif args['graph'] == ['demo']:
         path = os.path.dirname(numma.__file__)
         networks.append(nx.read_graphml(path + 'conet_otu_a.graphml'))
         networks.append(nx.read_graphml(path + 'conet_otu_b.graphml'))

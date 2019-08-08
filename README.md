@@ -18,11 +18,23 @@ To install _numma_, run:
 pip install git+https://github.com/ramellose/numma.git
 ```
 
-To run the script, only two arguments are required: input and output filepaths.
-The script recognizes gml, graphml and cyjs files by their extension. By default, cyjs is exported.
-It also accepts text files with edge lists, with the third column containing edge weight.
+
+For a quick demo, run _numma_ as follows, with the output filepath changed to something suitable for your system.
+When specifying the filepath, include the full path and a prefix for naming files.
+For example, _numma_ will save a csv file to numma_demo_sets.csv with the command below.
 ```
-numma -i filepath1 filepath2 filepath3 -o filepath_to_output
+numma -i demo -o C://Documents//numma_demo -draw -sample
+```
+
+The demo data for _numma_ was downloaded from the following publication:
+Meyer, K. M., Memiaghe, H., Korte, L., Kenfack, D., Alonso, A., & Bohannan, B. J. (2018).
+Why do microbes exhibit weak biogeographic patterns?. The ISME journal, 12(6), 1404.
+
+To run the script, only two arguments are required: input and output filepaths.
+The script recognizes gml, graphml and txt files by their extension.
+The text files should be edge lists, with the third column containing edge weight.
+```
+numma -i filepath1.graphml filepath2.gml filepath3.txt -o filepath_to_output
 ```
 
 _numma_ generates null models with permutations of the original network.
@@ -54,17 +66,6 @@ For a complete explanation of all the parameters, run:
 ```
 numma -h
 ```
-
-The demo data for _numma_ was downloaded from the following publication:
-Meyer, K. M., Memiaghe, H., Korte, L., Kenfack, D., Alonso, A., & Bohannan, B. J. (2018).
-Why do microbes exhibit weak biogeographic patterns?. The ISME journal, 12(6), 1404.
-
-To run the demo, run _numma_ as follows:
-```
-numma -i demo -o filepath_to_output
-```
-
-For an elaborate demo that goes through more variables, go [here](https://ramellose.github.io/networktutorials/numma.html).
 
 For documentation of specific functions, check out [the Sphinx documentation](https://ramellose.github.io/numma/index.html).
 
