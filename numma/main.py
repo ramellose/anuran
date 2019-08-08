@@ -191,7 +191,7 @@ def main():
         networks.append(nx.read_graphml(path + '//data//conet_otu_a.graphml'))
         networks.append(nx.read_graphml(path + '//data//conet_otu_b.graphml'))
         networks.append(nx.read_graphml(path + '//data//conet_otu_c.graphml'))
-    logger.info('Imported ' + len(networks) + ' networks.')
+    logger.info('Imported ' + str(len(networks)) + ' networks.')
     # first generate null models
     random = []
     degree = []
