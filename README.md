@@ -47,6 +47,7 @@ numma -n random     # changes degree
 The set sizes are calculated for the difference set and the intersection set by default.
 You can also choose to calculate the set sizes for all possible intersections of a number of the networks, i.e. each edge that was present on 2 out of 5 networks.
 If you flag the sign option, signs of edge weights are taken into account.
+For this, the input networks need to have weight as an edge property.
 The set difference can then have edges that have a unique edge sign in one network but a different edge sign in all others.
 In contrast, the set intersection will only include edges that have the same sign across the networks.
 

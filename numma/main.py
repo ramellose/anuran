@@ -212,7 +212,7 @@ def main():
             logger.error('Could not generate degree-preserving null models!', exc_info=True)
             exit()
     try:
-        set_sizes = generate_sizes(networks, random, degree,
+        set_sizes = generate_sizes(networks, random, degree, sign=args['sign'],
                                    fractions=args['share'], perm=args['nperm'], sizes=args['size'])
         set_sizes.to_csv(args['fp'] + '_sets.csv')
         logger.info('Set sizes exported to: ' + args['fp'] + '_sets.csv')
@@ -221,7 +221,7 @@ def main():
         exit()
     if args['sample']:
         try:
-            samples = generate_sample_sizes(networks, random, degree,
+            samples = generate_sample_sizes(networks, random, degree, sign=args['sign'],
                                             fractions=args['share'], perm=args['nperm'],
                                             sizes=args['size'], limit=args['sample'])
             samples.to_csv(args['fp'] + '_subsampled_sets.csv')
