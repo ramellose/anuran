@@ -66,13 +66,19 @@ def randomize_network(network, keep):
     null.add_nodes_from(network.nodes)
     if keep:
         null.add_edges_from(keep)
+        nx.set_edge_attributes(null, nx.get_edge_attributes(network, 'weight'), 'weight')
     num = len(network.edges) - len(null.edges)
+    randomized_weights = nx.get_edge_attributes(network, 'weight')
+    if len(randomized_weights) > 0:
+        for edge in null.edges:
+            randomized_weights.pop(edge, None)
+    randomized_weights = sample(list(randomized_weights.values()), len(randomized_weights))
     for edge in range(num):
         created = False
         while not created:
             new_edge = sample(null.nodes, 2)
             if new_edge not in null.edges:
-                null.add_edge(new_edge[0], new_edge[1])
+                null.add_edge(new_edge[0], new_edge[1], randomized_weights[num])
                 created = True
     return null
 
@@ -89,6 +95,7 @@ def randomize_dyads(network, keep):
     null = nx.Graph().to_undirected()
     null.add_nodes_from(network.nodes)
     null.add_edges_from(network.edges)
+    nx.set_edge_attributes(null, nx.get_edge_attributes(network, 'weight'), 'weight')
     # create dictionary of dyad pairs
     deg = {degree: list() for degree in dict(network.degree).values()}
     for node in network.nodes:
@@ -134,7 +141,7 @@ def randomize_dyads(network, keep):
             else:
                 null.remove_edge(edge_0, dyad[0])
                 null.remove_edge(edge_1, dyad[1])
-                null.add_edge(edge_1, dyad[0])
-                null.add_edge(edge_0, dyad[1])
+                null.add_edge(edge_1, dyad[0], weight=null.edges[edge_0, dyad[0]])
+                null.add_edge(edge_0, dyad[1], weight=null.edges[edge_1, dyad[1]])
                 success = True
     return null
