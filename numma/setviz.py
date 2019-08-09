@@ -53,7 +53,7 @@ def draw_samples(data, fp):
         sns.set_style(style="whitegrid")
         fig = sns.lineplot(x='Samples', y='Set size', hue='Network',
                            data=subdata)
-        fig.set_xticks(range(1, max(subdata['Samples'])))
+        fig.set_xticks(range(1, max(subdata['Samples']) + 1))
         fig.figure.savefig(fp + "_" + val.replace(' ', '_') + "_samples.png")
         fig.clear()
 

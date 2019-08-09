@@ -38,7 +38,12 @@ numma -i filepath1.graphml filepath2.gml filepath3.txt -o filepath_to_output
 ```
 
 _numma_ generates null models with permutations of the original network.
-By default, the null model preserves the degree distribution, but it can also be changed.
+By default, two models are generated: one that changes the degree distribution
+and one that does not.
+Note that the model changing the degree distribution may not have a major effect
+on the network structure as most smaller networks will not have enough dyad pairs to swap.
+Only the distribution is preserved, not the degree each node has.
+
 ```
 numma -n deg        # preserves degree
 numma -n random     # changes degree

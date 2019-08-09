@@ -109,10 +109,16 @@ def randomize_dyads(network, keep):
     swaps = 2 * (len(network.edges) - len(keep))
     # creates a list of lists with each of the sublists containing nodes with same degree
     swappable_deg = [deg[x] for x in deg if len(deg[x]) > 1]
+    timeout = False
     for swap in range(swaps):
         success = False
-        while not success:
+        count = 0
+        while not success and not timeout:
             # samples a set of nodes with swappable edges
+            if count > 100:
+                logger.warning("The network has too few dyads with distinct edge partners to \n"
+                               "generate a useful degree-preserving model!\n"
+                               "It may be better to only use the fully randomized model. ")
             dyadset = sample(swappable_deg, 1)[0]
             # samples two nodes that could have edges swapped
             dyad = sample(dyadset, 2)
@@ -123,20 +129,26 @@ def randomize_dyads(network, keep):
             if dyad[0] in n1:
                 n1.remove(dyad[0])
             if len(n0) == 0 or len(n1) == 1:
-                break
+                count += 1
+                continue
             edge_0 = sample(n0, 1)[0]
             edge_1 = sample(n1, 1)[0]
             if (edge_0, dyad[0]) in keep or (dyad[0], edge_0) in keep:
-                break
+                count += 1
+                continue
             elif (edge_1, dyad[1]) in keep or (dyad[1], edge_1) in keep:
-                break
+                count += 1
+                continue
             # check if edge already exists
             elif (edge_1, dyad[0]) in null.edges:
-                break
+                count += 1
+                continue
             elif (edge_0, dyad[1]) in null.edges:
-                break
+                count += 1
+                continue
             elif edge_0 == edge_1:
-                break
+                count += 1
+                continue
             else:
                 null.remove_edge(edge_0, dyad[0])
                 null.remove_edge(edge_1, dyad[1])
