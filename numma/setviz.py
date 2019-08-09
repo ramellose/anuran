@@ -31,6 +31,7 @@ def draw_sets(data, fp):
     fig = sns.catplot(x='Network', y='Set size', col='Set type',
                       data=data, kind='strip')
     fig.savefig(fp + "_setsizes.png")
+    fig.fig.clf()
 
 
 def draw_samples(data, fp):
@@ -52,7 +53,6 @@ def draw_samples(data, fp):
         sns.set_style(style="whitegrid")
         fig = sns.lineplot(x='Samples', y='Set size', hue='Network',
                            data=subdata)
-        fig.clear()
         fig.set_xticks(range(1, max(subdata['Samples'])))
         fig.figure.savefig(fp + "_" + val.replace(' ', '_') + "_samples.png")
         fig.clear()
