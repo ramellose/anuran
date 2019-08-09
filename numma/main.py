@@ -203,7 +203,7 @@ def main():
             exit()
     set_sizes = None
     try:
-        set_sizes = generate_sizes(networks, random, degree, sign=args['sign'],
+        set_sizes = generate_sizes(networks, random, degree, sign=args['sign'], set_operation=args['set'],
                                    fractions=args['share'], perm=args['nperm'], sizes=args['size'])
         set_sizes.to_csv(args['fp'] + '_sets.csv')
         logger.info('Set sizes exported to: ' + args['fp'] + '_sets.csv')
@@ -213,7 +213,7 @@ def main():
     samples = None
     if args['sample']:
         try:
-            samples = generate_sample_sizes(networks, random, degree, sign=args['sign'],
+            samples = generate_sample_sizes(networks, random, degree, sign=args['sign'], set_operation=args['set'],
                                             fractions=args['share'], perm=args['nperm'],
                                             sizes=args['size'], limit=args['sample'])
             samples.to_csv(args['fp'] + '_subsampled_sets.csv')
