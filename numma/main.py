@@ -99,6 +99,7 @@ def set_numma():
     parser.add_argument('-sample', '--resample',
                         dest='sample',
                         required=False,
+                        type=int,
                         help='Resample your networks to generate changes in the set sizes \n'
                              'when you increase the network number up until the total. \n'
                              'Specify an upper limit of resamples, or True if you want all possible resamples. \n'
