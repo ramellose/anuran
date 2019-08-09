@@ -63,7 +63,7 @@ def generate_sizes(networks, random, degree, sign, fractions, perm, sizes):
                                           'Network type': 'Random networks',
                                           'Conserved fraction': fractions[i],
                                           'Set type': 'Intersection ' + str(size),
-                                          'Set size': intersection(randomperm, sign)}, ignore_index=True)
+                                          'Set size': intersection(randomperm, size, sign)}, ignore_index=True)
             degreeperm = [sample(degree[i][r], 1)[0] for r in range(len(degree[i]))]
             results = results.append({'Network': 'Degree ' + str(fractions[i]),
                                       'Network type': 'Degree networks',
@@ -75,7 +75,7 @@ def generate_sizes(networks, random, degree, sign, fractions, perm, sizes):
                                           'Network type': 'Degree networks',
                                           'Conserved fraction': fractions[i],
                                           'Set type': 'Intersection ' + str(size),
-                                          'Set size': intersection(degreeperm, sign)}, ignore_index=True)
+                                          'Set size': intersection(degreeperm, size, sign)}, ignore_index=True)
     return results
 
 
