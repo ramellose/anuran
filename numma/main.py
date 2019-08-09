@@ -71,9 +71,9 @@ def set_numma():
                         required=False,
                         help='Types of null models to generate (degree-preserving or random rewiring). '
                              '\n By default, both models are generated.',
-                        choices=['deg', 'random'],
+                        choices=['degree', 'random'],
                         nargs='+',
-                        default=['deg', 'random'])
+                        default=['degree', 'random'])
     parser.add_argument('-set', '--set_type',
                         dest='set',
                         required=False,
@@ -152,6 +152,8 @@ def main():
         logger.info('Version ' + info.version_string())
         exit(0)
     networks = list()
+    if not args['graph']:
+        logger.info('Please give an input file.')
     if args['graph'] != ['demo']:
         for file in args['graph']:
             filename = file.split(sep=".")
@@ -177,9 +179,10 @@ def main():
         networks.append(nx.read_graphml(path + '//data//conet_otu_c.graphml'))
     logger.info('Imported ' + str(len(networks)) + ' networks.')
     # first generate null models
-    random = []
-    degree = []
+    random = None
+    degree = None
     if 'random' in args['null']:
+        random = []
         try:
             for frac in args['share']:
                     random.append(generate_null(networks, n=args['perm'], share=frac, mode='random'))
@@ -188,6 +191,7 @@ def main():
             logger.error('Could not generate randomized null models!', exc_info=True)
             exit()
     if 'degree' in args['null']:
+        degree = []
         try:
             for frac in args['share']:
                 degree.append(generate_null(networks, n=args['perm'], share=frac, mode='degree'))

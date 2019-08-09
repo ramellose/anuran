@@ -52,30 +52,32 @@ def generate_sizes(networks, random, degree, sign, fractions, perm, sizes):
                                   'Set size': intersection(networks, size, sign)}, ignore_index=True)
     for i in range(len(fractions)):
         for j in range(perm):
-            randomperm = [sample(random[i][r], 1)[0] for r in range(len(random[i]))]
-            results = results.append({'Network': 'Random ' + str(fractions[i]),
-                                      'Network type': 'Random networks',
-                                      'Conserved fraction': fractions[i],
-                                      'Set type': 'Difference',
-                                      'Set size': difference(randomperm, sign)}, ignore_index=True)
-            for size in sizes:
+            if random:
+                randomperm = [sample(random[i][r], 1)[0] for r in range(len(random[i]))]
                 results = results.append({'Network': 'Random ' + str(fractions[i]),
                                           'Network type': 'Random networks',
                                           'Conserved fraction': fractions[i],
-                                          'Set type': 'Intersection ' + str(size),
-                                          'Set size': intersection(randomperm, size, sign)}, ignore_index=True)
-            degreeperm = [sample(degree[i][r], 1)[0] for r in range(len(degree[i]))]
-            results = results.append({'Network': 'Degree ' + str(fractions[i]),
-                                      'Network type': 'Degree networks',
-                                      'Conserved fraction': fractions[i],
-                                      'Set type': 'Difference',
-                                      'Set size': difference(degreeperm, sign)}, ignore_index=True)
-            for size in sizes:
+                                          'Set type': 'Difference',
+                                          'Set size': difference(randomperm, sign)}, ignore_index=True)
+                for size in sizes:
+                    results = results.append({'Network': 'Random ' + str(fractions[i]),
+                                              'Network type': 'Random networks',
+                                              'Conserved fraction': fractions[i],
+                                              'Set type': 'Intersection ' + str(size),
+                                              'Set size': intersection(randomperm, size, sign)}, ignore_index=True)
+            if degree:
+                degreeperm = [sample(degree[i][r], 1)[0] for r in range(len(degree[i]))]
                 results = results.append({'Network': 'Degree ' + str(fractions[i]),
                                           'Network type': 'Degree networks',
                                           'Conserved fraction': fractions[i],
-                                          'Set type': 'Intersection ' + str(size),
-                                          'Set size': intersection(degreeperm, size, sign)}, ignore_index=True)
+                                          'Set type': 'Difference',
+                                          'Set size': difference(degreeperm, sign)}, ignore_index=True)
+                for size in sizes:
+                    results = results.append({'Network': 'Degree ' + str(fractions[i]),
+                                              'Network type': 'Degree networks',
+                                              'Conserved fraction': fractions[i],
+                                              'Set type': 'Intersection ' + str(size),
+                                              'Set size': intersection(degreeperm, size, sign)}, ignore_index=True)
     return results
 
 
