@@ -125,6 +125,8 @@ def randomize_dyads(network, keep):
                 n0.remove(dyad[1])
             if dyad[0] in n1:
                 n1.remove(dyad[0])
+            if len(n0) == 0 or len(n1) == 1:
+                break
             edge_0 = sample(n0, 1)[0]
             edge_1 = sample(n1, 1)[0]
             if (edge_0, dyad[0]) in keep or (dyad[0], edge_0) in keep:
