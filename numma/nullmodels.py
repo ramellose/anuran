@@ -78,7 +78,7 @@ def randomize_network(network, keep):
         while not created:
             new_edge = sample(null.nodes, 2)
             if new_edge not in null.edges:
-                null.add_edge(new_edge[0], new_edge[1], randomized_weights[num])
+                null.add_edge(new_edge[0], new_edge[1], weight=randomized_weights[edge])
                 created = True
     return null
 
