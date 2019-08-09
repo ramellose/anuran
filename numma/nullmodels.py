@@ -38,11 +38,8 @@ def generate_null(networks, n, share, mode):
     for i in range(len(networks)):
         network = networks[i]
         nulls.append(list())
-        if share:
-            # all null models need to preserve the same edges
-            keep = sample(network.edges, int(len(network.edges) * share))
-        else:
-            keep = []
+        # all null models need to preserve the same edges
+        keep = sample(network.edges, int(len(network.edges) * share))
         for j in range(n):
             if mode == 'random':
                 nulls[i].append(randomize_network(network, keep))
