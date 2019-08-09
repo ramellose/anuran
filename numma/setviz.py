@@ -31,7 +31,6 @@ def draw_sets(data, fp):
     fig = sns.catplot(x='Network', y='Set size', col='Set type',
                       data=data, kind='box')
     fig.savefig(fp + "_setsizes.png")
-    fig.clear()
 
 
 def draw_samples(data, fp):
