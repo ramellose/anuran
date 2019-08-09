@@ -23,7 +23,7 @@ For a quick demo, run _numma_ as follows, with the output filepath changed to so
 When specifying the filepath, include the full path and a prefix for naming files.
 For example, _numma_ will save a csv file to numma_demo_sets.csv with the command below.
 ```
-numma -i demo -o C://Documents//numma_demo -draw -sample
+numma -i demo -o C://Documents//numma_demo -draw -sample 10
 ```
 
 The demo data for _numma_ was downloaded from the following publication:
