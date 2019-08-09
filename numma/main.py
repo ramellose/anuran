@@ -87,7 +87,8 @@ def set_numma():
                         required=False,
                         nargs='+',
                         default=[1],
-                        help='If specified, associations only shared by a number of networks are included. \n'
+                        help='If specified, associations only shared by a number of networks '
+                             'times the specified size fraction are included. \n'
                              'You can specify multiple numbers. By default, the full intersection is calculated.')
     parser.add_argument('-sign', '--edge_sign',
                         dest='sign',

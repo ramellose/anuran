@@ -49,7 +49,7 @@ def generate_sizes(networks, random, degree, sign, fractions, perm, sizes):
         results = results.append({'Network': 'Input networks',
                                   'Network type': 'Input networks',
                                   'Set type': 'Intersection ' + str(size),
-                                  'Set size': intersection(networks, size, sign)}, ignore_index=True)
+                                  'Set size': intersection(networks, float(size), sign)}, ignore_index=True)
     for i in range(len(fractions)):
         for j in range(perm):
             if random:
@@ -64,7 +64,7 @@ def generate_sizes(networks, random, degree, sign, fractions, perm, sizes):
                                               'Network type': 'Random networks',
                                               'Conserved fraction': fractions[i],
                                               'Set type': 'Intersection ' + str(size),
-                                              'Set size': intersection(randomperm, size, sign)}, ignore_index=True)
+                                              'Set size': intersection(randomperm, float(size), sign)}, ignore_index=True)
             if degree:
                 degreeperm = [sample(degree[i][r], 1)[0] for r in range(len(degree[i]))]
                 results = results.append({'Network': 'Degree ' + str(fractions[i]),
@@ -77,7 +77,7 @@ def generate_sizes(networks, random, degree, sign, fractions, perm, sizes):
                                               'Network type': 'Degree networks',
                                               'Conserved fraction': fractions[i],
                                               'Set type': 'Intersection ' + str(size),
-                                              'Set size': intersection(degreeperm, size, sign)}, ignore_index=True)
+                                              'Set size': intersection(degreeperm, float(size), sign)}, ignore_index=True)
     return results
 
 
