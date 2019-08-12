@@ -87,10 +87,10 @@ def randomize_network(network, keep):
     return null
 
 
-def randomize_dyads(network):
+def randomize_dyads(network, keep):
     """
     This function returns a network with the same nodes and edge number as the input network.
-    Each edge is swapped via a dyad, so the degree distribution is preserved.
+    Each edge is swapped rather than moved, so the degree distribution is preserved.
 
     :param network: NetworkX object
     :param keep: List of conserved edges
@@ -100,68 +100,36 @@ def randomize_dyads(network):
     null.add_nodes_from(network.nodes)
     null.add_edges_from(network.edges)
     nx.set_edge_attributes(null, nx.get_edge_attributes(network, 'weight'), 'weight')
-    # create dictionary of dyad pairs
-    deg = {degree: list() for degree in dict(network.degree).values()}
-    for node in network.nodes:
-        deg[network.degree[node]].append(node)
-    # sanity check for enough dyads
-    total = 0
-    for val in deg:
-        total += binom(len(deg[val]), 2)
-    if total < len(network) * 0.1:
-        logger.warning("The network has too few dyads to generate a useful degree-preserving model!\n"
-                       "It may be better to only use the fully randomized model. ")
     # we should carry out twice the number of swaps than the number of nodes with swappable edges
     # this should usually fully randomize the network
     swaps = 2 * len(network.edges)
     # creates a list of lists with each of the sublists containing nodes with same degree
-    swappable_deg = [deg[x] for x in deg if len(deg[x]) > 1]
     timeout = False
     for swap in range(swaps):
-        while not timeout:
-            success = False
-            count = 0
-            while not success and not timeout:
-                # samples a set of nodes with swappable edges
-                if count > 100:
-                    timeout = True
-                dyadset = sample(swappable_deg, 1)[0]
-                # samples two nodes that could have edges swapped
-                dyad = sample(dyadset, 2)
-                n0 = list(nx.neighbors(null, dyad[0]))
-                n1 = list(nx.neighbors(null, dyad[0]))
-                if dyad[1] in n0:
-                    n0.remove(dyad[1])
-                if dyad[0] in n1:
-                    n1.remove(dyad[0])
-                if len(n0) == 0 or len(n1) == 1:
-                    count += 1
-                    continue
-                edge_0 = sample(n0, 1)[0]
-                edge_1 = sample(n1, 1)[0]
-                if (edge_1, dyad[0]) in null.edges:
-                    count += 1
-                    continue
-                elif (edge_0, dyad[1]) in null.edges:
-                    count += 1
-                    continue
-                elif edge_0 == edge_1:
-                    count += 1
-                    continue
-                else:
-                    null.remove_edge(edge_0, dyad[0])
-                    null.remove_edge(edge_1, dyad[1])
-                    null.add_edge(edge_1, dyad[0], weight=null.edges[edge_0, dyad[0]])
-                    null.add_edge(edge_0, dyad[1], weight=null.edges[edge_1, dyad[1]])
-                    success = True
-    for swap in range(swaps):
-        # also swap nodes
-        # keeps degree distribution and network structure
-        # if there are not enough dyad swaps
-        label_dict = {x: x for x in null.nodes}
-        dyadset = sample(swappable_deg, 1)[0]
-        dyad = sample(dyadset, 2)
-        label_dict[dyad[0]] = dyad[1]
-        label_dict[dyad[1]] = dyad[0]
-        null = nx.relabel_nodes(null, label_dict)
+        success = False
+        count = 0
+        while not success and not timeout:
+            # samples a set of nodes with swappable edges
+            if count > 100:
+                timeout = True
+            dyad = sample(null.edges, 2)
+            # samples two nodes that could have edges swapped
+            if (dyad[0][0], dyad[1][0]) in null.edges or (dyad[1][0], dyad[0][0]) in null.edges:
+                count += 1
+                continue
+            elif (dyad[1][1], dyad[0][1]) in null.edges or (dyad[0][1], dyad[1][1]) in null.edges:
+                count += 1
+                continue
+            elif dyad[0][0] == dyad[1][0] or dyad[0][1] == dyad[1][1]:
+                count += 1
+                continue
+            elif dyad[0] in keep or dyad[1] in keep:
+                count += 1
+                continue
+            else:
+                null.add_edge(dyad[0][0], dyad[1][0], weight=null.edges[dyad[0]]['weight'])
+                null.add_edge(dyad[0][1], dyad[1][1], weight=null.edges[dyad[1]]['weight'])
+                null.remove_edge(dyad[0][0], dyad[0][1])
+                null.remove_edge(dyad[1][0], dyad[1][1])
+                success = True
     return null, timeout

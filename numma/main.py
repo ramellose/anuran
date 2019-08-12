@@ -202,15 +202,19 @@ def main():
             exit()
     if 'degree' in args['null']:
         degree = []
+        degree_fractions = []
         try:
             degree = generate_null(networks, n=args['perm'], share=0, mode='degree')
+            if args['share']:
+                for frac in args['share']:
+                    degree_fractions.append(generate_null(networks, n=args['perm'], share=frac, mode='degree'))
             logger.info('Finished constructing all degree-preserving randomized networks.')
         except Exception:
             logger.error('Could not generate degree-preserving null models!', exc_info=True)
             exit()
     set_sizes = None
     try:
-        set_sizes = generate_sizes(networks, random, random_fractions, degree,
+        set_sizes = generate_sizes(networks, random, random_fractions, degree, degree_fractions,
                                    sign=args['sign'], set_operation=args['set'],
                                    fractions=args['share'], perm=args['nperm'], sizes=args['size'])
         set_sizes.to_csv(args['fp'] + '_sets.csv')
@@ -222,7 +226,8 @@ def main():
     if args['sample']:
         try:
             samples = generate_sample_sizes(networks, random, random_fractions,
-                                            degree, sign=args['sign'], set_operation=args['set'],
+                                            degree, degree_fractions,
+                                            sign=args['sign'], set_operation=args['set'],
                                             fractions=args['share'], perm=args['nperm'],
                                             sizes=args['size'], limit=args['sample'])
             samples.to_csv(args['fp'] + '_subsampled_sets.csv')

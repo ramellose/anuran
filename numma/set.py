@@ -16,7 +16,7 @@ from scipy.special import binom
 import numpy as np
 
 
-def generate_sizes(networks, random, random_fractions, degree, sign, set_operation, fractions, perm, sizes):
+def generate_sizes(networks, random, random_fractions, degree, degree_fractions, sign, set_operation, fractions, perm, sizes):
     """
     This function carries out set operations on all networks provided in
     the network, random and degree lists.
@@ -34,8 +34,9 @@ def generate_sizes(networks, random, random_fractions, degree, sign, set_operati
     for the degree-preserving model.
     :param networks: List of input networks
     :param random: List of permuted input networks without preserved degree distribution
-    :param random: List of permuted input networks with a fraction of shared edges
+    :param random_fractions: List of permuted input networks with fraction of preserved edges
     :param degree: List of permuted input networks with preserved degree distribution
+    :param degree_fractions: List of permuted input networks with fraction of preserved edges
     :param sign: If true, sets take sign information into account.
     :param set_operation: Type of set operation to carry out
     :param fractions: List with fractions of shared interactions
@@ -93,23 +94,36 @@ def generate_sizes(networks, random, random_fractions, degree, sign, set_operati
                     # instead of sampling 1 null model per network,
                     # we sample a number of null models equal to the total network number
                     randomperm = sample(random_fractions[i][k], len(random_fractions[i]))
+                    degreeperm = sample(degree_fractions[i][k], len(degree_fractions[i]))
                     if 'difference' in set_operation:
                         results = results.append({'Network': 'Random ' + str(fractions[i]),
                                                   'Network type': 'Random networks',
                                                   'Conserved fraction': fractions[i],
                                                   'Set type': 'Difference',
                                                   'Set size': difference(randomperm, sign)}, ignore_index=True)
+                        results = results.append({'Network': 'Degree ' + str(fractions[i]),
+                                                  'Network type': 'Degree networks',
+                                                  'Conserved fraction': fractions[i],
+                                                  'Set type': 'Difference',
+                                                  'Set size': difference(degreeperm, sign)}, ignore_index=True)
                     if 'intersection' in set_operation:
                         for size in sizes:
                             results = results.append({'Network': 'Random ' + str(fractions[i]),
                                                       'Network type': 'Random networks',
                                                       'Conserved fraction': fractions[i],
                                                       'Set type': 'Intersection ' + str(size),
-                                                      'Set size': intersection(randomperm, float(size), sign)}, ignore_index=True)
+                                                      'Set size': intersection(randomperm, float(size), sign)},
+                                                     ignore_index=True)
+                            results = results.append({'Network': 'Degree ' + str(fractions[i]),
+                                                      'Network type': 'Degree networks',
+                                                      'Conserved fraction': fractions[i],
+                                                      'Set type': 'Intersection ' + str(size),
+                                                      'Set size': intersection(degreeperm, float(size), sign)},
+                                                     ignore_index=True)
     return results
 
 
-def generate_sample_sizes(networks, random, random_fractions, degree, sign, set_operation, fractions, perm, sizes, limit):
+def generate_sample_sizes(networks, random, random_fractions, degree, degree_fractions, sign, set_operation, fractions, perm, sizes, limit):
     """
     This function wraps the the generate_sizes function
     but it only gives a random subset of the input networks and null models.
@@ -118,6 +132,7 @@ def generate_sample_sizes(networks, random, random_fractions, degree, sign, set_
     :param random: List of permuted input networks without preserved degree distribution
     :param random_fractions: List of permuted input networks with fraction of preserved edges
     :param degree: List of permuted input networks with preserved degree distribution
+    :param degree_fractions: List of permuted input networks with fraction of preserved edges
     :param sign: If true, sets take sign information into account.
     :param set_operation: Type of set operation to carry out
     :param fractions: List with fractions of shared interactions
@@ -139,11 +154,15 @@ def generate_sample_sizes(networks, random, random_fractions, degree, sign, set_
             subnetworks = [networks[x] for x in item]
             subrandom = [random[x] for x in item]
             subdegree = [degree[x] for x in item]
-            subfractions = list()
+            subrandomfracs = list()
             if fractions:
                 for frac in range(len(fractions)):
-                    subfractions.append([degree[frac][x] for x in item])
-            subresults = generate_sizes(subnetworks, subrandom, subfractions, subdegree,
+                    subrandomfracs.append([random_fractions[frac][x] for x in item])
+            subdegreefracs = list()
+            if fractions:
+                for frac in range(len(fractions)):
+                    subdegreefracs.append([degree_fractions[frac][x] for x in item])
+            subresults = generate_sizes(subnetworks, subrandom, subrandomfracs, subdegree, subdegreefracs,
                                         sign, set_operation, fractions, perm, sizes)
             subresults['Samples'] = i
             results = results.append(subresults)
