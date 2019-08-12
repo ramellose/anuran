@@ -44,7 +44,7 @@ def generate_null(networks, n, share, mode):
             if mode == 'random':
                 nulls[i].append(randomize_network(network, keep))
             elif mode == 'degree':
-                nulls[i].append(randomize_dyads(network, keep))
+                nulls[i].append(randomize_dyads(network))
             else:
                 logger.error("The null model mode is not recognized.", exc_info=True)
     return nulls
@@ -80,7 +80,7 @@ def randomize_network(network, keep):
     return null
 
 
-def randomize_dyads(network, keep):
+def randomize_dyads(network):
     """
     This function returns a network with the same nodes and edge number as the input network.
     Each edge is swapped via a dyad, so the degree distribution is preserved.
@@ -106,53 +106,58 @@ def randomize_dyads(network, keep):
                        "It may be better to only use the fully randomized model. ")
     # we should carry out twice the number of swaps than the number of nodes with swappable edges
     # this should usually fully randomize the network
-    swaps = 2 * (len(network.edges) - len(keep))
+    swaps = 2 * len(network.edges)
     # creates a list of lists with each of the sublists containing nodes with same degree
     swappable_deg = [deg[x] for x in deg if len(deg[x]) > 1]
     timeout = False
     for swap in range(swaps):
-        success = False
-        count = 0
-        while not success and not timeout:
-            # samples a set of nodes with swappable edges
-            if count > 100:
-                logger.warning("The network has too few dyads with distinct edge partners to \n"
-                               "generate a useful degree-preserving model!\n"
-                               "It may be better to only use the fully randomized model. ")
-            dyadset = sample(swappable_deg, 1)[0]
-            # samples two nodes that could have edges swapped
-            dyad = sample(dyadset, 2)
-            n0 = list(nx.neighbors(null, dyad[0]))
-            n1 = list(nx.neighbors(null, dyad[0]))
-            if dyad[1] in n0:
-                n0.remove(dyad[1])
-            if dyad[0] in n1:
-                n1.remove(dyad[0])
-            if len(n0) == 0 or len(n1) == 1:
-                count += 1
-                continue
-            edge_0 = sample(n0, 1)[0]
-            edge_1 = sample(n1, 1)[0]
-            if (edge_0, dyad[0]) in keep or (dyad[0], edge_0) in keep:
-                count += 1
-                continue
-            elif (edge_1, dyad[1]) in keep or (dyad[1], edge_1) in keep:
-                count += 1
-                continue
-            # check if edge already exists
-            elif (edge_1, dyad[0]) in null.edges:
-                count += 1
-                continue
-            elif (edge_0, dyad[1]) in null.edges:
-                count += 1
-                continue
-            elif edge_0 == edge_1:
-                count += 1
-                continue
-            else:
-                null.remove_edge(edge_0, dyad[0])
-                null.remove_edge(edge_1, dyad[1])
-                null.add_edge(edge_1, dyad[0], weight=null.edges[edge_0, dyad[0]])
-                null.add_edge(edge_0, dyad[1], weight=null.edges[edge_1, dyad[1]])
-                success = True
+        while not timeout:
+            success = False
+            count = 0
+            while not success and not timeout:
+                # samples a set of nodes with swappable edges
+                if count > 100:
+                    logger.warning("The network has too few dyads with distinct edge partners to \n"
+                                   "generate a useful degree-preserving model!\n"
+                                   "It may be better to only use the fully randomized model. ")
+                    timeout = True
+                dyadset = sample(swappable_deg, 1)[0]
+                # samples two nodes that could have edges swapped
+                dyad = sample(dyadset, 2)
+                n0 = list(nx.neighbors(null, dyad[0]))
+                n1 = list(nx.neighbors(null, dyad[0]))
+                if dyad[1] in n0:
+                    n0.remove(dyad[1])
+                if dyad[0] in n1:
+                    n1.remove(dyad[0])
+                if len(n0) == 0 or len(n1) == 1:
+                    count += 1
+                    continue
+                edge_0 = sample(n0, 1)[0]
+                edge_1 = sample(n1, 1)[0]
+                if (edge_1, dyad[0]) in null.edges:
+                    count += 1
+                    continue
+                elif (edge_0, dyad[1]) in null.edges:
+                    count += 1
+                    continue
+                elif edge_0 == edge_1:
+                    count += 1
+                    continue
+                else:
+                    null.remove_edge(edge_0, dyad[0])
+                    null.remove_edge(edge_1, dyad[1])
+                    null.add_edge(edge_1, dyad[0], weight=null.edges[edge_0, dyad[0]])
+                    null.add_edge(edge_0, dyad[1], weight=null.edges[edge_1, dyad[1]])
+                    success = True
+    for swap in range(swaps):
+        # also swap nodes
+        # keeps degree distribution and network structure
+        # if there are not enough dyad swaps
+        label_dict = {x: x for x in null.nodes}
+        dyadset = sample(swappable_deg, 1)[0]
+        dyad = sample(dyadset, 2)
+        label_dict[dyad[0]] = dyad[1]
+        label_dict[dyad[1]] = dyad[0]
+        null = nx.relabel_nodes(null, label_dict)
     return null

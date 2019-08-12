@@ -112,8 +112,12 @@ def set_numma():
                         required=False,
                         nargs='+',
                         default=[0],
-                        help='If specified, null models include a set fraction of shared interactions. \n'
-                             'You can specify multiple fractions. By default, null models have no shared interactions.')
+                        help='If specified, randomized null models (not the degree-preserving models)'
+                             ' include a set fraction of shared interactions. \n'
+                             'You can specify multiple fractions. '
+                             'By default, null models have no shared interactions.\n'
+                             'Higher fractions will also lead to the randomized network better approximating the '
+                             'original network structure.')
     parser.add_argument('-perm', '--permutations',
                         dest='perm',
                         type=int,

@@ -82,7 +82,7 @@ class TestMain(unittest.TestCase):
 
     def test_randomize_dyads(self):
         """Checks whether a network with swapped dyads is returned. """
-        random = randomize_dyads(a, keep=[])
+        random = randomize_dyads(a)
         orig_deg = np.sort(nx.degree(a))
         new_deg = np.sort(nx.degree(random))
         self.assertTrue((orig_deg == new_deg).all())
@@ -94,22 +94,32 @@ class TestMain(unittest.TestCase):
         random = [generate_null(networks, n=perm, share=0, mode='random')]
         degree = [generate_null(networks, n=perm, share=0, mode='degree')]
         results = generate_sizes(networks, random=random, degree=degree, fractions=[0],
-                                 perm=nperm, sizes=[1])
+                                 perm=nperm, sizes=[1], sign=True, set_operation=['difference', 'intersection'])
         self.assertEqual(len(results['Set type']), 42)
 
     def test_intersection(self):
         """Checks whether the intersection set size is correctly returned. """
-        results = intersection(networks, size=1)
+        results = intersection(networks, size=1, sign=False)
         self.assertEqual(results, 4)
 
     def test_intersection_size(self):
         """Checks whether the intersection set size is correctly returned. """
-        results = intersection(networks, size=0.6)
+        results = intersection(networks, size=0.6, sign=True)
         self.assertEqual(results, 5)
+
+    def test_intersection_sign(self):
+        """Checks whether the intersection set size is correctly returned. """
+        results = intersection(networks, size=1, sign=True)
+        self.assertEqual(results, 3)
 
     def test_difference(self):
         """Checks whether the difference set size is correctly returned. """
-        results = difference(networks)
+        results = difference(networks, sign=True)
+        self.assertEqual(results, 5)
+
+    def test_difference_sign(self):
+        """Checks whether the difference set size is correctly returned. """
+        results = difference(networks, sign=False)
         self.assertEqual(results, 4)
 
     def test_generate_sample_sizes(self):
@@ -118,8 +128,9 @@ class TestMain(unittest.TestCase):
         nperm = 10
         random = [generate_null(networks, n=perm, share=0, mode='random')]
         degree = [generate_null(networks, n=perm, share=0, mode='degree')]
-        results = generate_sample_sizes(networks, random=random, degree=degree,
-                                        fractions=[0], perm=perm, sizes=[1], limit=False)
+        results = generate_sample_sizes(networks, random=random, degree=degree, sign=True,
+                                        fractions=[0], perm=perm, sizes=[1], limit=False,
+                                        set_operation=['difference', 'intersection'])
         num = 42 * binom(3, 3) + 42 * binom(3, 2) + 42 * binom(3, 1)
         self.assertEqual(len(results['Network']), num)
 

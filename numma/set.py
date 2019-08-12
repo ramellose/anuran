@@ -144,7 +144,7 @@ def difference(networks, sign):
             if sign:
                 diff.append(edge + (np.sign(network.edges[edge]['weight']),))
             else:
-                diff.extend(edge)
+                diff.append(edge)
     unique_edges = 0
     for edge in set(diff):
         if sign:
@@ -179,7 +179,7 @@ def intersection(networks, size, sign):
             if sign:
                 matches.append(edge + (np.sign(network.edges[edge]['weight']),))
             else:
-                matches.extend(edge)
+                matches.append(edge)
     shared_edges = 0
     # remove swapped edges
     edges = set(matches)

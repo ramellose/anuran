@@ -41,8 +41,7 @@ _numma_ generates null models with permutations of the original network.
 By default, two models are generated: one that changes the degree distribution
 and one that does not.
 Note that the model changing the degree distribution may not have a major effect
-on the network structure as most smaller networks will not have enough dyad pairs to swap.
-Only the distribution is preserved, not the degree each node has.
+on the network structure as most smaller networks will not have enough dyad pairs to swap, especially if degree assortativity is large.
 
 ```
 numma -n deg        # preserves degree
