@@ -140,8 +140,9 @@ def generate_sample_sizes(networks, random, random_fractions, degree, sign, set_
             subrandom = [random[x] for x in item]
             subdegree = [degree[x] for x in item]
             subfractions = list()
-            for frac in range(len(fractions)):
-                subfractions.append([degree[frac][x] for x in item])
+            if fractions:
+                for frac in range(len(fractions)):
+                    subfractions.append([degree[frac][x] for x in item])
             subresults = generate_sizes(subnetworks, subrandom, subfractions, subdegree,
                                         sign, set_operation, fractions, perm, sizes)
             subresults['Samples'] = i
