@@ -35,6 +35,7 @@ def generate_null(networks, n, share, mode):
     :return: List of lists with randomized networks
     """
     nulls = list()
+    dyad_problem = False
     for i in range(len(networks)):
         network = networks[i]
         nulls.append(list())
@@ -46,12 +47,13 @@ def generate_null(networks, n, share, mode):
             elif mode == 'degree':
                 result = randomize_dyads(network)
                 nulls[i].append(result[0])
-                if result[1]:
-                    logger.warning("The network has too few dyads with distinct edge partners to \n"
-                                   "generate a useful degree-preserving model!\n"
-                                   "It may be better to only use the fully randomized model. ")
+                dyad_problem = result[1]
             else:
                 logger.error("The null model mode is not recognized.", exc_info=True)
+    if dyad_problem:
+        logger.warning("The network has too few dyads with distinct edge partners to \n"
+                       "generate a useful degree-preserving model!\n"
+                       "It may be better to only use the fully randomized model. ")
     return nulls
 
 
