@@ -111,13 +111,14 @@ def set_numma():
                         dest='share',
                         required=False,
                         nargs='+',
-                        default=[0],
+                        default=False,
                         help='If specified, randomized null models (not the degree-preserving models)'
                              ' include a set fraction of shared interactions. \n'
                              'You can specify multiple fractions. '
-                             'By default, null models have no shared interactions.\n'
-                             'Higher fractions will also lead to the randomized network better approximating the '
-                             'original network structure.')
+                             'By default, null models have no shared interactions and '
+                             'sets are computed for all randomized networks.\n'
+                             'When the fraction is larger than 0, sets are only computed '
+                             'between models generated from a single network.')
     parser.add_argument('-perm', '--permutations',
                         dest='perm',
                         type=int,
@@ -189,25 +190,28 @@ def main():
     degree = None
     if 'random' in args['null']:
         random = []
+        random_fractions = []
         try:
-            for frac in args['share']:
-                    random.append(generate_null(networks, n=args['perm'], share=frac, mode='random'))
-            logger.info('Finished constructing all randomized networks.')
+            random = generate_null(networks, n=args['perm'], share=0, mode='random')
+            if args['share']:
+                for frac in args['share']:
+                        random_fractions.append(generate_null(networks, n=args['perm'], share=frac, mode='random'))
+                logger.info('Finished constructing all randomized networks.')
         except Exception:
             logger.error('Could not generate randomized null models!', exc_info=True)
             exit()
     if 'degree' in args['null']:
         degree = []
         try:
-            for frac in args['share']:
-                degree.append(generate_null(networks, n=args['perm'], share=frac, mode='degree'))
+            degree = generate_null(networks, n=args['perm'], share=frac, mode='degree')
             logger.info('Finished constructing all degree-preserving randomized networks.')
         except Exception:
             logger.error('Could not generate degree-preserving null models!', exc_info=True)
             exit()
     set_sizes = None
     try:
-        set_sizes = generate_sizes(networks, random, degree, sign=args['sign'], set_operation=args['set'],
+        set_sizes = generate_sizes(networks, random, random_fractions, degree,
+                                   sign=args['sign'], set_operation=args['set'],
                                    fractions=args['share'], perm=args['nperm'], sizes=args['size'])
         set_sizes.to_csv(args['fp'] + '_sets.csv')
         logger.info('Set sizes exported to: ' + args['fp'] + '_sets.csv')
@@ -217,7 +221,8 @@ def main():
     samples = None
     if args['sample']:
         try:
-            samples = generate_sample_sizes(networks, random, degree, sign=args['sign'], set_operation=args['set'],
+            samples = generate_sample_sizes(networks, random, random_fractions,
+                                            degree, sign=args['sign'], set_operation=args['set'],
                                             fractions=args['share'], perm=args['nperm'],
                                             sizes=args['size'], limit=args['sample'])
             samples.to_csv(args['fp'] + '_subsampled_sets.csv')
