@@ -44,9 +44,14 @@ def generate_null(networks, n, share, mode):
             if mode == 'random':
                 nulls[i].append(randomize_network(network, keep))
             elif mode == 'degree':
-                nulls[i].append(randomize_dyads(network))
+                result = randomize_dyads(network)
+                nulls[i].append(result[0])
             else:
                 logger.error("The null model mode is not recognized.", exc_info=True)
+        if result[1]:
+            logger.warning("The network has too few dyads with distinct edge partners to \n"
+                           "generate a useful degree-preserving model!\n"
+                           "It may be better to only use the fully randomized model. ")
     return nulls
 
 
@@ -117,9 +122,6 @@ def randomize_dyads(network):
             while not success and not timeout:
                 # samples a set of nodes with swappable edges
                 if count > 100:
-                    logger.warning("The network has too few dyads with distinct edge partners to \n"
-                                   "generate a useful degree-preserving model!\n"
-                                   "It may be better to only use the fully randomized model. ")
                     timeout = True
                 dyadset = sample(swappable_deg, 1)[0]
                 # samples two nodes that could have edges swapped
@@ -160,4 +162,4 @@ def randomize_dyads(network):
         label_dict[dyad[0]] = dyad[1]
         label_dict[dyad[1]] = dyad[0]
         null = nx.relabel_nodes(null, label_dict)
-    return null
+    return null, timeout
