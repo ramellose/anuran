@@ -39,11 +39,12 @@ def generate_null(networks, n, share, mode):
         network = networks[i]
         nulls.append(list())
         # all null models need to preserve the same edges
-        keep = sample(network.edges, int(len(network.edges) * share))
         for j in range(n):
             if mode == 'random':
+                keep = sample(network.edges, int(len(network.edges) * share))
                 nulls[i].append(randomize_network(network, keep))
             elif mode == 'degree':
+                keep = sample(network.edges, int(len(network.edges) * share))
                 nulls[i].append(randomize_dyads(network, keep))
             else:
                 logger.error("The null model mode is not recognized.", exc_info=True)
