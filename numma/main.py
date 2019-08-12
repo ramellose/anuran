@@ -203,7 +203,7 @@ def main():
     if 'degree' in args['null']:
         degree = []
         try:
-            degree = generate_null(networks, n=args['perm'], share=frac, mode='degree')
+            degree = generate_null(networks, n=args['perm'], share=0, mode='degree')
             logger.info('Finished constructing all degree-preserving randomized networks.')
         except Exception:
             logger.error('Could not generate degree-preserving null models!', exc_info=True)
