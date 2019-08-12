@@ -86,25 +86,26 @@ def generate_sizes(networks, random, random_fractions, degree, sign, set_operati
                                               'Set type': 'Intersection ' + str(size),
                                               'Set size': intersection(randomperm, float(size), sign)},
                                              ignore_index=True)
-    for i in range(len(fractions)):
-        for j in range(perm):
-            for k in range(len(networks)):
-                # instead of sampling 1 null model per network,
-                # we sample a number of null models equal to the total network number
-                randomperm = sample(random_fractions[i][k], len(random_fractions[i]))
-                if 'difference' in set_operation:
-                    results = results.append({'Network': 'Random ' + str(fractions[i]),
-                                              'Network type': 'Random networks',
-                                              'Conserved fraction': fractions[i],
-                                              'Set type': 'Difference',
-                                              'Set size': difference(randomperm, sign)}, ignore_index=True)
-                if 'intersection' in set_operation:
-                    for size in sizes:
+    if fractions:
+        for i in range(len(fractions)):
+            for j in range(perm):
+                for k in range(len(networks)):
+                    # instead of sampling 1 null model per network,
+                    # we sample a number of null models equal to the total network number
+                    randomperm = sample(random_fractions[i][k], len(random_fractions[i]))
+                    if 'difference' in set_operation:
                         results = results.append({'Network': 'Random ' + str(fractions[i]),
                                                   'Network type': 'Random networks',
                                                   'Conserved fraction': fractions[i],
-                                                  'Set type': 'Intersection ' + str(size),
-                                                  'Set size': intersection(randomperm, float(size), sign)}, ignore_index=True)
+                                                  'Set type': 'Difference',
+                                                  'Set size': difference(randomperm, sign)}, ignore_index=True)
+                    if 'intersection' in set_operation:
+                        for size in sizes:
+                            results = results.append({'Network': 'Random ' + str(fractions[i]),
+                                                      'Network type': 'Random networks',
+                                                      'Conserved fraction': fractions[i],
+                                                      'Set type': 'Intersection ' + str(size),
+                                                      'Set size': intersection(randomperm, float(size), sign)}, ignore_index=True)
     return results
 
 
