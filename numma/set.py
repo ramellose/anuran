@@ -16,7 +16,9 @@ from scipy.special import binom
 import numpy as np
 
 
-def generate_sizes(networks, random, random_fractions, degree, degree_fractions, sign, set_operation, fractions, perm, sizes):
+def generate_sizes(networks, random, random_fractions,
+                   degree, degree_fractions, sign,
+                   set_operation, fractions, perm, sizes):
     """
     This function carries out set operations on all networks provided in
     the network, random and degree lists.
@@ -123,7 +125,9 @@ def generate_sizes(networks, random, random_fractions, degree, degree_fractions,
     return results
 
 
-def generate_sample_sizes(networks, random, random_fractions, degree, degree_fractions, sign, set_operation, fractions, perm, sizes, limit):
+def generate_sample_sizes(networks, random, random_fractions,
+                          degree, degree_fractions, sign,
+                          set_operation, fractions, perm, sizes, limit):
     """
     This function wraps the the generate_sizes function
     but it only gives a random subset of the input networks and null models.

@@ -44,7 +44,7 @@ def generate_null(networks, n, share, mode):
             if mode == 'random':
                 nulls[i].append(randomize_network(network, keep))
             elif mode == 'degree':
-                result = randomize_dyads(network, keep)
+                nulls[i].append(randomize_dyads(network, keep))
             else:
                 logger.error("The null model mode is not recognized.", exc_info=True)
     return nulls

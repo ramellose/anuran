@@ -82,7 +82,7 @@ class TestMain(unittest.TestCase):
 
     def test_randomize_dyads(self):
         """Checks whether a network with swapped dyads is returned. """
-        random = randomize_dyads(a)[0]
+        random = randomize_dyads(a, keep=[])
         orig_deg = np.sort(nx.degree(a))
         new_deg = np.sort(nx.degree(random))
         self.assertTrue((orig_deg == new_deg).all())
@@ -93,7 +93,8 @@ class TestMain(unittest.TestCase):
         nperm = 10
         random = generate_null(networks, n=perm, share=0, mode='random')
         degree = generate_null(networks, n=perm, share=0, mode='degree')
-        results = generate_sizes(networks, random=random, random_fractions=[], degree=degree, fractions=False,
+        results = generate_sizes(networks, random=random, random_fractions=[],
+                                 degree=degree, degree_fractions=[], fractions=False,
                                  perm=nperm, sizes=[1], sign=True, set_operation=['difference', 'intersection'])
         self.assertEqual(len(results['Set type']), 42)
 
@@ -128,7 +129,8 @@ class TestMain(unittest.TestCase):
         nperm = 10
         random = generate_null(networks, n=perm, share=0, mode='random')
         degree = generate_null(networks, n=perm, share=0, mode='degree')
-        results = generate_sample_sizes(networks, random=random, random_fractions=[], degree=degree, sign=True,
+        results = generate_sample_sizes(networks, random=random, random_fractions=[], degree=degree,
+                                        degree_fractions=[], sign=True,
                                         fractions=False, perm=perm, sizes=[1], limit=False,
                                         set_operation=['difference', 'intersection'])
         num = 42 * binom(3, 3) + 42 * binom(3, 2) + 42 * binom(3, 1)
