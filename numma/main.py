@@ -192,7 +192,8 @@ def main():
                 random['core'][frac] = dict()
                 for core in args['prev']:
                     random['core'][frac][core] = generate_core(networks,
-                                                               share=frac, mode='random', core=core)
+                                                               share=float(frac), mode='random',
+                                                               core=float(core))
             logger.info('Finished constructing all randomized networks.')
     except Exception:
         logger.error('Could not generate randomized null models!', exc_info=True)
@@ -206,7 +207,8 @@ def main():
                 degree['core'][frac] = dict()
                 for core in args['prev']:
                     degree['core'][frac][core] = generate_core(networks,
-                                                               share=frac, mode='degree', core=core)
+                                                               share=float(frac), mode='degree',
+                                                               core=float(core))
         logger.info('Finished constructing all degree-preserving randomized networks.')
     except Exception:
         logger.error('Could not generate degree-preserving null models!', exc_info=True)
