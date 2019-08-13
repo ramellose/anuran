@@ -141,7 +141,7 @@ def generate_rows(name, data, networks, set_operation, sizes, sign, fraction=Non
     """
     full_name = name + ' networks'
     if fraction:
-        name += ' ' + str(fraction) + ' ' + str(prev)
+        name += ' size: ' + str(fraction) + ' prev:' + str(prev)
     if 'difference' in set_operation:
         data = data.append({'Network': name,
                             'Network type': full_name,
