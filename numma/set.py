@@ -141,7 +141,7 @@ def generate_rows(name, data, networks, set_operation, sizes, sign, fraction=Non
     """
     full_name = name + ' networks'
     if fraction:
-        name += str(fraction) + str(prev)
+        name += ' ' + str(fraction) + ' ' + str(prev)
     if 'difference' in set_operation:
         data = data.append({'Network': name,
                             'Network type': full_name,
@@ -157,7 +157,7 @@ def generate_rows(name, data, networks, set_operation, sizes, sign, fraction=Non
                                 'Conserved fraction': fraction,
                                 'Prevalence of conserved fraction': prev,
                                 'Set type': 'Intersection ' + str(size),
-                                'Set size': intersection(networks, size, sign)},
+                                'Set size': intersection(networks, float(size), sign)},
                                ignore_index=True)
     return data
 

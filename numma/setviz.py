@@ -30,6 +30,7 @@ def draw_sets(data, fp):
     sns.set_style(style="whitegrid")
     fig = sns.catplot(x='Network', y='Set size', col='Set type',
                       data=data, kind='strip')
+    fig.set_xticklabels(rotation=30)
     fig.savefig(fp + "_setsizes.png")
     fig.fig.clf()
 

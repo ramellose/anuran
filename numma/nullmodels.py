@@ -68,7 +68,7 @@ def generate_core(networks, mode, share, core):
         network = networks[i]
         nulls.append(list())
         # all null models need to preserve the same edges
-        keep = sample(network.edges, round(len(network.edges)) * share)
+        keep = sample(network.edges, round(len(network.edges) * share))
         # create lists to distribute edges over according to core prevalence
         keep_subsets = [[] for x in networks]
         occurrence = round(core * len(networks))

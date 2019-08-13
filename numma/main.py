@@ -217,7 +217,7 @@ def main():
     try:
         set_sizes = generate_sizes(networks, random, degree,
                                    sign=args['sign'], set_operation=args['set'],
-                                   fractions=args['share'], core=args['prev'],
+                                   fractions=args['cs'], core=args['prev'],
                                    perm=args['nperm'], sizes=args['size'])
         set_sizes.to_csv(args['fp'] + '_sets.csv')
         logger.info('Set sizes exported to: ' + args['fp'] + '_sets.csv')
@@ -229,7 +229,7 @@ def main():
         try:
             samples = generate_sample_sizes(networks, random, degree,
                                             sign=args['sign'], set_operation=args['set'],
-                                            fractions=args['share'], perm=args['nperm'], core=args['prev'],
+                                            fractions=args['cs'], perm=args['nperm'], core=args['prev'],
                                             sizes=args['size'], limit=args['sample'])
             samples.to_csv(args['fp'] + '_subsampled_sets.csv')
         except Exception:
