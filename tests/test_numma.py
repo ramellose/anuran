@@ -11,7 +11,7 @@ __license__ = 'Apache 2.0'
 import unittest
 import networkx as nx
 import numpy as np
-from numma.nullmodels import generate_null, randomize_network, randomize_dyads
+from numma.nullmodels import generate_null, randomize_network, randomize_dyads, generate_core
 from numma.set import generate_sizes, difference, intersection, generate_sample_sizes
 from scipy.special import binom
 
@@ -66,12 +66,22 @@ class TestMain(unittest.TestCase):
 
     def test_generate_null(self):
         """Checks whether the specified number of randomized models is returned.
-         generate_random should generate a list of lists with each of the lists
+         generate_null should generate a list of lists with each of the lists
          containing all permuted networks for one original network. """
         perm = 10
         results = generate_null(networks, n=perm, share=0, mode='random')
         self.assertEqual(len(results[0]), perm)
         self.assertEqual(len(results), len(networks))
+
+    def test_generate_core(self):
+        """Checks whether the specified number of randomized models is returned.
+         generate_core should generate null models with fractions conserved. """
+        results = generate_core(networks, share=1, core=1, mode='random')
+        a = list(results[0][0].edges)
+        a.sort()
+        b = list(results[0][1].edges)
+        b.sort()
+        self.assertEqual(a[0], b[0])
 
     def test_randomize_network(self):
         """Checks whether a randomized network is returned. """
@@ -93,8 +103,8 @@ class TestMain(unittest.TestCase):
         nperm = 10
         random = generate_null(networks, n=perm, share=0, mode='random')
         degree = generate_null(networks, n=perm, share=0, mode='degree')
-        results = generate_sizes(networks, random=random, random_fractions=[],
-                                 degree=degree, degree_fractions=[], fractions=False,
+        results = generate_sizes(networks, random={'random': random},
+                                 degree={'degree': degree}, core=[1], fractions=False,
                                  perm=nperm, sizes=[1], sign=True, set_operation=['difference', 'intersection'])
         self.assertEqual(len(results['Set type']), 42)
 
@@ -129,13 +139,25 @@ class TestMain(unittest.TestCase):
         nperm = 10
         random = generate_null(networks, n=perm, share=0, mode='random')
         degree = generate_null(networks, n=perm, share=0, mode='degree')
-        results = generate_sample_sizes(networks, random=random, random_fractions=[], degree=degree,
-                                        degree_fractions=[], sign=True,
+        results = generate_sample_sizes(networks, random={'random': random}, degree={'degree': degree},
+                                        sign=True, core=[1],
                                         fractions=False, perm=perm, sizes=[1], limit=False,
                                         set_operation=['difference', 'intersection'])
         num = 42 * binom(3, 3) + 42 * binom(3, 2) + 42 * binom(3, 1)
         self.assertEqual(len(results['Network']), num)
 
+    def test_generate_sample_sizes_fractions(self):
+        """Checks whether the subsampled set sizes are correctly returned. """
+        perm = 10
+        nperm = 10
+        random = generate_null(networks, n=perm, share=0, mode='random')
+        degree = generate_null(networks, n=perm, share=0, mode='degree')
+        results = generate_sample_sizes(networks, random={'random': random}, degree={'degree': degree},
+                                        sign=True, core=[1],
+                                        fractions=False, perm=perm, sizes=[1], limit=False,
+                                        set_operation=['difference', 'intersection'])
+        num = 42 * binom(3, 3) + 42 * binom(3, 2) + 42 * binom(3, 1)
+        self.assertEqual(len(results['Network']), num)
 
 if __name__ == '__main__':
     unittest.main()

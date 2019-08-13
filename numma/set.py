@@ -16,133 +16,76 @@ from scipy.special import binom
 import numpy as np
 
 
-def generate_sizes(networks, random, random_fractions,
-                   degree, degree_fractions, sign,
-                   set_operation, fractions, perm, sizes):
+def generate_sizes(networks, random, degree, sign,
+                   set_operation, fractions, core, perm, sizes):
     """
     This function carries out set operations on all networks provided in
     the network, random and degree lists.
     The random and degree lists are structured as follows:
     ---List corresponding to each original network (length networks)
         ---List of permutations per original network (length n in generate_null)
-    The random_fractions list is structured as follows:
+    The core list is structured as follows:
     ---List of all shared fractions (length fractions)
-        ---List corresponding to each original network (length networks)
-            ---List of permutations per original network (length n in generate_null)
+        ---List corresponding to core prevalence(length core)
+            ---List of permutations per original network (length networks)
     The function returns a pandas dataframe with the size of the intersection,
     the type of model and the shared fraction as a separate column.
     The length of the dataset is equal to the number of original networks,
     the number of permuted sets for the random models and the number of permuted sets
     for the degree-preserving model.
     :param networks: List of input networks
-    :param random: List of permuted input networks without preserved degree distribution
-    :param random_fractions: List of permuted input networks with fraction of preserved edges
-    :param degree: List of permuted input networks with preserved degree distribution
-    :param degree_fractions: List of permuted input networks with fraction of preserved edges
+    :param random: Dictionary with permuted input networks without preserved degree distribution
+    :param degree: Dictionary with permuted input networks with preserved degree distribution
     :param sign: If true, sets take sign information into account.
     :param set_operation: Type of set operation to carry out
     :param fractions: List with fractions of shared interactions
+    :param core: List with prevalence of shared interactions
     :param perm: Number of sets to take from null models
     :param sizes: Size of intersection to calculate. By default 1 (edge should be in all networks).
     :return: List of lists with set sizes
     """
     # Create empty pandas dataframe
     results = pd.DataFrame(columns=['Network', 'Network type', 'Conserved fraction',
+                                    'Prevalence of conserved fraction',
                                     'Set type', 'Set size'])
-    if 'difference' in set_operation:
-        results = results.append({'Network': 'Input networks',
-                                  'Network type': 'Input networks',
-                                  'Set type': 'Difference',
-                                  'Set size': difference(networks, sign)}, ignore_index=True)
-    if 'intersection' in set_operation:
-        for size in sizes:
-            results = results.append({'Network': 'Input networks',
-                                      'Network type': 'Input networks',
-                                      'Set type': 'Intersection ' + str(size),
-                                      'Set size': intersection(networks, float(size), sign)}, ignore_index=True)
+    results = generate_rows(name='Input', data=results, networks=networks, set_operation=set_operation,
+                            sizes=sizes, sign=sign, fraction=None, prev=None)
     for j in range(perm):
-        if degree:
-            degreeperm = [sample(degree[r], 1)[0] for r in range(len(degree))]
-            if 'difference' in set_operation:
-                results = results.append({'Network': 'Degree ',
-                                          'Network type': 'Degree networks',
-                                          'Set type': 'Difference',
-                                          'Set size': difference(degreeperm, sign)}, ignore_index=True)
-            if 'intersection' in set_operation:
-                for size in sizes:
-                    results = results.append({'Network': 'Degree ',
-                                              'Network type': 'Degree networks',
-                                              'Set type': 'Intersection ' + str(size),
-                                              'Set size': intersection(degreeperm, float(size), sign)},
-                                             ignore_index=True)
-        if random:
-            randomperm = [sample(random[r], 1)[0] for r in range(len(random))]
-            if 'difference' in set_operation:
-                results = results.append({'Network': 'Random ',
-                                          'Network type': 'Random networks',
-                                          'Set type': 'Difference',
-                                          'Set size': difference(randomperm, sign)}, ignore_index=True)
-            if 'intersection' in set_operation:
-                for size in sizes:
-                    results = results.append({'Network': 'Random ',
-                                              'Network type': 'Random networks',
-                                              'Set type': 'Intersection ' + str(size),
-                                              'Set size': intersection(randomperm, float(size), sign)},
-                                             ignore_index=True)
+        degreeperm = [sample(degree['degree'][r], 1)[0] for r in range(len(degree['degree']))]
+        results = generate_rows(name='Degree', data=results, networks=degreeperm, set_operation=set_operation,
+                                sizes=sizes, sign=sign, fraction=None, prev=None)
+        randomperm = [sample(random['random'][r], 1)[0] for r in range(len(random['random']))]
+        results = generate_rows(name='Random', data=results, networks=randomperm, set_operation=set_operation,
+                                   sizes=sizes, sign=sign, fraction=None, prev=None)
     if fractions:
-        for i in range(len(fractions)):
-            for j in range(perm):
-                #for k in range(len(networks)):
-                    # we sample 1 null model per network,
-                    # we sample a number of null models equal to the total network number
-                randomperm = [sample(random_fractions[i][r], 1)[0] for r in range(len(random_fractions[i]))]
-                degreeperm = [sample(degree_fractions[i][r], 1)[0] for r in range(len(degree_fractions[i]))]
-                # the section below only samples from one original network
-                # randomperm = sample(random_fractions[i][k], len(random_fractions[i]))
-                # degreeperm = sample(degree_fractions[i][k], len(degree_fractions[i]))
-                if 'difference' in set_operation:
-                    results = results.append({'Network': 'Random ' + str(fractions[i]),
-                                              'Network type': 'Random networks',
-                                              'Conserved fraction': fractions[i],
-                                              'Set type': 'Difference',
-                                              'Set size': difference(randomperm, sign)}, ignore_index=True)
-                    results = results.append({'Network': 'Degree ' + str(fractions[i]),
-                                              'Network type': 'Degree networks',
-                                              'Conserved fraction': fractions[i],
-                                              'Set type': 'Difference',
-                                              'Set size': difference(degreeperm, sign)}, ignore_index=True)
-                if 'intersection' in set_operation:
-                    for size in sizes:
-                        results = results.append({'Network': 'Random ' + str(fractions[i]),
-                                                  'Network type': 'Random networks',
-                                                  'Conserved fraction': fractions[i],
-                                                  'Set type': 'Intersection ' + str(size),
-                                                  'Set size': intersection(randomperm, float(size), sign)},
-                                                 ignore_index=True)
-                        results = results.append({'Network': 'Degree ' + str(fractions[i]),
-                                                  'Network type': 'Degree networks',
-                                                  'Conserved fraction': fractions[i],
-                                                  'Set type': 'Intersection ' + str(size),
-                                                  'Set size': intersection(degreeperm, float(size), sign)},
-                                                 ignore_index=True)
+        for frac in fractions:
+            for c in core:
+                for network in range(len(networks)):
+                    degreeperm = degree['core'][frac][c][network]
+                    randomperm = random['core'][frac][c][network]
+                    results = generate_rows(name='Degree', data=results, networks=degreeperm,
+                                            set_operation=set_operation,
+                                            sizes=sizes, sign=sign, fraction=frac, prev=c)
+                    results = generate_rows(name='Random', data=results, networks=randomperm,
+                                            set_operation=set_operation,
+                                            sizes=sizes, sign=sign, fraction=frac, prev=c)
     return results
 
 
-def generate_sample_sizes(networks, random, random_fractions,
-                          degree, degree_fractions, sign,
-                          set_operation, fractions, perm, sizes, limit):
+def generate_sample_sizes(networks, random,
+                          degree, sign,
+                          set_operation, fractions, core, perm, sizes, limit):
     """
     This function wraps the the generate_sizes function
     but it only gives a random subset of the input networks and null models.
     This shows the effect of increasing sample number on set size.
     :param networks: List of input networks
     :param random: List of permuted input networks without preserved degree distribution
-    :param random_fractions: List of permuted input networks with fraction of preserved edges
     :param degree: List of permuted input networks with preserved degree distribution
-    :param degree_fractions: List of permuted input networks with fraction of preserved edges
     :param sign: If true, sets take sign information into account.
     :param set_operation: Type of set operation to carry out
     :param fractions: List with fractions of shared interactions
+    :param core: List with prevalence of shared interactions
     :param perm: Number of sets to take from null models
     :param sizes: Size of intersection to calculate. By default 1 (edge should be in all networks).
     :param limit: Maximum number of resamples.
@@ -159,21 +102,64 @@ def generate_sample_sizes(networks, random, random_fractions,
         combos = sample(list(combos), int(n))
         for item in combos:
             subnetworks = [networks[x] for x in item]
-            subrandom = [random[x] for x in item]
-            subdegree = [degree[x] for x in item]
-            subrandomfracs = list()
+            subrandom = {'random': [random['random'][x] for x in item]}
+            subdegree = {'degree': [degree['degree'][x] for x in item]}
+            subrandom['core'] = {}
+            subdegree['core'] = {}
             if fractions:
-                for frac in range(len(fractions)):
-                    subrandomfracs.append([random_fractions[frac][x] for x in item])
-            subdegreefracs = list()
-            if fractions:
-                for frac in range(len(fractions)):
-                    subdegreefracs.append([degree_fractions[frac][x] for x in item])
-            subresults = generate_sizes(subnetworks, subrandom, subrandomfracs, subdegree, subdegreefracs,
-                                        sign, set_operation, fractions, perm, sizes)
+                for frac in fractions:
+                    subrandom['core'][frac] = dict()
+                    subdegree['core'][frac] = dict()
+                    for c in core:
+                        subrandom['core'][frac][c] = list()
+                        subdegree['core'][frac][c] = list()
+                        for n in range(len(networks)):
+                            selection = [random['core'][frac][c][n][x] for x in item]
+                            subrandom['core'][frac][c].append(selection)
+                            selection = [degree['core'][frac][c][n][x] for x in item]
+                            subdegree['core'][frac][c].append(networks)
+            subresults = generate_sizes(networks=subnetworks, random=subrandom, degree=subdegree,
+                                        sign=sign, set_operation=set_operation,
+                                        fractions=fractions, core=core, perm=perm, sizes=sizes)
             subresults['Samples'] = i
             results = results.append(subresults)
     return results
+
+
+def generate_rows(name, data, networks, set_operation, sizes, sign, fraction=None, prev=None):
+    """
+    Generates dictionaries with necessary data for the pandas dataframes.
+    :param name: Network name
+    :param data: Pandas data
+    :param networks: List of NetworkX objects
+    :param set_operation: Difference and/or intersection
+    :param sizes: Intersection sizes
+    :param sign: If true, sets take sign information into account.
+    :param fraction: Fraction of conserved interactions.
+    :param prev: Prevalence of conserved interactions.
+    :return: Pandas dataframe with new rows
+    """
+    full_name = name + ' networks'
+    if fraction:
+        name += str(fraction) + str(prev)
+    if 'difference' in set_operation:
+        data = data.append({'Network': name,
+                            'Network type': full_name,
+                            'Conserved fraction': fraction,
+                            'Prevalence of conserved fraction': prev,
+                            'Set type': 'Difference',
+                            'Set size': difference(networks, sign)},
+                           ignore_index=True)
+    if 'intersection' in set_operation:
+        for size in sizes:
+            data = data.append({'Network': name,
+                                'Network type': type,
+                                'Conserved fraction': fraction,
+                                'Prevalence of conserved fraction': prev,
+                                'Set type': 'Intersection ' + str(size),
+                                'Set size': intersection(networks, size, sign)},
+                               ignore_index=True)
+    return data
 
 
 def difference(networks, sign):

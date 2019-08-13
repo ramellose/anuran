@@ -27,7 +27,7 @@ import os
 import argparse
 
 import numma
-from numma.nullmodels import generate_null
+from numma.nullmodels import generate_null, generate_core
 from numma.set import generate_sizes, generate_sample_sizes
 from numma.setviz import draw_sets, draw_samples
 import logging.handlers
@@ -66,14 +66,6 @@ def set_numma():
                         dest='fp',
                         help='Output filename. Specify full file path without extension.',
                         default=None, required=False)
-    parser.add_argument('-n', '--null_model',
-                        dest='null',
-                        required=False,
-                        help='Types of null models to generate (degree-preserving or random rewiring). '
-                             '\n By default, both models are generated.',
-                        choices=['degree', 'random'],
-                        nargs='+',
-                        default=['degree', 'random'])
     parser.add_argument('-set', '--set_type',
                         dest='set',
                         required=False,
@@ -107,18 +99,23 @@ def set_numma():
                              'By default, the upper limit equal to the binomial coefficient of the input networks. \n'
                              'If the limit is higher than this coefficient, all possible combinations are resampled.',
                         default=False)
-    parser.add_argument('-share', '--shared_interactions',
-                        dest='share',
+    parser.add_argument('-cs', '--core_size',
+                        dest='cs',
                         required=False,
                         nargs='+',
                         default=False,
-                        help='If specified, randomized null models (not the degree-preserving models)'
+                        help='If specified, true positive null models '
                              ' include a set fraction of shared interactions. \n'
                              'You can specify multiple fractions. '
                              'By default, null models have no shared interactions and '
-                             'sets are computed for all randomized networks.\n'
-                             'When the fraction is larger than 0, sets are only computed '
-                             'between models generated from a single network.')
+                             'sets are computed for all randomized networks.\n. ')
+    parser.add_argument('-prev', '--core_prevalence',
+                        dest='prev',
+                        required=False,
+                        nargs='+',
+                        help='Specify the prevalence of the core. \n'
+                             'By default, 1; each interaction is present in all models.',
+                        default=[1])
     parser.add_argument('-perm', '--permutations',
                         dest='perm',
                         type=int,
@@ -186,37 +183,40 @@ def main():
         networks.append(nx.read_graphml(path + '//data//conet_family_c.graphml'))
     logger.info('Imported ' + str(len(networks)) + ' networks.')
     # first generate null models
-    random = None
-    degree = None
-    if 'random' in args['null']:
-        random = []
-        random_fractions = []
-        try:
-            random = generate_null(networks, n=args['perm'], share=0, mode='random')
-            if args['share']:
-                for frac in args['share']:
-                        random_fractions.append(generate_null(networks, n=args['perm'], share=frac, mode='random'))
-                logger.info('Finished constructing all randomized networks.')
-        except Exception:
-            logger.error('Could not generate randomized null models!', exc_info=True)
-            exit()
-    if 'degree' in args['null']:
-        degree = []
-        degree_fractions = []
-        try:
-            degree = generate_null(networks, n=args['perm'], share=0, mode='degree')
-            if args['share']:
-                for frac in args['share']:
-                    degree_fractions.append(generate_null(networks, n=args['perm'], share=frac, mode='degree'))
-            logger.info('Finished constructing all degree-preserving randomized networks.')
-        except Exception:
-            logger.error('Could not generate degree-preserving null models!', exc_info=True)
-            exit()
+    random = {'random': [],
+              'core': {}}
+    try:
+        random['random'] = generate_null(networks, n=args['perm'], share=0, mode='random')
+        if args['cs']:
+            for frac in args['cs']:
+                random['core'][frac] = dict()
+                for core in args['prev']:
+                    random['core'][frac][core] = generate_core(networks,
+                                                               share=frac, mode='random', core=core)
+            logger.info('Finished constructing all randomized networks.')
+    except Exception:
+        logger.error('Could not generate randomized null models!', exc_info=True)
+        exit()
+    degree = {'degree': [],
+              'core': {}}
+    try:
+        degree['degree'] = generate_null(networks, n=args['perm'], share=0, mode='degree')
+        if args['cs']:
+            for frac in args['cs']:
+                degree['core'][frac] = dict()
+                for core in args['prev']:
+                    degree['core'][frac][core] = generate_core(networks,
+                                                               share=frac, mode='degree', core=core)
+        logger.info('Finished constructing all degree-preserving randomized networks.')
+    except Exception:
+        logger.error('Could not generate degree-preserving null models!', exc_info=True)
+        exit()
     set_sizes = None
     try:
-        set_sizes = generate_sizes(networks, random, random_fractions, degree, degree_fractions,
+        set_sizes = generate_sizes(networks, random, degree,
                                    sign=args['sign'], set_operation=args['set'],
-                                   fractions=args['share'], perm=args['nperm'], sizes=args['size'])
+                                   fractions=args['share'], core=args['prev'],
+                                   perm=args['nperm'], sizes=args['size'])
         set_sizes.to_csv(args['fp'] + '_sets.csv')
         logger.info('Set sizes exported to: ' + args['fp'] + '_sets.csv')
     except Exception:
@@ -225,10 +225,9 @@ def main():
     samples = None
     if args['sample']:
         try:
-            samples = generate_sample_sizes(networks, random, random_fractions,
-                                            degree, degree_fractions,
+            samples = generate_sample_sizes(networks, random, degree,
                                             sign=args['sign'], set_operation=args['set'],
-                                            fractions=args['share'], perm=args['nperm'],
+                                            fractions=args['share'], perm=args['nperm'], core=args['prev'],
                                             sizes=args['size'], limit=args['sample'])
             samples.to_csv(args['fp'] + '_subsampled_sets.csv')
         except Exception:

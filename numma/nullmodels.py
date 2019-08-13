@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-def generate_null(networks, n, share, mode):
+def generate_null(networks, n, share, mode, core=False):
     """
     This function takes a list of networks.
     For each network, a list with length n is generated,
@@ -30,8 +30,37 @@ def generate_null(networks, n, share, mode):
         ---List of permutations per original network (length n)
     :param networks: List of input NetworkX objects
     :param n: Number of randomized networks per input network
-    :param share: Fraction of conserved interactions
     :param mode: random or degree; whether to preserve the degree distribution
+    :param share: Fraction of conserved interactions
+    :param core: Prevalence of core. If provided, null models have conserved interactions.
+    :return: List of lists with randomized networks
+    """
+    nulls = list()
+    for i in range(len(networks)):
+        network = networks[i]
+        nulls.append(list())
+        for j in range(n):
+            if mode == 'random':
+                nulls[i].append(randomize_network(network, keep=[]))
+            elif mode == 'degree':
+                nulls[i].append(randomize_dyads(network, keep=[]))
+            else:
+                logger.error("The null model mode is not recognized.", exc_info=True)
+    return nulls
+
+
+def generate_core(networks, mode, share, core):
+    """
+    This function takes a list of networks.
+    For each network, a list with length n is generated,
+    with each item in the list being a permutation of the original network.
+    This is returned as a list of lists with this structure:
+    ---List corresponding to each original network (length networks)
+        ---List of permutations per original network (length networks)
+    :param networks: List of input NetworkX objects
+    :param mode: random or degree; whether to preserve the degree distribution
+    :param share: Fraction of conserved interactions
+    :param core: Prevalence of core. If provided, null models have conserved interactions.
     :return: List of lists with randomized networks
     """
     nulls = list()
@@ -39,13 +68,19 @@ def generate_null(networks, n, share, mode):
         network = networks[i]
         nulls.append(list())
         # all null models need to preserve the same edges
-        for j in range(n):
+        keep = sample(network.edges, round(len(network.edges) * share))
+        # create lists to distribute edges over according to core prevalence
+        keep_subsets = [[] for x in networks]
+        occurrence = round(core * len(networks))
+        for edge in keep:
+            indices = sample(range(len(networks)), occurrence)
+            for k in indices:
+                keep_subsets[k].append(edge)
+        for j in range(len(networks)):
             if mode == 'random':
-                keep = sample(network.edges, int(len(network.edges) * share))
-                nulls[i].append(randomize_network(network, keep))
+                nulls[i].append(randomize_network(network, keep_subsets[j]))
             elif mode == 'degree':
-                keep = sample(network.edges, int(len(network.edges) * share))
-                nulls[i].append(randomize_dyads(network, keep))
+                nulls[i].append(randomize_dyads(network, keep_subsets[j]))
             else:
                 logger.error("The null model mode is not recognized.", exc_info=True)
     return nulls
