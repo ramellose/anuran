@@ -153,7 +153,7 @@ def generate_rows(name, data, networks, set_operation, sizes, sign, fraction=Non
     if 'intersection' in set_operation:
         for size in sizes:
             data = data.append({'Network': name,
-                                'Network type': type,
+                                'Network type': full_name,
                                 'Conserved fraction': fraction,
                                 'Prevalence of conserved fraction': prev,
                                 'Set type': 'Intersection ' + str(size),
