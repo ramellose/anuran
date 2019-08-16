@@ -169,11 +169,11 @@ def main():
             extension = filename[len(filename)-1]
             try:
                 if extension == 'graphml':
-                    network = nx.read_graphml(args['graph'] + '/' + file)
+                    network = nx.read_graphml(file)
                 elif extension == 'txt':
-                    network = nx.read_weighted_edgelist(args['graph'] + '/' + file)
+                    network = nx.read_weighted_edgelist(file)
                 elif extension == 'gml':
-                    network = nx.read_gml(args['graph'] + '/' + file)
+                    network = nx.read_gml(file)
                 else:
                     logger.warning('Format not accepted. '
                                    'Please specify the filename including extension (e.g. test.graphml).', exc_info=True)
