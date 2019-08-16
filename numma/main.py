@@ -62,6 +62,13 @@ def set_numma():
                         default=None,
                         required=False,
                         nargs='+')
+    parser.add_argument('-p', '--prefix',
+                        dest='prefix',
+                        help='If all your networks are in the same location, use the prefix \n'
+                             'to specify this location. ',
+                        default='',
+                        required=False,
+                        type=str)
     parser.add_argument('-o', '--output',
                         dest='fp',
                         help='Output filename. Specify full file path without extension.',
@@ -164,11 +171,11 @@ def main():
             extension = filename[len(filename)-1]
             try:
                 if extension == 'graphml':
-                    network = nx.read_graphml(args['graph'])
+                    network = nx.read_graphml(args['prefix'] + '/' + file)
                 elif extension == 'txt':
-                    network = nx.read_weighted_edgelist(args['graph'])
+                    network = nx.read_weighted_edgelist(args['prefix'] + '/' + file)
                 elif extension == 'gml':
-                    network = nx.read_gml(args['graph'])
+                    network = nx.read_gml(args['prefix'] + '/' + file)
                 else:
                     logger.warning('Format not accepted. '
                                    'Please specify the filename including extension (e.g. test.graphml).', exc_info=True)
