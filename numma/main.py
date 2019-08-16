@@ -178,6 +178,7 @@ def main():
                     logger.warning('Format not accepted. '
                                    'Please specify the filename including extension (e.g. test.graphml).', exc_info=True)
                     exit()
+                networks.append(network)
             except Exception:
                 logger.error('Could not import network file!', exc_info=True)
                 exit()
