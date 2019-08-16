@@ -25,6 +25,7 @@ import networkx as nx
 import sys
 import os
 import argparse
+import glob
 
 import numma
 from numma.nullmodels import generate_null, generate_core
@@ -56,19 +57,13 @@ def set_numma():
                     'a cluster- and phylogeny-informed layout.')
     parser.add_argument('-i', '--input_graphs',
                         dest='graph',
-                        help='Input network file. The format is detected based on the extension; \n'
+                        help='Location of input network files. The format is detected based on the extension; \n'
                              'at the moment, .graphml, .txt (weighted edgelist), .gml and .cyjs are accepted. \n'
-                             'If you set -i to "demo", a demo dataset will be loaded.',
+                             'If you set -i to "demo", a demo dataset will be loaded. \n'
+                             'All .graphml files in this folder will be compared.',
                         default=None,
                         required=False,
                         nargs='+')
-    parser.add_argument('-p', '--prefix',
-                        dest='prefix',
-                        help='If all your networks are in the same location, use the prefix \n'
-                             'to specify this location. ',
-                        default='',
-                        required=False,
-                        type=str)
     parser.add_argument('-o', '--output',
                         dest='fp',
                         help='Output filename. Specify full file path without extension.',
@@ -164,9 +159,12 @@ def main():
         exit(0)
     networks = list()
     if not args['graph']:
-        logger.info('Please give an input file.')
+        logger.info('Please give an input location.')
     if args['graph'] != ['demo']:
-        for file in args['graph']:
+        files = [f for f in glob.glob(args['graph'] + "**/*.graphml", recursive=True)]
+        files.extend([f for f in glob.glob(args['graph'] + "**/*.txt", recursive=True)])
+        files.extend([f for f in glob.glob(args['graph'] + "**/*.gml", recursive=True)])
+        for file in files:
             filename = file.split(sep=".")
             extension = filename[len(filename)-1]
             try:
