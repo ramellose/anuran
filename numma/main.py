@@ -63,7 +63,7 @@ def set_numma():
                              'All .graphml files in this folder will be compared.',
                         default=None,
                         required=False,
-                        nargs='+')
+                        type=str)
     parser.add_argument('-o', '--output',
                         dest='fp',
                         help='Output filename. Specify full file path without extension.',
