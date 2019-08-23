@@ -62,7 +62,7 @@ def generate_sizes(networks, random, degree, sign,
             for c in core:
                 for network in range(len(networks)):
                     degreeperm.append(degree['core'][frac][c][network])
-                    randomperm.append(['core'][frac][c][network])
+                    randomperm.append(random['core'][frac][c][network])
                 results = generate_rows(name='Degree', data=results, networks=degreeperm,
                                         set_operation=set_operation,
                                         sizes=sizes, sign=sign, fraction=frac, prev=c)
