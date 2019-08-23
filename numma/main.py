@@ -87,10 +87,11 @@ def set_numma():
     parser.add_argument('-sign', '--edge_sign',
                         dest='sign',
                         required=False,
-                        help='If flagged, signs of edge weights are taken into account. \n'
+                        help='If flagged, signs of edge weights are not taken into account. \n'
                              'The set difference then includes edges that have a unique edge sign in one network. \n'
                              'The set intersection then only includes edges that have the same sign across networks.',
-                        default=True)
+                        default=True,
+                        action='store_false')
     parser.add_argument('-sample', '--resample',
                         dest='sample',
                         required=False,
@@ -217,7 +218,8 @@ def main():
                                                                core=float(core))
         logger.info('Finished constructing all degree-preserving randomized networks.')
     except Exception:
-        logger.error('Could not generate degree-preserving null models!', exc_info=True)
+        logger.error('Could not generate degree-preserving null models! '
+                     'Try increasing the conserved fraction. ', exc_info=True)
         exit()
     set_sizes = None
     try:
@@ -238,6 +240,7 @@ def main():
                                             fractions=args['cs'], perm=args['nperm'], core=args['prev'],
                                             sizes=args['size'], limit=args['sample'])
             samples.to_csv(args['fp'] + '_subsampled_sets.csv')
+            logger.info('Subsampled set sizes exported to: ' + args['fp'] + '_sets.csv')
         except Exception:
             logger.error('Failed to subsample networks!', exc_info=True)
             exit()

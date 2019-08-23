@@ -57,14 +57,14 @@ In contrast, the set intersection will only include edges that have the same sig
 
 ```
 numma -set difference intersection       # Default calculates sizes of difference and intersection sets
-numma -size 2 4 6                        # Calculates null models for edges present in partial intersections
+numma -size 0.2 0.4 0.6                        # Calculates null models for edges present in partial intersections
 numma -sign                              # Includes edge sign in set calculation
 ```
 
 If you want to know how the set sizes change when you increase the number of replicates,
-use the flag below; this will calculate set sizes for all numbers of networks up to the total.
+use the parameter below; this will calculate set sizes for all numbers of networks up to the total.
 ```
-numma -sample
+numma -sample 10
 ```
 
 For a complete explanation of all the parameters, run:

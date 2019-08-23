@@ -113,11 +113,11 @@ def generate_sample_sizes(networks, random,
                     for c in core:
                         subrandom['core'][frac][c] = list()
                         subdegree['core'][frac][c] = list()
-                        for n in range(len(networks)):
+                        for n in range(len(item)):
                             selection = [random['core'][frac][c][n][x] for x in item]
                             subrandom['core'][frac][c].append(selection)
                             selection = [degree['core'][frac][c][n][x] for x in item]
-                            subdegree['core'][frac][c].append(networks)
+                            subdegree['core'][frac][c].append(selection)
             subresults = generate_sizes(networks=subnetworks, random=subrandom, degree=subdegree,
                                         sign=sign, set_operation=set_operation,
                                         fractions=fractions, core=core, perm=perm, sizes=sizes)
@@ -176,6 +176,7 @@ def difference(networks, sign):
     for network in networks:
         for edge in network.edges:
             if sign:
+                weight = np.sign(network.edges[edge]['weight'])
                 diff.append(edge + (np.sign(network.edges[edge]['weight']),))
             else:
                 diff.append(edge)
@@ -226,6 +227,8 @@ def intersection(networks, size, sign):
         else:
             count = matches.count(edge) + matches.count((edge[1], edge[0]))
         # handles occurrence of reversed edges in list
-        if count >= (size * len(networks)):
+        if count >= round(size * len(networks)) > 0:
+            # The edges should be present in a fraction of networks bigger than 0,
+            # otherwise intersection size is identical to the difference
             shared_edges += 1
     return shared_edges
