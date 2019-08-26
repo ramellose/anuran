@@ -141,6 +141,7 @@ def randomize_dyads(network, keep):
             # samples a set of nodes with swappable edges
             if count > 100:
                 timeout = True
+                logger.warning('Could not create good degree-preserving models!')
             dyad = sample(null.edges, 2)
             # samples two nodes that could have edges swapped
             if (dyad[0][0], dyad[1][0]) in null.edges or (dyad[1][0], dyad[0][0]) in null.edges:

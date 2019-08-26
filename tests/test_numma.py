@@ -159,5 +159,23 @@ class TestMain(unittest.TestCase):
         num = 42 * binom(3, 3) + 42 * binom(3, 2) + 42 * binom(3, 1)
         self.assertEqual(len(results['Network']), num)
 
+    def test_generate_core_random(self):
+        """Checks whether a number associations occurs
+        a certain number of times given a core size and prevalence."""
+        nulls = generate_core(networks, mode='random', share=0.3, core=0.6)
+        core = nulls[0]
+        all_edges = list()
+        for network in core:
+            all_edges.extend(network.edges)
+        counts = {x: 0 for x in list(set(all_edges))}
+        for edge in all_edges:
+            counts[edge] += 1
+        num_shared = 0
+        for edge in counts:
+            if counts[edge] > (0.6 * len(core)):
+                num_shared += 1
+        self.assertGreater(num_shared, 0.3 * len(core[0].edges))
+
+
 if __name__ == '__main__':
     unittest.main()

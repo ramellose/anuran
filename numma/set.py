@@ -56,7 +56,7 @@ def generate_sizes(networks, random, degree, sign,
                                 sizes=sizes, sign=sign, fraction=None, prev=None)
         randomperm = [sample(random['random'][r], 1)[0] for r in range(len(random['random']))]
         results = generate_rows(name='Random', data=results, networks=randomperm, set_operation=set_operation,
-                                   sizes=sizes, sign=sign, fraction=None, prev=None)
+                                sizes=sizes, sign=sign, fraction=None, prev=None)
     if fractions:
         for frac in fractions:
             for c in core:
