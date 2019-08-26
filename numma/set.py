@@ -47,7 +47,7 @@ def generate_sizes(networks, random, degree, sign,
     # Create empty pandas dataframe
     results = pd.DataFrame(columns=['Network', 'Network type', 'Conserved fraction',
                                     'Prevalence of conserved fraction',
-                                    'Set type', 'Set size'])
+                                    'Set type', 'Set size', 'Set type (absolute)'])
     results = generate_rows(name='Input', data=results, networks=networks, set_operation=set_operation,
                             sizes=sizes, sign=sign, fraction=None, prev=None)
     for j in range(perm):
@@ -92,7 +92,7 @@ def generate_sample_sizes(networks, random,
     :return: List of lists with set sizes
     """
     results = pd.DataFrame(columns=['Network', 'Network type', 'Conserved fraction',
-                                    'Set type', 'Set size', 'Samples'])
+                                    'Set type', 'Set size', 'Set type (absolute)', 'Samples', ])
     for i in range(1, len(networks)+1):
         n = binom(len(networks), i)
         if limit:
@@ -157,7 +157,8 @@ def generate_rows(name, data, networks, set_operation, sizes, sign, fraction=Non
                                 'Conserved fraction': fraction,
                                 'Prevalence of conserved fraction': prev,
                                 'Set type': 'Intersection ' + str(size),
-                                'Set size': intersection(networks, float(size), sign)},
+                                'Set size': intersection(networks, float(size), sign),
+                                'Set type (absolute)': str(round(len(networks) * float(size)))},
                                ignore_index=True)
     return data
 
