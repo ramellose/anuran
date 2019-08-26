@@ -227,8 +227,9 @@ def intersection(networks, size, sign):
         else:
             count = matches.count(edge) + matches.count((edge[1], edge[0]))
         # handles occurrence of reversed edges in list
-        if count >= round(size * len(networks)) > 0:
+        if count >= round(size * len(networks)) > 1:
             # The edges should be present in a fraction of networks bigger than 0,
             # otherwise intersection size is identical to the difference
+            # Should also be bigger than 1 otherwise there is not really an intersection
             shared_edges += 1
     return shared_edges
