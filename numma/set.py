@@ -74,7 +74,7 @@ def generate_sizes(networks, random, degree, sign,
 
 def generate_sample_sizes(networks, random,
                           degree, sign,
-                          set_operation, fractions, core, perm, sizes, limit):
+                          set_operation, fractions, core, perm, sizes, limit, number):
     """
     This function wraps the the generate_sizes function
     but it only gives a random subset of the input networks and null models.
@@ -89,11 +89,16 @@ def generate_sample_sizes(networks, random,
     :param perm: Number of sets to take from null models
     :param sizes: Size of intersection to calculate. By default 1 (edge should be in all networks).
     :param limit: Maximum number of resamples.
+    :param number: Sample number to test.
     :return: List of lists with set sizes
     """
     results = pd.DataFrame(columns=['Network', 'Network type', 'Conserved fraction',
                                     'Set type', 'Set size', 'Set type (absolute)', 'Samples', ])
-    for i in range(1, len(networks)+1):
+    if number:
+        seq = [int(x) for x in number]
+    else:
+        seq = range(1, len(networks)+1)
+    for i in seq:
         n = binom(len(networks), i)
         if limit:
             if limit < n:

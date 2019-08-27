@@ -96,12 +96,20 @@ def set_numma():
                         dest='sample',
                         required=False,
                         type=int,
-                        help='Resample your networks to generate changes in the set sizes \n'
+                        help='Resample your networks to observe the impact of increasing sample number. \n'
                              'when you increase the network number up until the total. \n'
                              'Specify an upper limit of resamples, or True if you want all possible resamples. \n'
                              'By default, the upper limit equal to the binomial coefficient of the input networks. \n'
                              'If the limit is higher than this coefficient, all possible combinations are resampled.',
                         default=False)
+    parser.add_argument('-n', '--sample_number',
+                        dest='number',
+                        required=False,
+                        nargs='+',
+                        default=None,
+                        help='If you have a lot of samples, specify the sample numbers to test here. \n'
+                             'For example: -n 4 8 12 will test the effect of acquiring 4, 8, and 12 samples. \n'
+                             'By default, all sample numbers are tested.')
     parser.add_argument('-cs', '--core_size',
                         dest='cs',
                         required=False,
@@ -238,7 +246,7 @@ def main():
             samples = generate_sample_sizes(networks, random, degree,
                                             sign=args['sign'], set_operation=args['set'],
                                             fractions=args['cs'], perm=args['nperm'], core=args['prev'],
-                                            sizes=args['size'], limit=args['sample'])
+                                            sizes=args['size'], limit=args['sample'], number=args['number'])
             samples.to_csv(args['fp'] + '_subsampled_sets.csv')
             logger.info('Subsampled set sizes exported to: ' + args['fp'] + '_sets.csv')
         except Exception:
