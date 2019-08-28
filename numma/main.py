@@ -187,6 +187,7 @@ def main():
                     logger.warning('Format not accepted. '
                                    'Please specify the filename including extension (e.g. test.graphml).', exc_info=True)
                     exit()
+                # Check if node ID is different from name
                 networks.append(network)
             except Exception:
                 logger.error('Could not import network file!', exc_info=True)
@@ -248,7 +249,7 @@ def main():
                                             fractions=args['cs'], perm=args['nperm'], core=args['prev'],
                                             sizes=args['size'], limit=args['sample'], number=args['number'])
             samples.to_csv(args['fp'] + '_subsampled_sets.csv')
-            logger.info('Subsampled set sizes exported to: ' + args['fp'] + '_sets.csv')
+            logger.info('Subsampled set sizes exported to: ' + args['fp'] + '_subsampled_sets.csv')
         except Exception:
             logger.error('Failed to subsample networks!', exc_info=True)
             exit()

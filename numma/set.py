@@ -163,7 +163,7 @@ def generate_rows(name, data, networks, set_operation, sizes, sign, fraction=Non
                                 'Prevalence of conserved fraction': prev,
                                 'Set type': 'Intersection ' + str(size),
                                 'Set size': intersection(networks, float(size), sign),
-                                'Set type (absolute)': str(round(len(networks) * float(size)))},
+                                'Set type (absolute)': str(len(networks) * float(size))},
                                ignore_index=True)
     return data
 
