@@ -144,6 +144,13 @@ def set_numma():
                              'This value becomes huge quickly, so a random subset of possible sets is taken.\n '
                              'Default: 50. ',
                         default=50)
+    parser.add_argument('-c', '--centrality',
+                        dest='centrality',
+                        required=False,
+                        action='store_true',
+                        help='If true, extracts centrality ranking from networks \n'
+                             'and compares these to rankings extracted from null models. ',
+                        default=False)
     parser.add_argument('-draw', '--draw_figures',
                         dest='draw',
                         required=False,
@@ -187,7 +194,13 @@ def main():
                     logger.warning('Format not accepted. '
                                    'Please specify the filename including extension (e.g. test.graphml).', exc_info=True)
                     exit()
-                # Check if node ID is different from name
+                # need to make sure the graphml function does not arbitrarily assign node ID
+                try:
+                    if 'name' in network.nodes[list(network.nodes)[0]]:
+                        if network.nodes[list(network.nodes)[0]]['name'] != list(network.nodes)[0]:
+                            network = nx.relabel_nodes(network, nx.get_node_attributes(network, 'name'))
+                except IndexError:
+                    logger.warning('One of the imported networks contains no nodes.', exc_info=True)
                 networks.append(network)
             except Exception:
                 logger.error('Could not import network file!', exc_info=True)
@@ -241,6 +254,12 @@ def main():
     except Exception:
         logger.error('Failed to calculate set sizes!', exc_info=True)
         exit()
+    if args['centrality']:
+        try:
+            pass
+        except Exception:
+            logger.error('Could not rank centralities!', exc_info=True)
+            exit()
     samples = None
     if args['sample']:
         try:
