@@ -35,6 +35,39 @@ def draw_sets(data, fp):
     fig.fig.clf()
 
 
+def draw_centralities(data, fp):
+    """
+    This function accepts a pandas dataframe
+    with 5 columns:
+    Node, Network, Network type, Conserved fraction, Centrality, Upper limit, Lower limit
+    For every centrality a scatter plot is generated with the upper- and lower limits
+    on the x and y axes respectively.
+
+    :param data: Pandas data frame
+    :param fp: Filepath with prefix for name
+    :return:
+    """
+    sns.set_style(style="whitegrid")
+    degree = data[data['Centrality'] == 'Degree']
+    fig = sns.relplot(x='Lower limit', y='Upper limit', col='Network',
+                      hue='Network', data=degree)
+    fig.set(ylim=(0, 1), xlim=(0, 1))
+    fig.savefig(fp + "_degree.png")
+    fig.fig.clf()
+    degree = data[data['Centrality'] == 'Betweenness']
+    fig = sns.relplot(x='Lower limit', y='Upper limit', col='Network',
+                      hue='Network', data=degree)
+    fig.set(ylim=(0, 1), xlim=(0, 1))
+    fig.savefig(fp + "_betweenness.png")
+    fig.fig.clf()
+    degree = data[data['Centrality'] == 'Closeness']
+    fig = sns.relplot(x='Lower limit', y='Upper limit', col='Network',
+                      hue='Network', data=degree)
+    fig.set(ylim=(0, 1), xlim=(0, 1))
+    fig.savefig(fp + "_closeness.png")
+    fig.fig.clf()
+
+
 def draw_samples(data, fp):
     """
     This function accepts a pandas dataframe

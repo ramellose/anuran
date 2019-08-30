@@ -149,7 +149,6 @@ def generate_rows(name, data, networks, set_operation, sizes, sign, fraction=Non
         name += ' size: ' + str(fraction) + ' prev:' + str(prev)
     if 'difference' in set_operation:
         data = data.append({'Network': name,
-                            'Network type': full_name,
                             'Conserved fraction': fraction,
                             'Prevalence of conserved fraction': prev,
                             'Set type': 'Difference',

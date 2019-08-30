@@ -30,7 +30,8 @@ import glob
 import numma
 from numma.nullmodels import generate_null, generate_core
 from numma.set import generate_sizes, generate_sample_sizes
-from numma.setviz import draw_sets, draw_samples
+from numma.centrality import generate_ci_frame
+from numma.setviz import draw_sets, draw_samples, draw_centralities
 import logging.handlers
 from pbr.version import VersionInfo
 
@@ -256,7 +257,9 @@ def main():
         exit()
     if args['centrality']:
         try:
-            pass
+            centralities = generate_ci_frame(networks, random, degree,
+                                             fractions=args['cs'], core=args['prev'], perm=args['nperm'])
+            centralities.to_csv(args['fp'] + '_centralities.csv')
         except Exception:
             logger.error('Could not rank centralities!', exc_info=True)
             exit()
@@ -275,6 +278,8 @@ def main():
     if args['draw']:
         try:
             draw_sets(set_sizes, args['fp'])
+            if args['centrality']:
+                draw_centralities(centralities, args['fp'])
             if args['sample']:
                 draw_samples(samples, args['fp'])
         except Exception:
