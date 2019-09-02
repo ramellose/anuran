@@ -31,6 +31,7 @@ import numma
 from numma.nullmodels import generate_null, generate_core
 from numma.set import generate_sizes, generate_sample_sizes
 from numma.centrality import generate_ci_frame
+from numma.graphvals import generate_graph_frame
 from numma.setviz import draw_sets, draw_samples, draw_centralities
 import logging.handlers
 from pbr.version import VersionInfo
@@ -58,13 +59,14 @@ def set_numma():
                     'a cluster- and phylogeny-informed layout.')
     parser.add_argument('-i', '--input_graphs',
                         dest='graph',
-                        help='Location of input network files. The format is detected based on the extension; \n'
+                        help='Locations of input network files. The format is detected based on the extension; \n'
                              'at the moment, .graphml, .txt (weighted edgelist), .gml and .cyjs are accepted. \n'
                              'If you set -i to "demo", a demo dataset will be loaded. \n'
-                             'All .graphml files in this folder will be compared.',
+                             'If you want to compare different sets of networks, \n'
+                             'specify this by including multiple locations. ',
                         default=None,
                         required=False,
-                        type=str)
+                        nargs='+')
     parser.add_argument('-o', '--output',
                         dest='fp',
                         help='Output filename. Specify full file path without extension.',
@@ -152,10 +154,30 @@ def set_numma():
                         help='If true, extracts centrality ranking from networks \n'
                              'and compares these to rankings extracted from null models. ',
                         default=False)
+    parser.add_argument('-net', '--network',
+                        dest='network',
+                        required=False,
+                        action='store_true',
+                        help='If true, extracts network-level properties \n'
+                             'and compares these to properties of randomized networks. ',
+                        default=False)
+    parser.add_argument('-compare', '--compare_networks',
+                        dest='comparison',
+                        required=False,
+                        help='If true, networks in the folders specified by the input parameter \n'
+                             'are compared for different emergent properties. ',
+                        default=False)
     parser.add_argument('-draw', '--draw_figures',
                         dest='draw',
                         required=False,
                         help='If flagged, draws figures showing the set sizes.',
+                        action='store_true',
+                        default=False)
+    parser.add_argument('-p', '--pvals',
+                        dest='pvals',
+                        required=False,
+                        help='If flagged, p-values are computed for the comparisons to null models \n'
+                             'and to subsets of the networks.',
                         action='store_true',
                         default=False)
     parser.add_argument('-version', '--version',
@@ -174,72 +196,75 @@ def main():
         info = VersionInfo('numma')
         logger.info('Version ' + info.version_string())
         exit(0)
-    networks = list()
     if not args['graph']:
         logger.info('Please give an input location.')
     if args['graph'] != ['demo']:
-        files = [f for f in glob.glob(args['graph'] + "**/*.graphml", recursive=True)]
-        files.extend([f for f in glob.glob(args['graph'] + "**/*.txt", recursive=True)])
-        files.extend([f for f in glob.glob(args['graph'] + "**/*.gml", recursive=True)])
-        for file in files:
-            filename = file.split(sep=".")
-            extension = filename[len(filename)-1]
-            try:
-                if extension == 'graphml':
-                    network = nx.read_graphml(file)
-                elif extension == 'txt':
-                    network = nx.read_weighted_edgelist(file)
-                elif extension == 'gml':
-                    network = nx.read_gml(file)
-                else:
-                    logger.warning('Format not accepted. '
-                                   'Please specify the filename including extension (e.g. test.graphml).', exc_info=True)
-                    exit()
-                # need to make sure the graphml function does not arbitrarily assign node ID
+        networks = {x: list() for x in args['graph']}
+        # code for importing from multiple folders
+        for location in args['graph']:
+            files = [f for f in glob.glob(location + "**/*.graphml", recursive=True)]
+            files.extend([f for f in glob.glob(location + "**/*.txt", recursive=True)])
+            files.extend([f for f in glob.glob(location + "**/*.gml", recursive=True)])
+            for file in files:
+                filename = file.split(sep=".")
+                extension = filename[len(filename)-1]
                 try:
-                    if 'name' in network.nodes[list(network.nodes)[0]]:
-                        if network.nodes[list(network.nodes)[0]]['name'] != list(network.nodes)[0]:
-                            network = nx.relabel_nodes(network, nx.get_node_attributes(network, 'name'))
-                except IndexError:
-                    logger.warning('One of the imported networks contains no nodes.', exc_info=True)
-                networks.append(network)
-            except Exception:
-                logger.error('Could not import network file!', exc_info=True)
-                exit()
+                    if extension == 'graphml':
+                        network = nx.read_graphml(file)
+                    elif extension == 'txt':
+                        network = nx.read_weighted_edgelist(file)
+                    elif extension == 'gml':
+                        network = nx.read_gml(file)
+                    else:
+                        logger.warning('Format not accepted. '
+                                       'Please specify the filename including extension (e.g. test.graphml).', exc_info=True)
+                        exit()
+                    # need to make sure the graphml function does not arbitrarily assign node ID
+                    try:
+                        if 'name' in network.nodes[list(network.nodes)[0]]:
+                            if network.nodes[list(network.nodes)[0]]['name'] != list(network.nodes)[0]:
+                                network = nx.relabel_nodes(network, nx.get_node_attributes(network, 'name'))
+                    except IndexError:
+                        logger.warning('One of the imported networks contains no nodes.', exc_info=True)
+                    networks.append(network)
+                except Exception:
+                    logger.error('Could not import network file!', exc_info=True)
+                    exit()
     elif args['graph'] == ['demo']:
+        networks = {'demo': list()}
         path = os.path.dirname(numma.__file__)
-        networks.append(nx.read_graphml(path + '//data//conet_family_a.graphml'))
-        networks.append(nx.read_graphml(path + '//data//conet_family_b.graphml'))
-        networks.append(nx.read_graphml(path + '//data//conet_family_c.graphml'))
+        networks['demo'].append(nx.read_graphml(path + '//data//conet_family_a.graphml'))
+        networks['demo'].append(nx.read_graphml(path + '//data//conet_family_b.graphml'))
+        networks['demo'].append(nx.read_graphml(path + '//data//conet_family_c.graphml'))
     logger.info('Imported ' + str(len(networks)) + ' networks.')
     # first generate null models
-    random = {'random': [],
-              'core': {}}
+    random = {x: {'random': [], 'core': {}} for x in networks}
     try:
-        random['random'] = generate_null(networks, n=args['perm'], share=0, mode='random')
-        if args['cs']:
-            for frac in args['cs']:
-                random['core'][frac] = dict()
-                for core in args['prev']:
-                    random['core'][frac][core] = generate_core(networks,
-                                                               share=float(frac), mode='random',
-                                                               core=float(core))
-            logger.info('Finished constructing all randomized networks.')
+        for x in networks:
+            random[x]['random'] = generate_null(networks[x], n=args['perm'], share=0, mode='random')
+            if args['cs']:
+                for frac in args['cs']:
+                    random[x]['core'][frac] = dict()
+                    for core in args['prev']:
+                        random[x]['core'][frac][core] = generate_core(networks[x],
+                                                                      share=float(frac), mode='random',
+                                                                      core=float(core))
+                logger.info('Finished constructing all randomized networks.')
     except Exception:
         logger.error('Could not generate randomized null models!', exc_info=True)
         exit()
-    degree = {'degree': [],
-              'core': {}}
+    degree = {x: {'degree': [], 'core': {}} for x in networks}
     try:
-        degree['degree'] = generate_null(networks, n=args['perm'], share=0, mode='degree')
-        if args['cs']:
-            for frac in args['cs']:
-                degree['core'][frac] = dict()
-                for core in args['prev']:
-                    degree['core'][frac][core] = generate_core(networks,
-                                                               share=float(frac), mode='degree',
-                                                               core=float(core))
-        logger.info('Finished constructing all degree-preserving randomized networks.')
+        for x in networks:
+            degree[x]['degree'] = generate_null(networks[x], n=args['perm'], share=0, mode='degree')
+            if args['cs']:
+                for frac in args['cs']:
+                    degree[x]['core'][frac] = dict()
+                    for core in args['prev']:
+                        degree[x]['core'][frac][core] = generate_core(networks[x],
+                                                                      share=float(frac), mode='degree',
+                                                                      core=float(core))
+            logger.info('Finished constructing all degree-preserving randomized networks.')
     except Exception:
         logger.error('Could not generate degree-preserving null models! '
                      'Try increasing the conserved fraction. ', exc_info=True)
@@ -263,6 +288,14 @@ def main():
         except Exception:
             logger.error('Could not rank centralities!', exc_info=True)
             exit()
+    if args['network']:
+        try:
+            graph_properties = generate_graph_frame(networks, random, degree,
+                                             fractions=args['cs'], core=args['prev'], perm=args['nperm'])
+            graph_properties.to_csv(args['fp'] + 'graph_properties.csv')
+        except Exception:
+            logger.error('Could not rank centralities!', exc_info=True)
+            exit()
     samples = None
     if args['sample']:
         try:
@@ -275,6 +308,9 @@ def main():
         except Exception:
             logger.error('Failed to subsample networks!', exc_info=True)
             exit()
+    if args['pval']:
+        # add code for pvalue estimation
+        pass
     if args['draw']:
         try:
             draw_sets(set_sizes, args['fp'])

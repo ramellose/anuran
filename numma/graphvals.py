@@ -13,8 +13,8 @@ __license__ = 'Apache 2.0'
 import pandas as pd
 import networkx as nx
 from random import sample
-from scipy.stats import sem, t
 import numpy as np
+import os
 
 
 def generate_graph_frame(networks, random, degree, fractions, core, perm):
@@ -45,29 +45,37 @@ def generate_graph_frame(networks, random, degree, fractions, core, perm):
     results = pd.DataFrame(columns=['Network', 'Network type', 'Conserved fraction',
                                     'Prevalence of conserved fraction',
                                     'Property', 'Value'])
-    results = generate_graph_rows(name='Input', data=results, networks=networks, fraction=None, prev=None)
-    for j in range(perm):
-        degreeperm = [sample(degree['degree'][r], 1)[0] for r in range(len(degree['degree']))]
-        results = generate_graph_rows(name='Degree', data=results, networks=degreeperm, fraction=None, prev=None)
-        randomperm = [sample(random['random'][r], 1)[0] for r in range(len(random['random']))]
-        results = generate_graph_rows(name='Random', data=results, networks=randomperm, fraction=None, prev=None)
-    if fractions:
-        for frac in fractions:
-            for c in core:
-                for network in range(len(networks)):
-                    degreeperm = degree['core'][frac][c][network]
-                    randomperm = random['core'][frac][c][network]
-                    results = generate_graph_rows(name='Degree', data=results, networks=degreeperm, fraction=frac, prev=c)
-                    results = generate_graph_rows(name='Random', data=results, networks=randomperm, fraction=frac, prev=c)
+    for x in networks:
+        group = os.path.basename(x)
+        results = generate_graph_rows(name='Input', data=results, group=group,
+                                      networks=networks[x], fraction=None, prev=None)
+        for j in range(perm):
+            degreeperm = [sample(degree[x]['degree'][r], 1)[0] for r in range(len(degree[x]['degree']))]
+            results = generate_graph_rows(name='Degree', data=results, group=group,
+                                          networks=degreeperm, fraction=None, prev=None)
+            randomperm = [sample(random[x]['random'][r], 1)[0] for r in range(len(random[x]['random']))]
+            results = generate_graph_rows(name='Random', data=results, group=group,
+                                          networks=randomperm, fraction=None, prev=None)
+        if fractions:
+            for frac in fractions:
+                for c in core:
+                    for network in range(len(networks)):
+                        degreeperm = degree[x]['core'][frac][c][network]
+                        randomperm = random[x]['core'][frac][c][network]
+                        results = generate_graph_rows(name='Degree', data=results, group=group,
+                                                      networks=degreeperm, fraction=frac, prev=c)
+                        results = generate_graph_rows(name='Random', data=results, group=group,
+                                                      networks=randomperm, fraction=frac, prev=c)
     return results
 
 
-def generate_graph_rows(data, name, networks, fraction, prev):
+def generate_graph_rows(data, name, group, networks, fraction, prev):
     """
     Generates Pandas rows with network measures for a list of networks.
 
     :param data: Pandas dataframe
     :param name: Name for the list of NetworkX objects
+    :param group: Name for grouping NetworkX objects
     :param networks: List of NetworkX objects
     :param fraction: If a null model with core is provided, adds the core fraction to the row
     :param prev: If a null model with core is provided, adds the core prevalence to the row
@@ -80,6 +88,7 @@ def generate_graph_rows(data, name, networks, fraction, prev):
     for property in properties:
         for network in properties[property]:
             data = data.append({'Network': name,
+                                'Group': group,
                                 'Network type': full_name,
                                 'Conserved fraction': fraction,
                                 'Prevalence of conserved fraction': prev,
