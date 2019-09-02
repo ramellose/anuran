@@ -75,9 +75,8 @@ def generate_ci_rows(data, name, networks, fraction, prev):
     full_name = name + ' networks'
     if fraction:
         name += ' size: ' + str(fraction) + ' prev:' + str(prev)
-    property_names = ['Degree', 'Closeness', 'Betweenness']
     properties = generate_centralities(networks)
-    for property in property_names:
+    for property in properties:
         ci = generate_confidence_interval(properties[property])
         for node in ci:
             data = data.append({'Node': node,
