@@ -18,7 +18,7 @@ import numpy as np
 
 def generate_ci_frame(networks, random, degree, fractions, core, perm):
     """
-    This function carries out set operations on all networks provided in
+    This function estimates centralities from all networks provided in
     the network, random and degree lists.
     The random and degree lists are structured as follows:
     ---List corresponding to each original network (length networks)
@@ -63,7 +63,7 @@ def generate_ci_frame(networks, random, degree, fractions, core, perm):
 
 def generate_ci_rows(data, name, networks, fraction, prev):
     """
-    Generates Pandas rows with all centrality measure cis for a list of networks.
+    Generates Pandas rows with all centrality measures for a list of networks.
 
     :param data: Pandas dataframe
     :param name: Name for the list of NetworkX objects
@@ -75,40 +75,20 @@ def generate_ci_rows(data, name, networks, fraction, prev):
     full_name = name + ' networks'
     if fraction:
         name += ' size: ' + str(fraction) + ' prev:' + str(prev)
-    degree, closeness, betweenness = generate_centralities(networks)
-    ci = generate_confidence_interval(degree)
-    for node in ci:
-        data = data.append({'Node': node,
-                            'Network': name,
-                            'Network type': full_name,
-                            'Conserved fraction': fraction,
-                            'Prevalence of conserved fraction': prev,
-                            'Centrality': 'Degree',
-                            'Upper limit': ci[node][1],
-                            'Lower limit': ci[node][0]},
-                            ignore_index=True)
-    ci = generate_confidence_interval(closeness)
-    for node in ci:
-        data = data.append({'Node': node,
-                            'Network': name,
-                            'Network type': full_name,
-                            'Conserved fraction': fraction,
-                            'Prevalence of conserved fraction': prev,
-                            'Centrality': 'Closeness',
-                            'Upper limit': ci[node][1],
-                            'Lower limit': ci[node][0]},
-                            ignore_index=True)
-    ci = generate_confidence_interval(betweenness)
-    for node in ci:
-        data = data.append({'Node': node,
-                            'Network': name,
-                            'Network type': full_name,
-                            'Conserved fraction': fraction,
-                            'Prevalence of conserved fraction': prev,
-                            'Centrality': 'Betweenness',
-                            'Upper limit': ci[node][1],
-                            'Lower limit': ci[node][0]},
-                            ignore_index=True)
+    property_names = ['Degree', 'Closeness', 'Betweenness']
+    properties = generate_centralities(networks)
+    for property in property_names:
+        ci = generate_confidence_interval(properties[property])
+        for node in ci:
+            data = data.append({'Node': node,
+                                'Network': name,
+                                'Network type': full_name,
+                                'Conserved fraction': fraction,
+                                'Prevalence of conserved fraction': prev,
+                                'Centrality': property,
+                                'Upper limit': ci[node][1],
+                                'Lower limit': ci[node][0]},
+                                ignore_index=True)
     return data
 
 
@@ -150,14 +130,12 @@ def generate_centralities(networks):
     :param networks: List of input networks
     :return: Pandas dataframe with rankings
     """
-    degree = list()
-    closeness = list()
-    betweenness = list()
+    properties = dict()
     for network in networks:
-        degree.append(centrality_percentile(nx.degree_centrality(network)))
-        closeness.append(centrality_percentile(nx.closeness_centrality(network)))
-        betweenness.append(centrality_percentile(nx.betweenness_centrality(network)))
-    return degree, closeness, betweenness
+        properties['Degree'] = centrality_percentile(nx.degree_centrality(network))
+        properties['Closeness'] = centrality_percentile(nx.closeness_centrality(network))
+        properties['Betweenness'] = centrality_percentile(nx.betweenness_centrality(network))
+    return properties
 
 
 def centrality_percentile(centrality):
