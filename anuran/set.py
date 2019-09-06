@@ -16,6 +16,7 @@ from scipy.special import binom
 import numpy as np
 import os
 
+
 def generate_sizes(networks, random, degree, sign,
                    set_operation, fractions, core, perm, sizes):
     """
@@ -156,6 +157,7 @@ def generate_rows(name, data, group, networks, set_operation, sizes, sign, fract
     if 'difference' in set_operation:
         data = data.append({'Network': name,
                             'Group': group,
+                            'Network type': full_name,
                             'Conserved fraction': fraction,
                             'Prevalence of conserved fraction': prev,
                             'Set type': 'Difference',

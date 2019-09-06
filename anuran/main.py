@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 
 """
-numma: Null models for replicate networks.
+anuran: Null models for replicate networks.
 The script takes a network as input and uses this to generate null models.
 The output of the null models is presented as a csv of set sizes
 and a t-test is used to assess whether set sizes are different than expected from the null model.
 Detailed explanations are available in the headers of each file.
 
-numma uses the file extension to import networks.
+anuran uses the file extension to import networks.
 Generation of null models is done on the adjacency matrix for speed;
 the NetworkX representation is unfortunately slower.
 
-The demo data for numma was downloaded from the following publication:
+The demo data for anuran was downloaded from the following publication:
 Meyer, K. M., Memiaghe, H., Korte, L., Kenfack, D., Alonso, A., & Bohannan, B. J. (2018).
 Why do microbes exhibit weak biogeographic patterns?. The ISME journal, 12(6), 1404.
 """
@@ -27,12 +27,12 @@ import os
 import argparse
 import glob
 
-import numma
-from numma.nullmodels import generate_null, generate_core
-from numma.set import generate_sizes, generate_sample_sizes
-from numma.centrality import generate_ci_frame
-from numma.graphvals import generate_graph_frame
-from numma.setviz import draw_sets, draw_samples, draw_centralities
+import anuran
+from anuran.nullmodels import generate_null, generate_core
+from anuran.set import generate_sizes, generate_sample_sizes
+from anuran.centrality import generate_ci_frame
+from anuran.graphvals import generate_graph_frame
+from anuran.setviz import draw_sets, draw_samples, draw_centralities
 import logging.handlers
 from pbr.version import VersionInfo
 
@@ -47,8 +47,8 @@ sh.setFormatter(formatter)
 logger.addHandler(sh)
 
 
-def set_numma():
-    """This parser gets input settings for running numma.
+def set_anuran():
+    """This parser gets input settings for running anuran.
     It requires an input format that can be read by NetworkX.
     Make sure to include the extension in the input filename
     as this is used to infer the file type."""
@@ -190,10 +190,10 @@ def set_numma():
 
 
 def main():
-    args = set_numma().parse_args(sys.argv[1:])
+    args = set_anuran().parse_args(sys.argv[1:])
     args = vars(args)
     if args['version']:
-        info = VersionInfo('numma')
+        info = VersionInfo('anuran')
         logger.info('Version ' + info.version_string())
         exit(0)
     if not args['graph']:
@@ -226,13 +226,13 @@ def main():
                                 network = nx.relabel_nodes(network, nx.get_node_attributes(network, 'name'))
                     except IndexError:
                         logger.warning('One of the imported networks contains no nodes.', exc_info=True)
-                    networks.append(network)
+                    networks[location].append(nx.to_undirected(network))
                 except Exception:
                     logger.error('Could not import network file!', exc_info=True)
                     exit()
     elif args['graph'] == ['demo']:
         networks = {'demo': list()}
-        path = os.path.dirname(numma.__file__)
+        path = os.path.dirname(anuran.__file__)
         networks['demo'].append(nx.read_graphml(path + '//data//conet_family_a.graphml'))
         networks['demo'].append(nx.read_graphml(path + '//data//conet_family_b.graphml'))
         networks['demo'].append(nx.read_graphml(path + '//data//conet_family_c.graphml'))
@@ -291,7 +291,7 @@ def main():
     if args['network']:
         try:
             graph_properties = generate_graph_frame(networks, random, degree,
-                                             fractions=args['cs'], core=args['prev'], perm=args['nperm'])
+                                                    fractions=args['cs'], core=args['prev'], perm=args['nperm'])
             graph_properties.to_csv(args['fp'] + 'graph_properties.csv')
         except Exception:
             logger.error('Could not rank centralities!', exc_info=True)
@@ -321,7 +321,7 @@ def main():
         except Exception:
             logger.error('Could not draw data!', exc_info=True)
             exit()
-    logger.info('numma completed all tasks.')
+    logger.info('anuran completed all tasks.')
     exit(0)
 
 

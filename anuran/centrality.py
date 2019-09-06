@@ -139,11 +139,11 @@ def generate_centralities(networks):
     :param networks: List of input networks
     :return: Pandas dataframe with rankings
     """
-    properties = dict()
+    properties = {x: list() for x in ['Degree', 'Closeness', 'Betweenness']}
     for network in networks:
-        properties['Degree'] = centrality_percentile(nx.degree_centrality(network))
-        properties['Closeness'] = centrality_percentile(nx.closeness_centrality(network))
-        properties['Betweenness'] = centrality_percentile(nx.betweenness_centrality(network))
+        properties['Degree'].append(centrality_percentile(nx.degree_centrality(network)))
+        properties['Closeness'].append(centrality_percentile(nx.closeness_centrality(network)))
+        properties['Betweenness'].append(centrality_percentile(nx.betweenness_centrality(network)))
     return properties
 
 

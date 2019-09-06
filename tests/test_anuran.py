@@ -11,8 +11,8 @@ __license__ = 'Apache 2.0'
 import unittest
 import networkx as nx
 import numpy as np
-from numma.nullmodels import generate_null, randomize_network, randomize_dyads, generate_core
-from numma.set import generate_sizes, difference, intersection, generate_sample_sizes
+from anuran.nullmodels import generate_null, randomize_network, randomize_dyads, generate_core
+from anuran.set import generate_sizes, difference, intersection, generate_sample_sizes
 from scipy.special import binom
 
 # generate three alternative networks with first 4 edges conserved but rest random
