@@ -17,7 +17,7 @@ import numpy as np
 import os
 
 
-def generate_graph_frame(networks, random, degree, fractions, core, perm):
+def generate_graph_frame(networks, random, degree, fractions, core):
     """
     This function estimates graph-level properties of all networks provided in
     the network, random and degree lists.
@@ -42,34 +42,34 @@ def generate_graph_frame(networks, random, degree, fractions, core, perm):
     :return: List of lists with set sizes
     """
     # Create empty pandas dataframe
-    results = pd.DataFrame(columns=['Network', 'Network type', 'Conserved fraction',
+    results = pd.DataFrame(columns=['Network', 'Group', 'Network type', 'Conserved fraction',
                                     'Prevalence of conserved fraction',
                                     'Property', 'Value'])
     for x in networks:
         group = os.path.basename(x)
-        results = generate_graph_rows(name='Input', data=results, group=group,
-                                      networks=networks[x], fraction=None, prev=None)
-        for j in range(perm):
-            degreeperm = [sample(degree[x]['degree'][r], 1)[0] for r in range(len(degree[x]['degree']))]
-            results = generate_graph_rows(name='Degree', data=results, group=group,
-                                          networks=degreeperm, fraction=None, prev=None)
-            randomperm = [sample(random[x]['random'][r], 1)[0] for r in range(len(random[x]['random']))]
-            results = generate_graph_rows(name='Random', data=results, group=group,
-                                          networks=randomperm, fraction=None, prev=None)
+        results = _generate_graph_rows(name='Input', data=results, group=group,
+                                       networks=networks[x], fraction=None, prev=None)
+        # we only need to compute the sizes once
+        degreeperm = [sample(degree[x]['degree'][r], 1)[0] for r in range(len(degree[x]['degree']))]
+        results = _generate_graph_rows(name='Degree', data=results, group=group,
+                                       networks=degreeperm, fraction=None, prev=None)
+        randomperm = [sample(random[x]['random'][r], 1)[0] for r in range(len(random[x]['random']))]
+        results = _generate_graph_rows(name='Random', data=results, group=group,
+                                       networks=randomperm, fraction=None, prev=None)
         if fractions:
             for frac in fractions:
                 for c in core:
                     for network in range(len(networks)):
                         degreeperm = degree[x]['core'][frac][c][network]
                         randomperm = random[x]['core'][frac][c][network]
-                        results = generate_graph_rows(name='Degree', data=results, group=group,
-                                                      networks=degreeperm, fraction=frac, prev=c)
-                        results = generate_graph_rows(name='Random', data=results, group=group,
-                                                      networks=randomperm, fraction=frac, prev=c)
+                        results = _generate_graph_rows(name='Degree', data=results, group=group,
+                                                       networks=degreeperm, fraction=frac, prev=c)
+                        results = _generate_graph_rows(name='Random', data=results, group=group,
+                                                       networks=randomperm, fraction=frac, prev=c)
     return results
 
 
-def generate_graph_rows(data, name, group, networks, fraction, prev):
+def _generate_graph_rows(data, name, group, networks, fraction, prev):
     """
     Generates Pandas rows with network measures for a list of networks.
 
@@ -94,7 +94,7 @@ def generate_graph_rows(data, name, group, networks, fraction, prev):
                                 'Prevalence of conserved fraction': prev,
                                 'Property': property,
                                 'Value': network},
-                                ignore_index=True)
+                               ignore_index=True)
     return data
 
 

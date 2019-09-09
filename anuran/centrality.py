@@ -17,7 +17,7 @@ import numpy as np
 import os
 
 
-def generate_ci_frame(networks, random, degree, fractions, core, perm):
+def generate_ci_frame(networks, random, degree, fractions, core):
     """
     This function estimates centralities from all networks provided in
     the network, random and degree lists.
@@ -33,6 +33,9 @@ def generate_ci_frame(networks, random, degree, fractions, core, perm):
     The length of the dataset is equal to the number of original networks,
     the number of permuted sets for the random models and the number of permuted sets
     for the degree-preserving model.
+
+    'None' values reflect that the species in question was not found in a network.
+
     :param networks: List of input networks
     :param random: Dictionary with permuted input networks without preserved degree distribution
     :param degree: Dictionary with permuted input networks with preserved degree distribution
@@ -44,32 +47,32 @@ def generate_ci_frame(networks, random, degree, fractions, core, perm):
     # Create empty pandas dataframe
     results = pd.DataFrame(columns=['Node', 'Network', 'Group', 'Network type', 'Conserved fraction',
                                     'Prevalence of conserved fraction',
-                                    'Centrality', 'Upper limit', 'Lower limit'])
+                                    'Centrality', 'Upper limit', 'Lower limit', 'Values'])
     for x in networks:
         group = os.path.basename(x)
-        results = generate_ci_rows(name='Input', data=results, group=group,
-                                   networks=networks[x], fraction=None, prev=None)
-        for j in range(perm):
-            degreeperm = [sample(degree[x]['degree'][r], 1)[0] for r in range(len(degree[x]['degree']))]
-            results = generate_ci_rows(name='Degree', data=results, group=group,
-                                       networks=degreeperm, fraction=None, prev=None)
-            randomperm = [sample(random[x]['random'][r], 1)[0] for r in range(len(random[x]['random']))]
-            results = generate_ci_rows(name='Random', data=results, group=group,
-                                       networks=randomperm, fraction=None, prev=None)
+        results = _generate_ci_rows(name='Input', data=results, group=group,
+                                    networks=networks[x], fraction=None, prev=None)
+        # we only need to compute the sizes once
+        degreeperm = [sample(degree[x]['degree'][r], 1)[0] for r in range(len(degree[x]['degree']))]
+        results = _generate_ci_rows(name='Degree', data=results, group=group,
+                                    networks=degreeperm, fraction=None, prev=None)
+        randomperm = [sample(random[x]['random'][r], 1)[0] for r in range(len(random[x]['random']))]
+        results = _generate_ci_rows(name='Random', data=results, group=group,
+                                    networks=randomperm, fraction=None, prev=None)
         if fractions:
             for frac in fractions:
                 for c in core:
                     for network in range(len(networks)):
                         degreeperm = degree[x]['core'][frac][c][network]
                         randomperm = random[x]['core'][frac][c][network]
-                        results = generate_ci_rows(name='Degree', data=results, group=group,
-                                                   networks=degreeperm, fraction=frac, prev=c)
-                        results = generate_ci_rows(name='Random', data=results, group=group,
-                                                   networks=randomperm, fraction=frac, prev=c)
-        return results
+                        results = _generate_ci_rows(name='Degree', data=results, group=group,
+                                                    networks=degreeperm, fraction=frac, prev=c)
+                        results = _generate_ci_rows(name='Random', data=results, group=group,
+                                                    networks=randomperm, fraction=frac, prev=c)
+    return results
 
 
-def generate_ci_rows(data, name, group, networks, fraction, prev):
+def _generate_ci_rows(data, name, group, networks, fraction, prev):
     """
     Generates Pandas rows with all centrality measures for a list of networks.
 
@@ -85,8 +88,8 @@ def generate_ci_rows(data, name, group, networks, fraction, prev):
     if fraction:
         name += ' size: ' + str(fraction) + ' prev:' + str(prev)
     properties = generate_centralities(networks)
-    for property in properties:
-        ci = generate_confidence_interval(properties[property])
+    for centrality in properties:
+        ci = generate_confidence_interval(properties[centrality])
         for node in ci:
             data = data.append({'Node': node,
                                 'Network': name,
@@ -94,10 +97,11 @@ def generate_ci_rows(data, name, group, networks, fraction, prev):
                                 'Network type': full_name,
                                 'Conserved fraction': fraction,
                                 'Prevalence of conserved fraction': prev,
-                                'Centrality': property,
+                                'Centrality': centrality,
                                 'Upper limit': ci[node][1],
-                                'Lower limit': ci[node][0]},
-                                ignore_index=True)
+                                'Lower limit': ci[node][0],
+                                'Values': [_catch(x, node) for x in properties[centrality]]},
+                               ignore_index=True)
     return data
 
 
@@ -164,9 +168,10 @@ def centrality_percentile(centrality):
     return ranking
 
 
-def _catch(dict, key):
+def _catch(dictionary, key):
     try:
-        return dict[key]
-    except Exception as e:
+        return dictionary[key]
+    except Exception:
         return None
+
 

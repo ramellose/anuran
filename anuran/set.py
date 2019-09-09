@@ -51,28 +51,28 @@ def generate_sizes(networks, random, degree, sign,
                                     'Set type', 'Set size', 'Set type (absolute)'])
     for x in networks:
         group = os.path.basename(x)
-        results = generate_rows(name='Input', data=results, group=group,
+        results = _generate_rows(name='Input', data=results, group=group,
                                 networks=networks[x], set_operation=set_operation,
                                 sizes=sizes, sign=sign, fraction=None, prev=None)
         for j in range(perm):
             degreeperm = [sample(degree[x]['degree'][r], 1)[0] for r in range(len(degree[x]['degree']))]
-            results = generate_rows(name='Degree', data=results, group=group,
+            results = _generate_rows(name='Degree', data=results, group=group,
                                     networks=degreeperm, set_operation=set_operation,
                                     sizes=sizes, sign=sign, fraction=None, prev=None)
             randomperm = [sample(random[x]['random'][r], 1)[0] for r in range(len(random[x]['random']))]
-            results = generate_rows(name='Random', data=results, group=group,
+            results = _generate_rows(name='Random', data=results, group=group,
                                     networks=randomperm, set_operation=set_operation,
                                     sizes=sizes, sign=sign, fraction=None, prev=None)
         if fractions:
             for frac in fractions:
                 for c in core:
-                    for network in range(len(networks)):
+                    for network in range(len(networks[x])):
                         degreeperm = degree[x]['core'][frac][c][network]
                         randomperm = random[x]['core'][frac][c][network]
-                        results = generate_rows(name='Degree', data=results, group=group,
+                        results = _generate_rows(name='Degree', data=results, group=group,
                                                 networks=degreeperm, set_operation=set_operation,
                                                 sizes=sizes, sign=sign, fraction=frac, prev=c)
-                        results = generate_rows(name='Random', data=results, group=group,
+                        results = _generate_rows(name='Random', data=results, group=group,
                                                 networks=randomperm, set_operation=set_operation,
                                                 sizes=sizes, sign=sign, fraction=frac, prev=c)
     return results
@@ -137,7 +137,7 @@ def generate_sample_sizes(networks, random,
     return results
 
 
-def generate_rows(name, data, group, networks, set_operation, sizes, sign, fraction=None, prev=None):
+def _generate_rows(name, data, group, networks, set_operation, sizes, sign, fraction=None, prev=None):
     """
     Generates dictionaries with necessary data for the pandas dataframes.
     :param name: Network name

@@ -33,6 +33,7 @@ from anuran.set import generate_sizes, generate_sample_sizes
 from anuran.centrality import generate_ci_frame
 from anuran.graphvals import generate_graph_frame
 from anuran.setviz import draw_sets, draw_samples, draw_centralities
+from anuran.stats import compare_set_sizes, compare_centralities, compare_graph_properties
 import logging.handlers
 from pbr.version import VersionInfo
 
@@ -173,12 +174,16 @@ def set_anuran():
                         help='If flagged, draws figures showing the set sizes.',
                         action='store_true',
                         default=False)
-    parser.add_argument('-p', '--pvals',
-                        dest='pvals',
+    parser.add_argument('-stats', '--statistics',
+                        dest='stats',
                         required=False,
-                        help='If flagged, p-values are computed for the comparisons to null models \n'
-                             'and to subsets of the networks.',
-                        action='store_true',
+                        help='Specify True or a multiple testing correction method to \n'
+                             'calculate p-values for comparisons. \n'
+                             'The available methods are listed in the docs for statsmodels.stats.multitest, \n'
+                             'and include bonferroni, sidak, simes-hochberg, fdr_bh and others. ',
+                        choices=[False, True, 'bonferroni', 'sidak', 'holm-sidak', 'holm',
+                                 'simes-hochberg', 'hommel', 'fdr_bh', 'fdr_by',
+                                 'fdr_tsbh', 'fdr_tsbky'],
                         default=False)
     parser.add_argument('-version', '--version',
                         dest='version',
@@ -236,7 +241,14 @@ def main():
         networks['demo'].append(nx.read_graphml(path + '//data//conet_family_a.graphml'))
         networks['demo'].append(nx.read_graphml(path + '//data//conet_family_b.graphml'))
         networks['demo'].append(nx.read_graphml(path + '//data//conet_family_c.graphml'))
-    logger.info('Imported ' + str(len(networks)) + ' networks.')
+    logger.info('Imported ' + str(len(networks)) + ' group(s) of networks.')
+    for network in networks:
+        if len(networks[network]) < 20:
+            logger.warning('One of the groups (' + network +
+                           ') does not contain enough networks '
+                           'to generate robust tests for centralities or set sizes. \n'
+                           'Suppressing warnings, but please be careful with the statistics! \n'
+                           'Preferably use groups with at least 20 networks. ')
     # first generate null models
     random = {x: {'random': [], 'core': {}} for x in networks}
     try:
@@ -283,7 +295,7 @@ def main():
     if args['centrality']:
         try:
             centralities = generate_ci_frame(networks, random, degree,
-                                             fractions=args['cs'], core=args['prev'], perm=args['nperm'])
+                                             fractions=args['cs'], core=args['prev'])
             centralities.to_csv(args['fp'] + '_centralities.csv')
         except Exception:
             logger.error('Could not rank centralities!', exc_info=True)
@@ -291,10 +303,10 @@ def main():
     if args['network']:
         try:
             graph_properties = generate_graph_frame(networks, random, degree,
-                                                    fractions=args['cs'], core=args['prev'], perm=args['nperm'])
+                                                    fractions=args['cs'], core=args['prev'])
             graph_properties.to_csv(args['fp'] + 'graph_properties.csv')
         except Exception:
-            logger.error('Could not rank centralities!', exc_info=True)
+            logger.error('Could not estimate graph properties!', exc_info=True)
             exit()
     samples = None
     if args['sample']:
@@ -308,9 +320,16 @@ def main():
         except Exception:
             logger.error('Failed to subsample networks!', exc_info=True)
             exit()
-    if args['pval']:
+    if args['stats']:
         # add code for pvalue estimation
-        pass
+        set_stats = compare_set_sizes(set_sizes, mc=args['stats'])
+        set_stats.to_csv(args['fp'] + '_set_stats.csv')
+        if args['centrality']:
+            central_stats = compare_centralities(centralities, mc=args['stats'])
+            central_stats.to_csv(args['fp'] + '_centrality_stats.csv')
+        if args['network']:
+            graph_stats = compare_graph_properties(graph_properties, mc=args['stats'])
+            graph_stats.to_csv(args['fp'] + '_graph_stats.csv')
     if args['draw']:
         try:
             draw_sets(set_sizes, args['fp'])
