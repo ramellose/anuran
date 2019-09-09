@@ -1,5 +1,6 @@
 """
-This file contains a testing function + resources for testing the clustering algorithm.
+This file contains a testing function + resources for testing whether
+the correct sets are returned with set.py.
 """
 
 __author__ = 'Lisa Rottjers'
@@ -64,39 +65,6 @@ class TestMain(unittest.TestCase):
     Tests whether the main clustering function properly assigns cluster IDs.
     """
 
-    def test_generate_null(self):
-        """Checks whether the specified number of randomized models is returned.
-         generate_null should generate a list of lists with each of the lists
-         containing all permuted networks for one original network. """
-        perm = 10
-        results = generate_null(networks, n=perm, share=0, mode='random')
-        self.assertEqual(len(results[0]), perm)
-        self.assertEqual(len(results), len(networks))
-
-    def test_generate_core(self):
-        """Checks whether the specified number of randomized models is returned.
-         generate_core should generate null models with fractions conserved. """
-        results = generate_core(networks, share=1, core=1, mode='random')
-        a = list(results[0][0].edges)
-        a.sort()
-        b = list(results[0][1].edges)
-        b.sort()
-        self.assertEqual(a[0], b[0])
-
-    def test_randomize_network(self):
-        """Checks whether a randomized network is returned. """
-        random = randomize_network(a, keep=[])
-        orig_deg = np.sort(nx.degree(a))
-        new_deg = np.sort(nx.degree(random))
-        self.assertFalse((orig_deg == new_deg).all())
-
-    def test_randomize_dyads(self):
-        """Checks whether a network with swapped dyads is returned. """
-        random = randomize_dyads(a, keep=[])
-        orig_deg = np.sort(nx.degree(a))
-        new_deg = np.sort(nx.degree(random))
-        self.assertTrue((orig_deg == new_deg).all())
-
     def test_generate_sizes(self):
         """Checks whether the set sizes are correctly returned. """
         perm = 10
@@ -158,23 +126,6 @@ class TestMain(unittest.TestCase):
                                         set_operation=['difference', 'intersection'])
         num = 42 * binom(3, 3) + 42 * binom(3, 2) + 42 * binom(3, 1)
         self.assertEqual(len(results['Network']), num)
-
-    def test_generate_core_random(self):
-        """Checks whether a number associations occurs
-        a certain number of times given a core size and prevalence."""
-        nulls = generate_core(networks, mode='random', share=0.3, core=0.6)
-        core = nulls[0]
-        all_edges = list()
-        for network in core:
-            all_edges.extend(network.edges)
-        counts = {x: 0 for x in list(set(all_edges))}
-        for edge in all_edges:
-            counts[edge] += 1
-        num_shared = 0
-        for edge in counts:
-            if counts[edge] > (0.6 * len(core)):
-                num_shared += 1
-        self.assertGreater(num_shared, 0.3 * len(core[0].edges))
 
 
 if __name__ == '__main__':
