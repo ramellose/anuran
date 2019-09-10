@@ -3,7 +3,7 @@ Toolbox for identification of non-random associations
 
 [![Build Status](https://travis-ci.com/ramellose/anuran.svg?token=9mhqeTh13MErxyrk5zR8&branch=master)](https://travis-ci.com/ramellose/anuran)
 
-This toolbox is intended to identify conserved or unique associations across multiple networks.
+This toolbox is intended to identify conserved or unique patterns across multiple networks.
 While carrying out set operations on such networks can help you find such associations,
 there is a chance that the outcome of the set operation was caused by random overlap between the networks.
 _anuran_ helps you identify if your biological networks have set operations that have different outcomes than would be expected by chance.
@@ -34,7 +34,13 @@ To run the script, only two arguments are required: input and output filepaths.
 The script recognizes gml, graphml and txt files by their extension.
 The text files should be edge lists, with the third column containing edge weight.
 ```
-anuran -i filepath1.graphml filepath2.gml filepath3.txt -o filepath_to_output
+anuran -i folder_with_networks -o filepath_to_output
+```
+
+You can specify more than one folder with the above parameter. If you want to compare across folders in addition to the
+null model comparison, add the flag below.
+```
+anuran -compare
 ```
 
 _anuran_ generates null models with permutations of the original network.
@@ -42,10 +48,20 @@ By default, two models are generated: one that changes the degree distribution
 and one that does not.
 Note that the model changing the degree distribution may not have a major effect
 on the network structure as most smaller networks will not have enough dyad pairs to swap, especially if degree assortativity is large.
-
+You can specify the number of null models with the parameter below.
 ```
-anuran -n deg        # preserves degree
-anuran -n random     # changes degree
+anuran -perm              # number of randomized networks
+```
+
+It is possible to generate randomized networks with a specific core.
+Since we do not know the true core, multiple randomizations (equal to the total number of networks) are generated from each input network,
+and these are then used in comparisons.
+
+If you want to simulate networks where 30% or 50% of the associations is shared across half of the networks,
+you can add the parameters below. Note that you can fill in more than one value.
+```
+anuran -cs 0.3 0.5        # core size
+anuran -prev 1            # core prevalence
 ```
 
 The set sizes are calculated for the difference set and the intersection set by default.
@@ -54,17 +70,35 @@ If you flag the sign option, signs of edge weights are taken into account.
 For this, the input networks need to have weight as an edge property.
 The set difference can then have edges that have a unique edge sign in one network but a different edge sign in all others.
 In contrast, the set intersection will only include edges that have the same sign across the networks.
-
 ```
 anuran -set difference intersection       # Default calculates sizes of difference and intersection sets
-anuran -size 0.2 0.4 0.6                        # Calculates null models for edges present in partial intersections
+anuran -size 0.2 0.4 0.6                  # Calculates null models for edges present in partial intersections
 anuran -sign                              # Includes edge sign in set calculation
 ```
 
 If you want to know how the set sizes change when you increase the number of replicates,
-use the parameter below; this will calculate set sizes for all numbers of networks up to the total.
+use the parameter below; this will calculate set sizes for all numbers of networks up to the total number of networks. Up to 10 combinations are considered here.
 ```
 anuran -sample 10
+```
+
+The sample size calculation can quickly become slow. If you are not interested in observing every single value, you can specify the sample numbers you are interested in.
+```
+anuran -n 5 10 20
+```
+
+In addition to set sizes, you can compute centrality scores (degree, betweenness and closeness centrality) and graph properties (assortativity, average shortest path length, connectivity, diameter and radius).
+If you want to know whether the set sizes, centralities or graph properties are different from the null models,
+you can run some statistics on these values. Note that the statistics are not reliable if you have fewer than 20 networks!
+
+The centrality scores and graph properties are compared across networks using a [Mann-Whitney _U_-test](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test).
+The Mann-Whitney _U_-test does not require equal _n_; this is important since not all networks contain the same nodes. If there are too many unique nodes across networks,
+this test may give strange results. Hence. if you want to carry out these statistical tests, make sure that prevalence of most nodes is high across networks.
+For comparing graph properties, the p-value is computed using [the standard score](https://en.wikipedia.org/wiki/Standard_score). This assumes that graph properties are normally distributed.
+
+To compute centralities and graph properties and the associated test (with Bonferroni multiple-testing correction), add the following parameters:
+```
+anuran -c -net -stats bonferroni
 ```
 
 For a complete explanation of all the parameters, run:

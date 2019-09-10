@@ -332,11 +332,15 @@ def main():
             graph_stats.to_csv(args['fp'] + '_graph_stats.csv')
     if args['draw']:
         try:
-            draw_sets(set_sizes, args['fp'])
-            if args['centrality']:
-                draw_centralities(centralities, args['fp'])
-            if args['sample']:
-                draw_samples(samples, args['fp'])
+            for x in networks:
+                subset_sizes = set_sizes[set_sizes['Group'] == x]
+                draw_sets(set_sizes, args['fp'] + '_' + x)
+                if args['centrality']:
+                    subset_centralities = centralities[centralities['Group'] == x]
+                    draw_centralities(subset_centralities, args['fp'] + '_' + x)
+                if args['sample']:
+                    subset_samples = samples[samples['Group'] == x]
+                    draw_samples(subset_samples, args['fp'] + '_' + x)
         except Exception:
             logger.error('Could not draw data!', exc_info=True)
             exit()
