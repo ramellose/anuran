@@ -100,35 +100,39 @@ def generate_sample_sizes(networks, random,
     """
     results = pd.DataFrame(columns=['Network', 'Network type', 'Conserved fraction',
                                     'Set type', 'Set size', 'Set type (absolute)', 'Samples', ])
-    if number:
-        seq = [int(x) for x in number]
-    else:
-        seq = range(1, len(networks)+1)
-    for i in seq:
-        n = binom(len(networks), i)
-        if limit:
-            if limit < n:
-                n = limit
-        combos = combinations(range(len(networks)), i)
-        combos = sample(list(combos), int(n))
-        for item in combos:
-            subnetworks = [networks[x] for x in item]
-            subrandom = {'random': [random['random'][x] for x in item]}
-            subdegree = {'degree': [degree['degree'][x] for x in item]}
-            subrandom['core'] = {}
-            subdegree['core'] = {}
+    subnetworks = dict()
+    subrandom = dict()
+    subdegree = dict()
+    for x in networks:
+        if number:
+            seq = [int(x) for x in number]
+        else:
+            seq = range(1, len(networks[x])+1)
+        for i in seq:
+            n = binom(len(networks[x]), i)
+            if type(limit) == int:
+                if limit < n:
+                    n = limit
+            combos = combinations(range(len(networks[x])), i)
+            combos = sample(list(combos), int(n))
+            for item in combos:
+                subnetworks[x] = [networks[x][y] for y in item]
+                subrandom[x] = {'random': [random[x]['random'][y] for y in item]}
+                subdegree[x] = {'degree': [degree[x]['degree'][y] for y in item]}
+            subrandom[x]['core'] = {}
+            subdegree[x]['core'] = {}
             if fractions:
                 for frac in fractions:
-                    subrandom['core'][frac] = dict()
-                    subdegree['core'][frac] = dict()
+                    subrandom[x]['core'][frac] = dict()
+                    subdegree[x]['core'][frac] = dict()
                     for c in core:
-                        subrandom['core'][frac][c] = list()
-                        subdegree['core'][frac][c] = list()
+                        subrandom[x]['core'][frac][c] = list()
+                        subdegree[x]['core'][frac][c] = list()
                         for n in range(len(item)):
-                            selection = [random['core'][frac][c][n][x] for x in item]
-                            subrandom['core'][frac][c].append(selection)
-                            selection = [degree['core'][frac][c][n][x] for x in item]
-                            subdegree['core'][frac][c].append(selection)
+                            selection = [random[x]['core'][frac][c][n][y] for y in item]
+                            subrandom[x]['core'][frac][c].append(selection)
+                            selection = [degree[x]['core'][frac][c][n][y] for y in item]
+                            subdegree[x]['core'][frac][c].append(selection)
             subresults = generate_sizes(networks=subnetworks, random=subrandom, degree=subdegree,
                                         sign=sign, set_operation=set_operation,
                                         fractions=fractions, core=core, perm=perm, sizes=sizes)
