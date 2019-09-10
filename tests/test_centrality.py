@@ -12,9 +12,10 @@ __license__ = 'Apache 2.0'
 import unittest
 import networkx as nx
 import numpy as np
-from anuran.nullmodels import generate_null, randomize_network, randomize_dyads, generate_core
-from anuran.set import generate_sizes, difference, intersection, generate_sample_sizes
-from scipy.special import binom
+from anuran.centrality import generate_ci_frame, generate_confidence_interval, \
+    generate_centralities, _generate_ci_rows, centrality_percentile
+import pandas as pd
+
 
 # generate three alternative networks with first 4 edges conserved but rest random
 nodes = ["OTU_1", "OTU_2", "OTU_3", "OTU_4", "OTU_5"]
@@ -57,13 +58,64 @@ c.add_edges_from(three)
 nx.set_edge_attributes(c, values=weights, name='weight')
 c = c.to_undirected()
 
-networks = [a, b, c]
+networks = {'a': [a], 'b': [b], 'c': [c]}
 
 
 class TestMain(unittest.TestCase):
     """"
     Tests whether the main clustering function properly assigns cluster IDs.
     """
+
+    def test_generate_ci_frame(self):
+        """
+        When given dictionaries with networks, this function should return a
+        dataframe reporting the centrality values over groups of networks.
+        """
+        random = {x: {'random': [], 'core': {}} for x in networks}
+        degree = {x: {'degree': [], 'core': {}} for x in networks}
+        results = generate_ci_frame(networks, random=random, degree=degree, fractions=None, core=None)
+        totalnodes = np.sum([len(networks[x][0].nodes) for x in networks])
+        self.assertEqual(len(results), totalnodes*3)
+
+    def test_generate_centralities(self):
+        """
+        Tests whether the generate_centralities function returns a ranking of centralities.
+        """
+        new = {'a': [networks['a'][0], networks['b'][0], networks['c'][0]]}
+        ranking = generate_centralities(new['a'])
+        self.assertEqual(len(ranking['Betweenness']), 3)
+
+    def test_generate_confidence_interval(self):
+        """
+        Since there are only 3 networks, this function should
+        return confidence intervals of (0, 1).
+        """
+        new = {'a': [networks['a'][0], networks['b'][0], networks['c'][0]]}
+        ranking = generate_centralities(new['a'])
+        CI = generate_confidence_interval(ranking['Betweenness'])
+        self.assertEqual(CI['OTU_1'], (0, 1))
+
+    def test__generate_ci_rows(self):
+        """
+        Tests whether a dataframe is returned with a length equal to
+        3 times the number of nodes.
+        :return:
+        """
+        new = {'a': [networks['a'][0], networks['b'][0], networks['c'][0]]}
+        results = pd.DataFrame(columns=['Node', 'Network', 'Group', 'Network type', 'Conserved fraction',
+                                        'Prevalence of conserved fraction',
+                                        'Centrality', 'Upper limit', 'Lower limit', 'Values'])
+        results = _generate_ci_rows(data=results, name='a', group='a', networks=new['a'], fraction=None, prev=None)
+        nodes = np.sum(len(x.nodes) for x in networks['a'])
+        self.assertEqual(nodes*3, len(results))
+
+    def centrality_percentile(self):
+        """
+        When given centrality scores, this function should return a ranking from 0 to 1.
+        """
+        deg = nx.degree_centrality(networks['a'][0])
+        ranking = centrality_percentile(deg)
+        self.assertEqual(np.max(list(ranking.values())), 1)
 
 
 if __name__ == '__main__':

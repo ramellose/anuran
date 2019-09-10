@@ -203,7 +203,8 @@ def compare_set_sizes(set_sizes, mc):
             # we construct a value range from each network type
             for nulltype in set(op_nulls['Network']):
                 vals = op_nulls[op_nulls['Network'] == nulltype]['Set size']
-                if not any(nulls[nulls['Network'] == nulltype]['Conserved fraction']) and not np.all(vals == 0):
+                if not any(nulls[nulls['Network'] == nulltype]['Conserved fraction']) and not np.all(vals == 0)\
+                        and not np.all(elem == list(vals)[0] for elem in vals):
                     # usually, core models do not follow a normal distribution
                     with catch_warnings():
                         simplefilter("ignore")
@@ -254,7 +255,7 @@ def _value_outside_range(value, values):
     :param values: List of values
     :return: P
     """
-    if not np.all(values == 0):
+    if not np.all(values == 0) and not all(np.all(elem == list(values)[0] for elem in values)):
         std = np.std(values)
         z = (value - np.mean(values)) / std
         pval = norm.sf(abs(z))**2

@@ -13,8 +13,6 @@ import unittest
 import networkx as nx
 import numpy as np
 from anuran.nullmodels import generate_null, randomize_network, randomize_dyads, generate_core
-from anuran.set import generate_sizes, difference, intersection, generate_sample_sizes
-from scipy.special import binom
 
 # generate three alternative networks with first 4 edges conserved but rest random
 nodes = ["OTU_1", "OTU_2", "OTU_3", "OTU_4", "OTU_5"]
@@ -57,7 +55,7 @@ c.add_edges_from(three)
 nx.set_edge_attributes(c, values=weights, name='weight')
 c = c.to_undirected()
 
-networks = [a, b, c]
+networks = {'a': [a], 'b': [b], 'c': [c]}
 
 
 class TestMain(unittest.TestCase):
@@ -66,42 +64,53 @@ class TestMain(unittest.TestCase):
     """
 
     def test_generate_null(self):
-        """Checks whether the specified number of randomized models is returned.
-         generate_null should generate a list of lists with each of the lists
-         containing all permuted networks for one original network. """
+        """
+        Checks whether the specified number of randomized models is returned.
+        generate_null should generate a list of lists with each of the lists
+        containing all permuted networks for one original network.
+        """
         perm = 10
-        results = generate_null(networks, n=perm, share=0, mode='random')
+        results = generate_null(networks['a'], n=perm, share=0, mode='random')
         self.assertEqual(len(results[0]), perm)
-        self.assertEqual(len(results), len(networks))
+        self.assertEqual(len(results), len(networks['a']))
 
     def test_generate_core(self):
-        """Checks whether the specified number of randomized models is returned.
-         generate_core should generate null models with fractions conserved. """
-        results = generate_core(networks, share=1, core=1, mode='random')
-        a = list(results[0][0].edges)
+        """
+        Checks whether the specified number of randomized models is returned.
+        generate_core should generate null models with fractions conserved.
+        """
+        a_core = generate_core(networks['a'], share=1, core=1, mode='random')
+        b_core = generate_core(networks['a'], share=1, core=1, mode='random')
+        a = list(a_core[0][0].edges)
         a.sort()
-        b = list(results[0][1].edges)
+        b = list(b_core[0][0].edges)
         b.sort()
         self.assertEqual(a[0], b[0])
 
     def test_randomize_network(self):
-        """Checks whether a randomized network is returned. """
+        """
+        Checks whether a randomized network is returned.
+        """
         random = randomize_network(a, keep=[])
         orig_deg = np.sort(nx.degree(a))
         new_deg = np.sort(nx.degree(random))
         self.assertFalse((orig_deg == new_deg).all())
 
     def test_randomize_dyads(self):
-        """Checks whether a network with swapped dyads is returned. """
+        """
+        Checks whether a network with swapped dyads is returned.
+        """
         random = randomize_dyads(a, keep=[])
         orig_deg = np.sort(nx.degree(a))
         new_deg = np.sort(nx.degree(random))
         self.assertTrue((orig_deg == new_deg).all())
 
     def test_generate_core_random(self):
-        """Checks whether a number associations occurs
-        a certain number of times given a core size and prevalence."""
-        nulls = generate_core(networks, mode='random', share=0.3, core=0.6)
+        """
+        Checks whether a number associations occurs
+        a certain number of times given a core size and prevalence.
+        """
+        nulls = generate_core(networks['a'], mode='random', share=0.3, core=0.6)
         core = nulls[0]
         all_edges = list()
         for network in core:
