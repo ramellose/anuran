@@ -12,6 +12,7 @@ __status__ = 'Development'
 __license__ = 'Apache 2.0'
 
 import seaborn as sns
+from anuran.set import difference, intersection
 
 
 def draw_sets(data, fp):

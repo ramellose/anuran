@@ -61,8 +61,7 @@ def generate_sizes(networks, random, degree, sign,
                                                  set_operation=set_operation, sizes=sizes)
         # run size inference in parallel
         pool = mp.Pool(mp.cpu_count())
-        p = mp.Process(_generate_rows, combined_networks)
-        p.start()
+        results = pool.map(_generate_rows, combined_networks)
         pool.close()
     return results
 
