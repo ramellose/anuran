@@ -13,6 +13,10 @@ __license__ = 'Apache 2.0'
 
 import seaborn as sns
 from anuran.set import difference, intersection
+import logging.handlers
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 def draw_sets(data, fp):
@@ -96,6 +100,9 @@ def draw_samples(data, fp):
 def _generate_rows(values):
     """
     Generates dictionaries with necessary data for the pandas dataframes.
+    While this function should be in set.py, the multiprocessing
+    function needs it to be imported from here.
+
     :param values: Dictionary containing values for new pandas rows
     :return: Pandas dataframe with new rows
     """
