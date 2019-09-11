@@ -11,9 +11,8 @@ __license__ = 'Apache 2.0'
 
 import unittest
 import networkx as nx
-import numpy as np
 from anuran.nulls import generate_null
-from anuran.set import generate_sizes
+from anuran.sets import generate_sizes
 from anuran.centrality import generate_ci_frame
 from anuran.graphvals import generate_graph_frame
 from anuran.stats import compare_centralities, compare_graph_properties, \
@@ -61,11 +60,8 @@ nx.set_edge_attributes(c, values=weights, name='weight')
 c = c.to_undirected()
 
 networks = {'a': [a, b, c, a, b, c]} # at least 5 nodes necessary for most tests
-random = {x: {'random': [], 'core': {}} for x in networks}
-degree = {x: {'degree': [], 'core': {}} for x in networks}
-for x in networks:
-    degree[x]['degree'] = generate_null(networks[x], n=10, share=0, mode='degree')
-    random[x]['random'] = generate_null(networks[x], n=10, share=0, mode='random')
+
+random, degree = generate_null(networks, n=10)
 
 
 class TestMain(unittest.TestCase):

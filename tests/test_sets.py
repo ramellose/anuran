@@ -14,7 +14,7 @@ import networkx as nx
 from anuran.nulls import generate_null
 from anuran.sets import generate_sizes, generate_sample_sizes
 from anuran.utils import _difference, _intersection, _generate_rows
-from scipy.stats import binom
+from scipy.special import binom
 import pandas as pd
 
 # generate three alternative networks with first 4 edges conserved but rest random
@@ -118,7 +118,7 @@ class TestMain(unittest.TestCase):
                                         fractions=False, perm=perm, sizes=[1], limit=False,
                                         set_operation=['difference', 'intersection'], number=[1, 2, 3])
         num = 42 * binom(3, 3) + 42 * binom(3, 2) + 42 * binom(3, 1)
-        self.assertEqual(len(results['Network']), float(num))
+        self.assertEqual(int(len(results)), int(num))
 
     def test_generate_sample_sizes_fractions(self):
         """Checks whether the subsampled set sizes are correctly returned. """
@@ -133,7 +133,7 @@ class TestMain(unittest.TestCase):
                                         fractions=[0.2, 0.6], perm=perm, sizes=[1], limit=False,
                                         set_operation=['difference', 'intersection'], number=[1, 2, 3])
         num = 66 * binom(3, 3) + 66 * binom(3, 2) + 66 * binom(3, 1)
-        self.assertEqual(len(results['Network']), float(num))
+        self.assertEqual(int(len(results)), int(num))
 
     def test_generate_rows(self):
         """
