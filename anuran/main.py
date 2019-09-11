@@ -30,11 +30,10 @@ from pbr.version import VersionInfo
 import logging.handlers
 
 import anuran
-from anuran.nullmodels import generate_null, generate_core
-from anuran.set import generate_sizes, generate_sample_sizes
+from anuran.nulls import generate_null
+from anuran.sets import generate_sizes, generate_sample_sizes, draw_sets, draw_samples, draw_centralities
 from anuran.centrality import generate_ci_frame
 from anuran.graphvals import generate_graph_frame
-from anuran.setviz import draw_sets, draw_samples, draw_centralities
 from anuran.stats import compare_set_sizes, compare_centralities, compare_graph_properties
 
 logger = logging.getLogger(__name__)
@@ -250,36 +249,10 @@ def main():
                            'Suppressing warnings, but please be careful with the statistics! \n'
                            'Preferably use groups with at least 20 networks. ')
     # first generate null models
-    random = {x: {'random': [], 'core': {}} for x in networks}
     try:
-        for x in networks:
-            random[x]['random'] = generate_null(networks[x], n=args['perm'], share=0, mode='random')
-            if args['cs']:
-                for frac in args['cs']:
-                    random[x]['core'][frac] = dict()
-                    for core in args['prev']:
-                        random[x]['core'][frac][core] = generate_core(networks[x],
-                                                                      share=float(frac), mode='random',
-                                                                      core=float(core))
-                logger.info('Finished constructing all randomized networks.')
+        random, degree = generate_null(networks, n=args['perm'], fraction=args['cs'], prev=args['prev'])
     except Exception:
-        logger.error('Could not generate randomized null models!', exc_info=True)
-        exit()
-    degree = {x: {'degree': [], 'core': {}} for x in networks}
-    try:
-        for x in networks:
-            degree[x]['degree'] = generate_null(networks[x], n=args['perm'], share=0, mode='degree')
-            if args['cs']:
-                for frac in args['cs']:
-                    degree[x]['core'][frac] = dict()
-                    for core in args['prev']:
-                        degree[x]['core'][frac][core] = generate_core(networks[x],
-                                                                      share=float(frac), mode='degree',
-                                                                      core=float(core))
-            logger.info('Finished constructing all degree-preserving randomized networks.')
-    except Exception:
-        logger.error('Could not generate degree-preserving null models! '
-                     'Try increasing the conserved fraction. ', exc_info=True)
+        logger.error('Could not generate null models!', exc_info=True)
         exit()
     set_sizes = None
     try:

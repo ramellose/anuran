@@ -1,7 +1,9 @@
 """
-The functions in this module calculate intersections or differences of networks.
-The first function is a wrapper that
-subsamples networks from a list of null models to output a dataframe of set sizes.
+The functions in this module visualize set sizes and contain utilities for set.py.
+Draw_sets visualizes the 95% confidence intervals of null models and
+shows whether the input networks lie outside or inside these confidence intervals.
+Draw_samples shows the distribution of set sizes as the number of networks increases,
+for both null models and the input networks.
 """
 
 __author__ = 'Lisa Rottjers'
@@ -9,14 +11,15 @@ __email__ = 'lisa.rottjers@kuleuven.be'
 __status__ = 'Development'
 __license__ = 'Apache 2.0'
 
+import seaborn as sns
+import logging.handlers
 import pandas as pd
 from random import sample
 from itertools import combinations
 from scipy.special import binom
 import os
 import multiprocessing as mp
-import logging.handlers
-from anuran.setviz import _generate_rows
+from anuran.utils import _generate_rows
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -57,7 +60,11 @@ def generate_sizes(networks, random, degree, sign,
                                         'Prevalence of conserved fraction',
                                         'Set type', 'Set size', 'Set type (absolute)'])
     for x in networks:
-        combined_networks = _sample_combinations(combos=combos[x], networks=networks, random=random, degree=degree,
+        if combos:
+            c = combos[x]
+        else:
+            c = None
+        combined_networks = _sample_combinations(combos=c, networks=networks, random=random, degree=degree,
                                                  group=x, fractions=fractions, core=core, perm=perm, sign=sign,
                                                  set_operation=set_operation, sizes=sizes)
         # run size inference in parallel
@@ -66,7 +73,7 @@ def generate_sizes(networks, random, degree, sign,
         pool.close()
         for result in results:
             all_results = all_results.append(result, ignore_index=True)
-    return results
+    return all_results
 
 
 def generate_sample_sizes(networks, random,
@@ -138,35 +145,35 @@ def _sample_combinations(networks, random, degree, group, fractions, core, perm,
         combos = [tuple([network for network in range(len(networks[group]))])]
     for item in combos:
         subnetworks = [networks[group][y] for y in item]
-        all_networks.append({'Networks': subnetworks,
-                             'Name': 'Input',
-                             'Group': group,
-                             'Set operation': set_operation,
-                             'Sizes': sizes,
-                             'Sign': sign,
-                             'Fraction': None,
-                             'Prev': None})
+        all_networks.append({'networks': subnetworks,
+                             'name': 'Input',
+                             'group': group,
+                             'set operation': set_operation,
+                             'sizes': sizes,
+                             'sign': sign,
+                             'fraction': None,
+                             'prev': None})
         subrandom = {'random': [random[group]['random'][y] for y in item]}
         subdegree = {'degree': [degree[group]['degree'][y] for y in item]}
         for j in range(perm):
             degreeperm = [sample(subdegree['degree'][r], 1)[0] for r in range(len(subdegree['degree']))]
-            all_networks.append({'Networks': degreeperm,
-                                 'Name': 'Degree',
-                                 'Group': os.path.basename(group),
-                                 'Set operation': set_operation,
-                                 'Sizes': sizes,
-                                 'Sign': sign,
-                                 'Fraction': None,
-                                 'Prev': None})
+            all_networks.append({'networks': degreeperm,
+                                 'name': 'Degree',
+                                 'group': os.path.basename(group),
+                                 'set operation': set_operation,
+                                 'sizes': sizes,
+                                 'sign': sign,
+                                 'fraction': None,
+                                 'prev': None})
             randomperm = [sample(subrandom['random'][r], 1)[0] for r in range(len(subrandom['random']))]
-            all_networks.append({'Networks': randomperm,
-                                 'Name': 'Random',
-                                 'Group': group,
-                                 'Set operation': set_operation,
-                                 'Sizes': sizes,
-                                 'Sign': sign,
-                                 'Fraction': None,
-                                 'Prev': None})
+            all_networks.append({'networks': randomperm,
+                                 'name': 'Random',
+                                 'group': group,
+                                 'set operation': set_operation,
+                                 'sizes': sizes,
+                                 'sign': sign,
+                                 'fraction': None,
+                                 'prev': None})
         subrandom['core'] = {}
         subdegree['core'] = {}
         if fractions:
@@ -178,22 +185,99 @@ def _sample_combinations(networks, random, degree, group, fractions, core, perm,
                     subdegree['core'][frac][c] = list()
                     for n in range(len(networks[group])):
                         degreeperm = [degree[group]['core'][frac][c][n][y] for y in item]
-                        all_networks.append({'Networks': degreeperm,
-                                             'Name': 'Degree',
-                                             'Group': group,
-                                             'Set operation': set_operation,
-                                             'Sizes': sizes,
-                                             'Sign': sign,
-                                             'Fraction': frac,
-                                             'Prev': c})
+                        all_networks.append({'networks': degreeperm,
+                                             'name': 'Degree',
+                                             'group': group,
+                                             'set operation': set_operation,
+                                             'sizes': sizes,
+                                             'sign': sign,
+                                             'fraction': frac,
+                                             'prev': c})
                         randomperm = [random[group]['core'][frac][c][n][y] for y in item]
-                        all_networks.append({'Networks': randomperm,
-                                             'Name': 'Random',
-                                             'Group': group,
-                                             'Set operation': set_operation,
-                                             'Sizes': sizes,
-                                             'Sign': sign,
-                                             'Fraction': frac,
-                                             'Prev': c})
+                        all_networks.append({'networks': randomperm,
+                                             'name': 'Random',
+                                             'group': group,
+                                             'set operation': set_operation,
+                                             'sizes': sizes,
+                                             'sign': sign,
+                                             'fraction': frac,
+                                             'prev': c})
     return all_networks
 
+
+def draw_sets(data, fp):
+    """
+    This function accepts a pandas dataframe
+    with 5 columns:
+    Network, Network type, Conserved fraction, Set type, Set size
+    For every combination of set type a faceted box and whiskers plot is generated
+    that visualizes the distribution of set sizes per network type.
+
+    :param data: Pandas data frame
+    :param fp: Filepath with prefix for name
+    :return:
+    """
+    data['Set size'] = data['Set size'].astype(float)
+    sns.set_style(style="whitegrid")
+    fig = sns.catplot(x='Network', y='Set size', col='Set type',
+                      data=data, kind='strip')
+    fig.set_xticklabels(rotation=30)
+    fig.savefig(fp + "_setsizes.png")
+    fig.fig.clf()
+
+
+def draw_centralities(data, fp):
+    """
+    This function accepts a pandas dataframe
+    with 5 columns:
+    Node, Network, Network type, Conserved fraction, Centrality, Upper limit, Lower limit
+    For every centrality a scatter plot is generated with the upper- and lower limits
+    on the x and y axes respectively.
+
+    :param data: Pandas data frame
+    :param fp: Filepath with prefix for name
+    :return:
+    """
+    sns.set_style(style="whitegrid")
+    degree = data[data['Centrality'] == 'Degree']
+    fig = sns.relplot(x='Lower limit', y='Upper limit', col='Network',
+                      hue='Network', data=degree)
+    fig.set(ylim=(0, 1), xlim=(0, 1))
+    fig.savefig(fp + "_degree.png")
+    fig.fig.clf()
+    degree = data[data['Centrality'] == 'Betweenness']
+    fig = sns.relplot(x='Lower limit', y='Upper limit', col='Network',
+                      hue='Network', data=degree)
+    fig.set(ylim=(0, 1), xlim=(0, 1))
+    fig.savefig(fp + "_betweenness.png")
+    fig.fig.clf()
+    degree = data[data['Centrality'] == 'Closeness']
+    fig = sns.relplot(x='Lower limit', y='Upper limit', col='Network',
+                      hue='Network', data=degree)
+    fig.set(ylim=(0, 1), xlim=(0, 1))
+    fig.savefig(fp + "_closeness.png")
+    fig.fig.clf()
+
+
+def draw_samples(data, fp):
+    """
+    This function accepts a pandas dataframe
+    with 6 columns:
+    Network, Network type, Conserved fraction, Set type, Set size
+    For every combination of set type a faceted box and whiskers plot is generated
+    that visualizes the distribution of set sizes per network type.
+
+    :param data: Pandas data frame
+    :param fp: Filepath with prefix for name
+    :return:
+    """
+    data['Set size'] = data['Set size'].astype(float)
+    data['Samples'] = data['Samples'].astype(int)
+    for val in set(data['Set type']):
+        subdata = data[data['Set type'] == val]
+        sns.set_style(style="whitegrid")
+        fig = sns.lineplot(x='Samples', y='Set size', hue='Network',
+                           data=subdata)
+        fig.set_xticks(range(1, max(subdata['Samples']) + 1))
+        fig.figure.savefig(fp + "_" + val.replace(' ', '_') + "_samples.png")
+        fig.clear()

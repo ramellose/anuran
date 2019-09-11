@@ -11,8 +11,10 @@ __license__ = 'Apache 2.0'
 
 import unittest
 import networkx as nx
-from anuran.nullmodels import generate_null, generate_core
-from anuran.set import generate_sizes, difference, intersection, generate_sample_sizes, _generate_rows
+from anuran.nulls import generate_null
+from anuran.sets import generate_sizes, generate_sample_sizes
+from anuran.utils import _difference, _intersection, _generate_rows
+from scipy.stats import binom
 import pandas as pd
 
 # generate three alternative networks with first 4 edges conserved but rest random
@@ -68,44 +70,41 @@ class TestMain(unittest.TestCase):
         """Checks whether the set sizes are correctly returned. """
         perm = 10
         nperm = 10
-        random = {x: {'random': [], 'core': {}} for x in networks}
-        degree = {x: {'degree': [], 'core': {}} for x in networks}
-        for x in networks:
-            random[x]['random'] = generate_null(networks[x], n=perm, share=0, mode='random')
-            degree[x]['degree'] = generate_null(networks[x], n=perm, share=0, mode='degree')
+        random, degree = generate_null(networks, n=perm)
         results = generate_sizes(networks, random=random,
-                                 degree=degree, core=[1], fractions=False,
+                                 degree=degree, core=None, fractions=False,
                                  perm=nperm, sizes=[1], sign=True, set_operation=['difference', 'intersection'])
+        # 126: 2 set operations * 21 networks * 3 groups
         self.assertEqual(len(results), 126)
 
     def test_intersection_1_network(self):
         """Checks whether the intersection set size is correctly returned. """
-        results = intersection(networks['a'], size=1, sign=False)
+        results = _intersection(networks['a'], size=1, sign=False)
         self.assertEqual(results, 0)
 
     def test_intersection(self):
         """Checks whether the intersection set size is correctly returned. """
-        results = intersection([networks['a'][0], networks['b'][0], networks['c'][0]], size=1, sign=False)
+        results = _intersection([networks['a'][0], networks['b'][0], networks['c'][0]], size=1, sign=False)
         self.assertEqual(results, 4)
 
     def test_intersection_size(self):
         """Checks whether the intersection set size is correctly returned. """
-        results = intersection([networks['a'][0], networks['b'][0], networks['c'][0]], size=0.6, sign=True)
+        results = _intersection([networks['a'][0], networks['b'][0], networks['c'][0]], size=0.6, sign=True)
         self.assertEqual(results, 5)
 
     def test_intersection_sign(self):
         """Checks whether the intersection set size is correctly returned. """
-        results = intersection([networks['a'][0], networks['b'][0], networks['c'][0]], size=1, sign=True)
+        results = _intersection([networks['a'][0], networks['b'][0], networks['c'][0]], size=1, sign=True)
         self.assertEqual(results, 3)
 
     def test_difference(self):
         """Checks whether the difference set size is correctly returned. """
-        results = difference([networks['a'][0], networks['b'][0], networks['c'][0]], sign=True)
+        results = _difference([networks['a'][0], networks['b'][0], networks['c'][0]], sign=True)
         self.assertEqual(results, 5)
 
     def test_difference_sign(self):
         """Checks whether the difference set size is correctly returned. """
-        results = difference([networks['a'][0], networks['b'][0], networks['c'][0]], sign=False)
+        results = _difference([networks['a'][0], networks['b'][0], networks['c'][0]], sign=False)
         self.assertEqual(results, 4)
 
     def test_generate_sample_sizes(self):
@@ -113,47 +112,28 @@ class TestMain(unittest.TestCase):
         perm = 10
         nperm = 10
         new = {'a': [networks['a'][0], networks['b'][0], networks['c'][0]]}
-        random = {x: {'random': [], 'core': {}} for x in new}
-        degree = {x: {'degree': [], 'core': {}} for x in new}
-        for x in new:
-            random[x]['random'] = generate_null(new[x], n=perm, share=0, mode='random')
-            degree[x]['degree'] = generate_null(new[x], n=perm, share=0, mode='degree')
+        random, degree = generate_null(new, n=perm)
         results = generate_sample_sizes(new, random=random, degree=degree,
                                         sign=True, core=False,
                                         fractions=False, perm=perm, sizes=[1], limit=False,
                                         set_operation=['difference', 'intersection'], number=[1, 2, 3])
-        num = 42 * len(new['a'])
-        self.assertEqual(len(results['Network']), num)
+        num = 42 * binom(3, 3) + 42 * binom(3, 2) + 42 * binom(3, 1)
+        self.assertEqual(len(results['Network']), float(num))
 
     def test_generate_sample_sizes_fractions(self):
         """Checks whether the subsampled set sizes are correctly returned. """
         perm = 10
         nperm = 10
         new = {'a': [networks['a'][0], networks['b'][0], networks['c'][0]]}
-        random = {x: {'random': [], 'core': {}} for x in new}
-        degree = {x: {'degree': [], 'core': {}} for x in new}
-        for x in new:
-            random[x]['random'] = generate_null(new[x], n=perm, share=0, mode='random')
-            degree[x]['degree'] = generate_null(new[x], n=perm, share=0, mode='degree')
         fractions = [0.2, 0.6]
         core = [1]
-        for x in new:
-            for frac in fractions:
-                degree[x]['core'][frac] = dict()
-                random[x]['core'][frac] = dict()
-                for c in core:
-                    degree[x]['core'][frac][c] = generate_core(new[x],
-                                                               share=float(frac), mode='degree',
-                                                               core=float(c))
-                    random[x]['core'][frac][c] = generate_core(new[x],
-                                                               share=float(frac), mode='random',
-                                                               core=float(c))
+        random, degree = generate_null(new, n=perm, fraction=fractions, prev=core)
         results = generate_sample_sizes(new, random=random, degree=degree,
                                         sign=True, core=[1],
                                         fractions=[0.2, 0.6], perm=perm, sizes=[1], limit=False,
                                         set_operation=['difference', 'intersection'], number=[1, 2, 3])
-        num = 58 * len(new['a'])
-        self.assertEqual(len(results['Network']), num)
+        num = 66 * binom(3, 3) + 66 * binom(3, 2) + 66 * binom(3, 1)
+        self.assertEqual(len(results['Network']), float(num))
 
     def test_generate_rows(self):
         """
@@ -163,10 +143,18 @@ class TestMain(unittest.TestCase):
                                         'Prevalence of conserved fraction',
                                         'Set type', 'Set size', 'Set type (absolute)'])
         new = {'a': [networks['a'][0], networks['b'][0], networks['c'][0]]}
-        results = _generate_rows(name='Test', data=results, group='a', networks=new['a'],
-                                 set_operation=['difference', 'intersection'],
-                                 sizes=[0.6, 1], sign=True, fraction=None, prev=None)
-        self.assertEqual(float(results[results['Set type'] == 'Intersection 1'].iloc[0]['Set type (absolute)']), 3.0)
+        values = {'networks': new['a'],
+                  'name': 'Test',
+                  'group': 'a',
+                  'set operation': ['difference', 'intersection'],
+                  'sizes': [0.6, 1],
+                  'sign': True,
+                  'fraction': None,
+                  'prev': None}
+        for result in _generate_rows(values):
+            all_results = results.append(result, ignore_index=True)
+        self.assertEqual(float(all_results[all_results['Set type'] ==
+                                           'Intersection 1'].iloc[0]['Set type (absolute)']), 3.0)
 
 
 if __name__ == '__main__':

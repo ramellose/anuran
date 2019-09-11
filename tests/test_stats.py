@@ -12,7 +12,7 @@ __license__ = 'Apache 2.0'
 import unittest
 import networkx as nx
 import numpy as np
-from anuran.nullmodels import generate_null
+from anuran.nulls import generate_null
 from anuran.set import generate_sizes
 from anuran.centrality import generate_ci_frame
 from anuran.graphvals import generate_graph_frame
