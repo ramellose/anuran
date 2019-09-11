@@ -26,6 +26,8 @@ import sys
 import os
 import argparse
 import glob
+from pbr.version import VersionInfo
+import logging.handlers
 
 import anuran
 from anuran.nullmodels import generate_null, generate_core
@@ -34,8 +36,6 @@ from anuran.centrality import generate_ci_frame
 from anuran.graphvals import generate_graph_frame
 from anuran.setviz import draw_sets, draw_samples, draw_centralities
 from anuran.stats import compare_set_sizes, compare_centralities, compare_graph_properties
-import logging.handlers
-from pbr.version import VersionInfo
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -204,7 +204,7 @@ def main():
     if not args['graph']:
         logger.info('Please give an input location.')
     if args['graph'] != ['demo']:
-        networks = {x: list() for x in args['graph']}
+        networks = {os.path.basename(x): list() for x in args['graph']}
         # code for importing from multiple folders
         for location in args['graph']:
             files = [f for f in glob.glob(location + "**/*.graphml", recursive=True)]
@@ -231,7 +231,7 @@ def main():
                                 network = nx.relabel_nodes(network, nx.get_node_attributes(network, 'name'))
                     except IndexError:
                         logger.warning('One of the imported networks contains no nodes.', exc_info=True)
-                    networks[location].append(nx.to_undirected(network))
+                    networks[os.path.basename(location)].append(nx.to_undirected(network))
                 except Exception:
                     logger.error('Could not import network file!', exc_info=True)
                     exit()

@@ -91,3 +91,46 @@ def draw_samples(data, fp):
         fig.figure.savefig(fp + "_" + val.replace(' ', '_') + "_samples.png")
         fig.clear()
 
+
+def _generate_rows(values):
+    """
+    Generates dictionaries with necessary data for the pandas dataframes.
+    :param values: Dictionary containing values for new pandas rows
+    :return: Pandas dataframe with new rows
+    """
+    try:
+        name = values['Name']
+        networks = values['Networks']
+        group = values['Group']
+        set_operation = values['Set operation']
+        fraction = values['Fraction']
+        prev = values['Prev']
+        sign = values['Sign']
+        sizes = values['Sizes']
+    except KeyError:
+        logger.error('Could not unpack dictionary!', exc_info=True)
+    full_name = name + ' networks'
+    if fraction:
+        name += ' size: ' + str(fraction) + ' prev:' + str(prev)
+    data = list()
+    if 'difference' in set_operation:
+        data.append({'Network': name,
+                     'Group': group,
+                     'Network type': full_name,
+                     'Conserved fraction': fraction,
+                     'Prevalence of conserved fraction': prev,
+                     'Set type': 'Difference',
+                     'Set size': difference(networks, sign),
+                     'Samples': len(networks)})
+    if 'intersection' in set_operation:
+        for size in sizes:
+            data.append({'Network': name,
+                         'Group': group,
+                         'Network type': full_name,
+                         'Conserved fraction': fraction,
+                         'Prevalence of conserved fraction': prev,
+                         'Set type': 'Intersection ' + str(size),
+                         'Set size': intersection(networks, float(size), sign),
+                         'Set type (absolute)': str(len(networks) * float(size)),
+                         'Samples': len(networks)})
+    return data
