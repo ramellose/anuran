@@ -13,7 +13,6 @@ import pandas as pd
 from random import sample
 from itertools import combinations
 from scipy.special import binom
-import numpy as np
 import os
 import multiprocessing as mp
 import logging.handlers
@@ -24,7 +23,7 @@ logger.setLevel(logging.INFO)
 
 
 def generate_sizes(networks, random, degree, sign,
-                   set_operation, fractions, core, perm, sizes):
+                   set_operation, fractions, core, perm, sizes, combos=None):
     """
     This function carries out set operations on all networks provided in
     the network, random and degree lists.
@@ -40,6 +39,7 @@ def generate_sizes(networks, random, degree, sign,
     The length of the dataset is equal to the number of original networks,
     the number of permuted sets for the random models and the number of permuted sets
     for the degree-preserving model.
+
     :param networks: List of input networks
     :param random: Dictionary with permuted input networks without preserved degree distribution
     :param degree: Dictionary with permuted input networks with preserved degree distribution
@@ -49,20 +49,23 @@ def generate_sizes(networks, random, degree, sign,
     :param core: List with prevalence of shared interactions
     :param perm: Number of sets to take from null models
     :param sizes: Size of intersection to calculate. By default 1 (edge should be in all networks).
+    :param combos: Dictionary of networks to combine per network
     :return: List of lists with set sizes
     """
     # Create empty pandas dataframe
-    results = pd.DataFrame(columns=['Network', 'Group', 'Network type', 'Conserved fraction',
-                                    'Prevalence of conserved fraction',
-                                    'Set type', 'Set size', 'Set type (absolute)'])
+    all_results = pd.DataFrame(columns=['Network', 'Group', 'Network type', 'Conserved fraction',
+                                        'Prevalence of conserved fraction',
+                                        'Set type', 'Set size', 'Set type (absolute)'])
     for x in networks:
-        combined_networks = _sample_combinations(combos=None, networks=networks, random=random, degree=degree,
+        combined_networks = _sample_combinations(combos=combos[x], networks=networks, random=random, degree=degree,
                                                  group=x, fractions=fractions, core=core, perm=perm, sign=sign,
                                                  set_operation=set_operation, sizes=sizes)
         # run size inference in parallel
         pool = mp.Pool(mp.cpu_count())
         results = pool.map(_generate_rows, combined_networks)
         pool.close()
+        for result in results:
+            all_results = all_results.append(result, ignore_index=True)
     return results
 
 
@@ -87,30 +90,27 @@ def generate_sample_sizes(networks, random,
     :param number: Sample number to test.
     :return: List of lists with set sizes
     """
-    results = pd.DataFrame(columns=['Network', 'Network type', 'Conserved fraction',
-                                    'Set type', 'Set size', 'Set type (absolute)', 'Samples', ])
+    all_combinations = dict.fromkeys(networks.keys())
     for x in networks:
         if number:
             seq = [int(x) for x in number]
         else:
             seq = range(1, len(networks[x])+1)
-        all_combinations = []
+        all_combinations[x] = []
         for i in seq:
             n = binom(len(networks[x]), i)
             if type(limit) == int:
                 if limit < n:
                     n = limit
             combos = combinations(range(len(networks[x])), i)
-            all_combinations.extend(sample(list(combos), int(n)))
+            all_combinations[x].extend(sample(list(combos), int(n)))
             # generate list of combinations
         # iterables are all groups of networks
         # this can be a huge file in memory, so be careful!
         # maybe run in separate iterations
-        combined_networks = _sample_combinations(combos=all_combinations, networks=networks, random=random, degree=degree,
-                                                 group=x, fractions=fractions, core=core, perm=perm, sign=sign,
-                                                 set_operation=set_operation, sizes=sizes)
-        # run size inference in parallel
-
+    results = generate_sizes(networks=networks, random=random, degree=degree, sign=sign,
+                             set_operation=set_operation, fractions=fractions,
+                             core=core, perm=perm, sizes=sizes, combos=all_combinations)
     return results
 
 
