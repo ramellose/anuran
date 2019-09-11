@@ -129,15 +129,27 @@ def _randomize_dyads(network, keep):
                 logger.warning('Could not create good degree-preserving models!')
             dyad = sample(null.edges, 2)
             # samples two nodes that could have edges swapped
-            if (dyad[0][0], dyad[1][0]) in null.edges or (dyad[1][0], dyad[0][0]) in null.edges:
+            if (dyad[0][0], dyad[1][0]) in null.edges:
                 count += 1
                 continue
-            elif (dyad[1][1], dyad[0][1]) in null.edges or (dyad[0][1], dyad[1][1]) in null.edges:
+            elif (dyad[1][1], dyad[0][1]) in null.edges:
                 count += 1
                 continue
-            elif dyad[0][0] == dyad[1][0] or dyad[0][1] == dyad[1][1]:
-                count += 1
-                continue
+            elif dyad[0][0] == dyad[1][0]:
+                # if there is a triplet, we can just do a single swap
+                if (dyad[0][1], dyad[1][1]) not in null.edges:
+                    null.add_edge(dyad[0][1], dyad[1][1], weight=null.edges[dyad[0]]['weight'])
+                    null.remove_edge(dyad[0][0], dyad[0][1])
+                else:
+                    count += 1
+                    continue
+            elif dyad[0][1] == dyad[1][1]:
+                if (dyad[0][0], dyad[1][0]) not in null.edges:
+                    null.add_edge(dyad[0][0], dyad[1][0], weight=null.edges[dyad[0]]['weight'])
+                    null.remove_edge(dyad[0][0], dyad[0][1])
+                else:
+                    count += 1
+                    continue
             elif dyad[0] in keep or dyad[1] in keep:
                 count += 1
                 continue
