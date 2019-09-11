@@ -44,10 +44,10 @@ def _generate_null_parallel(values):
         nulls.append(list())
         if fraction:
             # all null models need to preserve the same edges
-            keep = sample(network.edges, round(len(network.edges) * fraction))
+            keep = sample(network.edges, round(len(network.edges) * float(fraction)))
             # create lists to distribute edges over according to core prevalence
             keep_subsets = [[] for x in networks]
-            occurrence = round(prev * len(networks))
+            occurrence = round(float(prev) * len(networks))
             for edge in keep:
                 indices = sample(range(len(networks)), occurrence)
                 for k in indices:
