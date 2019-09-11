@@ -1,5 +1,5 @@
 """
-The functions in this module visualize set sizes.
+The functions in this module visualize set sizes and contain utilities for set.py.
 Draw_sets visualizes the 95% confidence intervals of null models and
 shows whether the input networks lie outside or inside these confidence intervals.
 Draw_samples shows the distribution of set sizes as the number of networks increases,
@@ -12,8 +12,9 @@ __status__ = 'Development'
 __license__ = 'Apache 2.0'
 
 import seaborn as sns
-from anuran.set import difference, intersection
 import logging.handlers
+import numpy as np
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -128,7 +129,7 @@ def _generate_rows(values):
                      'Conserved fraction': fraction,
                      'Prevalence of conserved fraction': prev,
                      'Set type': 'Difference',
-                     'Set size': difference(networks, sign),
+                     'Set size': _difference(networks, sign),
                      'Samples': len(networks)})
     if 'intersection' in set_operation:
         for size in sizes:
@@ -138,7 +139,80 @@ def _generate_rows(values):
                          'Conserved fraction': fraction,
                          'Prevalence of conserved fraction': prev,
                          'Set type': 'Intersection ' + str(size),
-                         'Set size': intersection(networks, float(size), sign),
+                         'Set size': _intersection(networks, float(size), sign),
                          'Set type (absolute)': str(len(networks) * float(size)),
                          'Samples': len(networks)})
     return data
+
+
+def _difference(networks, sign):
+    """
+    This function returns the size of the difference for a list of networks.
+    If sign is true, edges with unique edge weights are part of the difference
+    even though there are other edges with the same interaction partners.
+
+    :param networks:
+    :param sign: If true, the difference take sign information into account.
+    :return: Size of difference
+    """
+    diff = list()
+    for network in networks:
+        for edge in network.edges:
+            if sign:
+                weight = np.sign(network.edges[edge]['weight'])
+                diff.append(edge + (np.sign(network.edges[edge]['weight']),))
+            else:
+                diff.append(edge)
+    unique_edges = 0
+    for edge in set(diff):
+        if sign:
+            count = diff.count(edge) + diff.count((edge[1], edge[0], edge[2]))
+        else:
+            count = diff.count(edge) + diff.count((edge[1], edge[0]))
+        # handles occurrence of reversed edges in list
+        if count == 1:
+            unique_edges += 1
+    return unique_edges
+
+
+def _intersection(networks, size, sign):
+    """
+    This function returns a network with the same nodes and edge number as the input network.
+    Each edge is swapped via a dyad, so the degree distribution is preserved.
+    If sign is true, edges with unique edge weights are counted separately to check
+    whether they are part of the intersection.
+    I.e. when taking the unsigned intersection of 2 networks,
+    edges between the same partners but different weights are included.
+    For the signed interaction, such edges are only kept if each network
+    contains both the positive and negative edges.
+
+    :param networks: List of input networks
+    :param size: Number of networks that an edge needs to be a part of
+    :param sign: If true, the difference take sign information into account.
+    :return: Randomized network
+    """
+    matches = list()
+    for network in networks:
+        for edge in network.edges:
+            if sign:
+                matches.append(edge + (np.sign(network.edges[edge]['weight']),))
+            else:
+                matches.append(edge)
+    shared_edges = 0
+    # remove swapped edges
+    edges = set(matches)
+    for edge in set(matches):
+        if (edge[1], edge[0]) in edges:
+            edges.remove((edge[1], edge[0]))
+    for edge in edges:
+        if sign:
+            count = matches.count(edge) + matches.count((edge[1], edge[0], edge[2]))
+        else:
+            count = matches.count(edge) + matches.count((edge[1], edge[0]))
+        # handles occurrence of reversed edges in list
+        if count >= round(size * len(networks)) > 1:
+            # The edges should be present in a fraction of networks bigger than 0,
+            # otherwise intersection size is identical to the difference
+            # Should also be bigger than 1 otherwise there is not really an intersection
+            shared_edges += 1
+    return shared_edges
