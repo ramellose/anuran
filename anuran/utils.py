@@ -135,21 +135,10 @@ def _randomize_dyads(network, keep):
             elif (dyad[1][1], dyad[0][1]) in null.edges:
                 count += 1
                 continue
-            elif dyad[0][0] == dyad[1][0]:
-                # if there is a triplet, we can just do a single swap
-                if (dyad[0][1], dyad[1][1]) not in null.edges:
-                    null.add_edge(dyad[0][1], dyad[1][1], weight=null.edges[dyad[0]]['weight'])
-                    null.remove_edge(dyad[0][0], dyad[0][1])
-                else:
-                    count += 1
-                    continue
-            elif dyad[0][1] == dyad[1][1]:
-                if (dyad[0][0], dyad[1][0]) not in null.edges:
-                    null.add_edge(dyad[0][0], dyad[1][0], weight=null.edges[dyad[0]]['weight'])
-                    null.remove_edge(dyad[0][0], dyad[0][1])
-                else:
-                    count += 1
-                    continue
+            elif dyad[0][0] == dyad[1][0] or dyad[0][1] == dyad[1][1]:
+                # if there is a triplet, we can't swap since once node would gain an edge
+                count += 1
+                continue
             elif dyad[0] in keep or dyad[1] in keep:
                 count += 1
                 continue

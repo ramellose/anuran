@@ -26,7 +26,7 @@ logger.setLevel(logging.INFO)
 
 
 def generate_sizes(networks, random, degree, sign,
-                   set_operation, fractions, core, perm, sizes, combos=None):
+                   set_operation, core, fractions, prev, perm, sizes, combos=None):
     """
     This function carries out set operations on all networks provided in
     the network, random and degree lists.
@@ -47,9 +47,10 @@ def generate_sizes(networks, random, degree, sign,
     :param random: Dictionary with permuted input networks without preserved degree distribution
     :param degree: Dictionary with permuted input networks with preserved degree distribution
     :param sign: If true, sets take sign information into account.
-    :param set_operation: Type of set operation to carry out
+    :param set_operation: Type of set operation to carry outo
+    :param core: Number of processor cores
     :param fractions: List with fractions of shared interactions
-    :param core: List with prevalence of shared interactions
+    :param prev: List with prevalence of shared interactions
     :param perm: Number of sets to take from null models
     :param sizes: Size of intersection to calculate. By default 1 (edge should be in all networks).
     :param combos: Dictionary of networks to combine per network
@@ -65,10 +66,10 @@ def generate_sizes(networks, random, degree, sign,
         else:
             c = None
         combined_networks = _sample_combinations(combos=c, networks=networks, random=random, degree=degree,
-                                                 group=x, fractions=fractions, core=core, perm=perm, sign=sign,
+                                                 group=x, fractions=fractions, prev=prev, perm=perm, sign=sign,
                                                  set_operation=set_operation, sizes=sizes)
         # run size inference in parallel
-        pool = mp.Pool(mp.cpu_count())
+        pool = mp.Pool(core)
         results = pool.map(_generate_rows, combined_networks)
         pool.close()
         for result in results:
@@ -78,7 +79,7 @@ def generate_sizes(networks, random, degree, sign,
 
 def generate_sample_sizes(networks, random,
                           degree, sign,
-                          set_operation, fractions, core, perm, sizes, limit, number):
+                          set_operation, core, fractions, prev, perm, sizes, limit, number):
     """
     This function wraps the the generate_sizes function
     but it only gives a random subset of the input networks and null models.
@@ -89,8 +90,9 @@ def generate_sample_sizes(networks, random,
     :param degree: List of permuted input networks with preserved degree distribution
     :param sign: If true, sets take sign information into account.
     :param set_operation: Type of set operation to carry out
+    :param core: Number of processor cores
     :param fractions: List with fractions of shared interactions
-    :param core: List with prevalence of shared interactions
+    :param prev: List with prevalence of shared interactions
     :param perm: Number of sets to take from null models
     :param sizes: Size of intersection to calculate. By default 1 (edge should be in all networks).
     :param limit: Maximum number of resamples.
@@ -116,12 +118,12 @@ def generate_sample_sizes(networks, random,
         # this can be a huge file in memory, so be careful!
         # maybe run in separate iterations
     results = generate_sizes(networks=networks, random=random, degree=degree, sign=sign,
-                             set_operation=set_operation, fractions=fractions,
-                             core=core, perm=perm, sizes=sizes, combos=all_combinations)
+                             set_operation=set_operation, core=core, fractions=fractions,
+                             prev=prev, perm=perm, sizes=sizes, combos=all_combinations)
     return results
 
 
-def _sample_combinations(networks, random, degree, group, fractions, core, perm, sign, set_operation, sizes, combos=None):
+def _sample_combinations(networks, random, degree, group, fractions, prev, perm, sign, set_operation, sizes, combos=None):
     """
     This function generates an iterable containing all information required
     to add new rows to a pandas dataframe.
@@ -133,7 +135,7 @@ def _sample_combinations(networks, random, degree, group, fractions, core, perm,
     :param degree: List of degree-preserving null models belonging to group x
     :param group: Name of group x
     :param fractions: Size of core
-    :param core: Prevalence of core
+    :param prev: Prevalence of core
     :param perm: Number of sets to take from null models
     :param sign: If true, sets take sign information into account.
     :param set_operation: Type of set operation to carry out
@@ -180,7 +182,7 @@ def _sample_combinations(networks, random, degree, group, fractions, core, perm,
             for frac in fractions:
                 subrandom['core'][frac] = dict()
                 subdegree['core'][frac] = dict()
-                for c in core:
+                for c in prev:
                     subrandom['core'][frac][c] = list()
                     subdegree['core'][frac][c] = list()
                     for n in range(len(networks[group])):

@@ -61,7 +61,7 @@ c = c.to_undirected()
 
 networks = {'a': [a, b, c, a, b, c]} # at least 5 nodes necessary for most tests
 
-random, degree = generate_null(networks, n=10)
+random, degree = generate_null(networks, core=2, n=10)
 
 
 class TestMain(unittest.TestCase):
@@ -96,7 +96,7 @@ class TestMain(unittest.TestCase):
         Given a pandas dataframe with set sizes across groups of networks,
         this function should return a dataframe with statistics on these set sizes.
         """
-        set_values = generate_sizes(networks, random, degree, fractions=None, core=None,
+        set_values = generate_sizes(networks, random, degree, fractions=None, prev=None, core=2,
                                     sign=True, perm=10, sizes=[0.6, 1], set_operation=['difference', 'intersection'])
         results = compare_set_sizes(set_values, mc=None)
         results = results[results['Comparison'] == 'Random']
@@ -107,7 +107,7 @@ class TestMain(unittest.TestCase):
         """
         Given a pandas dataframe with results, this function should add a row.
         """
-        set_values = generate_sizes(networks, random, degree, fractions=None, core=None,
+        set_values = generate_sizes(networks, random, degree, fractions=None, prev=None, core=2,
                                     sign=True, perm=10, sizes=[0.6, 1], set_operation=['difference', 'intersection'])
         results = compare_set_sizes(set_values, mc=None)
         new_results = _generate_stat_rows(results, group='b', comparison='test',

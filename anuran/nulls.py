@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-def generate_null(networks, n, fraction=False, prev=False):
+def generate_null(networks, n, core, fraction=False, prev=False):
     """
     This function takes a list of networks.
     For each network, a list with length n is generated,
@@ -36,6 +36,7 @@ def generate_null(networks, n, fraction=False, prev=False):
         ---List of permutations per original network (length n)
     :param networks: List of input NetworkX objects
     :param n: Number of randomized networks per input network
+    :param core: Number of processor cores
     :param fraction: Fraction of conserved interactions
     :param prev: Prevalence of core. If provided, null models have conserved interactions.
     :return: List of lists with randomized networks
@@ -75,7 +76,7 @@ def generate_null(networks, n, fraction=False, prev=False):
                                        'n': n,
                                        'mode': 'degree'})
     # run size inference in parallel
-    pool = mp.Pool(mp.cpu_count())
+    pool = mp.Pool(core)
     results = pool.map(_generate_null_parallel, all_models)
     pool.close()
     for result in results:

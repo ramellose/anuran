@@ -17,7 +17,7 @@ import numpy as np
 import os
 
 
-def generate_ci_frame(networks, random, degree, fractions, core):
+def generate_ci_frame(networks, random, degree, fractions, prev):
     """
     This function estimates centralities from all networks provided in
     the network, random and degree lists.
@@ -40,8 +40,7 @@ def generate_ci_frame(networks, random, degree, fractions, core):
     :param random: Dictionary with permuted input networks without preserved degree distribution
     :param degree: Dictionary with permuted input networks with preserved degree distribution
     :param fractions: List with fractions of shared interactions
-    :param core: List with prevalence of shared interactions
-    :param perm: Number of sets to take from null models
+    :param prev: List with prevalence of shared interactions
     :return: List of lists with set sizes
     """
     # Create empty pandas dataframe
@@ -61,7 +60,7 @@ def generate_ci_frame(networks, random, degree, fractions, core):
                                     networks=randomperm, fraction=None, prev=None)
         if fractions:
             for frac in fractions:
-                for c in core:
+                for c in prev:
                     for network in range(len(networks)):
                         degreeperm = degree[x]['core'][frac][c][network]
                         randomperm = random[x]['core'][frac][c][network]

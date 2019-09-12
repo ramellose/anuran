@@ -70,9 +70,9 @@ class TestMain(unittest.TestCase):
         """Checks whether the set sizes are correctly returned. """
         perm = 10
         nperm = 10
-        random, degree = generate_null(networks, n=perm)
-        results = generate_sizes(networks, random=random,
-                                 degree=degree, core=None, fractions=False,
+        random, degree = generate_null(networks, core=2, n=perm)
+        results = generate_sizes(networks, random=random, core=2,
+                                 degree=degree, prev=None, fractions=False,
                                  perm=nperm, sizes=[1], sign=True, set_operation=['difference', 'intersection'])
         # 126: 2 set operations * 21 networks * 3 groups
         self.assertEqual(len(results), 126)
@@ -112,9 +112,9 @@ class TestMain(unittest.TestCase):
         perm = 10
         nperm = 10
         new = {'a': [networks['a'][0], networks['b'][0], networks['c'][0]]}
-        random, degree = generate_null(new, n=perm)
+        random, degree = generate_null(new, core=2, n=perm)
         results = generate_sample_sizes(new, random=random, degree=degree,
-                                        sign=True, core=False,
+                                        sign=True, prev=False, core=2,
                                         fractions=False, perm=perm, sizes=[1], limit=False,
                                         set_operation=['difference', 'intersection'], number=[1, 2, 3])
         num = 42 * binom(3, 3) + 42 * binom(3, 2) + 42 * binom(3, 1)
@@ -126,10 +126,10 @@ class TestMain(unittest.TestCase):
         nperm = 10
         new = {'a': [networks['a'][0], networks['b'][0], networks['c'][0]]}
         fractions = [0.2, 0.6]
-        core = [1]
-        random, degree = generate_null(new, n=perm, fraction=fractions, prev=core)
+        prev = [1]
+        random, degree = generate_null(new, n=perm, core=2, fraction=fractions, prev=prev)
         results = generate_sample_sizes(new, random=random, degree=degree,
-                                        sign=True, core=[1],
+                                        sign=True, prev=[1], core=2,
                                         fractions=[0.2, 0.6], perm=perm, sizes=[1], limit=False,
                                         set_operation=['difference', 'intersection'], number=[1, 2, 3])
         num = 66 * binom(3, 3) + 66 * binom(3, 2) + 66 * binom(3, 1)

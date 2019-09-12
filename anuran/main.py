@@ -26,6 +26,7 @@ import sys
 import os
 import argparse
 import glob
+from multiprocessing import cpu_count
 from pbr.version import VersionInfo
 import logging.handlers
 
@@ -184,6 +185,13 @@ def set_anuran():
                                  'simes-hochberg', 'hommel', 'fdr_bh', 'fdr_by',
                                  'fdr_tsbh', 'fdr_tsbky'],
                         default=False)
+    parser.add_argument('-core', '-processor_cores',
+                        dest='core',
+                        type=int,
+                        required=False,
+                        help='Number of processing cores to use. \n '
+                             'By default, CPU count - 2. ',
+                        default=cpu_count()-2)
     parser.add_argument('-version', '--version',
                         dest='version',
                         required=False,
@@ -250,15 +258,15 @@ def main():
                            'Preferably use groups with at least 20 networks. ')
     # first generate null models
     try:
-        random, degree = generate_null(networks, n=args['perm'], fraction=args['cs'], prev=args['prev'])
+        random, degree = generate_null(networks, n=args['perm'], core=args['core'], fraction=args['cs'], prev=args['prev'])
     except Exception:
         logger.error('Could not generate null models!', exc_info=True)
         exit()
     set_sizes = None
     try:
-        set_sizes = generate_sizes(networks, random, degree,
+        set_sizes = generate_sizes(networks, random, degree, core=args['core'],
                                    sign=args['sign'], set_operation=args['set'],
-                                   fractions=args['cs'], core=args['prev'],
+                                   fractions=args['cs'], prev=args['prev'],
                                    perm=args['nperm'], sizes=args['size'])
         set_sizes.to_csv(args['fp'] + '_sets.csv')
         logger.info('Set sizes exported to: ' + args['fp'] + '_sets.csv')
@@ -268,7 +276,7 @@ def main():
     if args['centrality']:
         try:
             centralities = generate_ci_frame(networks, random, degree,
-                                             fractions=args['cs'], core=args['prev'])
+                                             fractions=args['cs'], prev=args['prev'])
             centralities.to_csv(args['fp'] + '_centralities.csv')
         except Exception:
             logger.error('Could not rank centralities!', exc_info=True)
