@@ -1,4 +1,4 @@
-# anuran
+# anuran ![numma](https://github.com/ramellose/anuran/blob/master/anuran.png)
 Toolbox for identification of non-random associations
 
 [![Build Status](https://travis-ci.com/ramellose/anuran.svg?token=9mhqeTh13MErxyrk5zR8&branch=master)](https://travis-ci.com/ramellose/anuran)
