@@ -293,8 +293,8 @@ def main():
     if args['sample']:
         try:
             samples = generate_sample_sizes(networks, random, degree,
-                                            sign=args['sign'], set_operation=args['set'],
-                                            fractions=args['cs'], perm=args['nperm'], core=args['prev'],
+                                            sign=args['sign'], set_operation=args['set'], core=args['core'],
+                                            fractions=args['cs'], perm=args['nperm'], prev=args['prev'],
                                             sizes=args['size'], limit=args['sample'], number=args['number'])
             samples.to_csv(args['fp'] + '_subsampled_sets.csv')
             logger.info('Subsampled set sizes exported to: ' + args['fp'] + '_subsampled_sets.csv')
