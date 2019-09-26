@@ -279,6 +279,7 @@ def main():
             centralities = generate_ci_frame(networks, random, degree,
                                              fractions=args['cs'], prev=args['prev'])
             centralities.to_csv(args['fp'] + '_centralities.csv')
+            logger.info('Centralities exported to: ' + args['fp'] + '_centralities.csv')
         except Exception:
             logger.error('Could not rank centralities!', exc_info=True)
             exit()
@@ -287,6 +288,7 @@ def main():
             graph_properties = generate_graph_frame(networks, random, degree,
                                                     fractions=args['cs'], core=args['prev'])
             graph_properties.to_csv(args['fp'] + 'graph_properties.csv')
+            logger.info('Graph properties exported to: ' + args['fp'] + '_graph_properties.csv')
         except Exception:
             logger.error('Could not estimate graph properties!', exc_info=True)
             exit()
