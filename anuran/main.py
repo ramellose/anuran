@@ -258,7 +258,8 @@ def main():
                            'Preferably use groups with at least 20 networks. ')
     # first generate null models
     try:
-        random, degree = generate_null(networks, n=args['perm'], core=args['core'], fraction=args['cs'], prev=args['prev'])
+        random, degree = generate_null(networks, n=args['perm'], core=args['core'], fraction=args['cs'],
+                                       prev=args['prev'])
     except Exception:
         logger.error('Could not generate null models!', exc_info=True)
         exit()

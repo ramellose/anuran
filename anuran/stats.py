@@ -100,7 +100,7 @@ def compare_centralities(centralities, mc):
                     statsframe = _generate_stat_rows(statsframe, node=node, group=combo[0], comparison=combo[1],
                                                      operation=op, p=p[1], ptype='Mann-Whitney')
     # multiple testing correction
-    if mc:
+    if mc and len(statsframe) > 0:
         p_adjusted = multipletests(statsframe['P'], method=mc)[1]
         statsframe['P.adj'] = p_adjusted
     statsframe = statsframe.sort_values('P')
@@ -163,7 +163,7 @@ def compare_graph_properties(graph_properties, mc):
                 statsframe = _generate_stat_rows(statsframe, group=combo[0], comparison=combo[1],
                                                  operation=op, p=p[1], ptype='Mann-Whitney')
     # multiple testing correction
-    if mc:
+    if mc and len(statsframe) > 0:
         p_adjusted = multipletests(statsframe['P'], method=mc)[1]
         statsframe['P.adj'] = p_adjusted
     statsframe = statsframe.sort_values('P')
@@ -215,7 +215,7 @@ def compare_set_sizes(set_sizes, mc):
                 statsframe = _generate_stat_rows(statsframe, group=group, comparison=nulltype,
                                                  operation=op, p=p, ptype='Set sizes')
     # multiple testing correction
-    if mc:
+    if mc and len(statsframe) > 0:
         p_adjusted = multipletests(statsframe['P'], method=mc)[1]
         statsframe['P.adj'] = p_adjusted
     statsframe = statsframe.sort_values('P')
