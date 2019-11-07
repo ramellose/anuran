@@ -31,11 +31,13 @@ from pbr.version import VersionInfo
 import logging.handlers
 
 import anuran
+from anuran.utils import _intersection, _construct_intersection
 from anuran.nulls import generate_null
 from anuran.sets import generate_sizes, generate_sample_sizes, draw_sets, draw_samples, draw_centralities
 from anuran.centrality import generate_ci_frame
 from anuran.graphvals import generate_graph_frame
-from anuran.stats import compare_set_sizes, compare_centralities, compare_graph_properties
+from anuran.stats import compare_set_sizes, compare_centralities, compare_graph_properties, \
+    correlate_centralities, correlate_graph_properties
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -238,16 +240,16 @@ def main():
                                 network = nx.relabel_nodes(network, nx.get_node_attributes(network, 'name'))
                     except IndexError:
                         logger.warning('One of the imported networks contains no nodes.', exc_info=True)
-                    networks[os.path.basename(location)].append(nx.to_undirected(network))
+                    networks[os.path.basename(location)].append((os.path.basename(file), nx.to_undirected(network)))
                 except Exception:
                     logger.error('Could not import network file!', exc_info=True)
                     exit()
     elif args['graph'] == ['demo']:
         networks = {'demo': list()}
         path = os.path.dirname(anuran.__file__)
-        networks['demo'].append(nx.read_graphml(path + '//data//conet_family_a.graphml'))
-        networks['demo'].append(nx.read_graphml(path + '//data//conet_family_b.graphml'))
-        networks['demo'].append(nx.read_graphml(path + '//data//conet_family_c.graphml'))
+        networks['demo'].append(('conet_family_a.graphml', nx.read_graphml(path + '//data//conet_family_a.graphml')))
+        networks['demo'].append(('conet_family_b.graphml',nx.read_graphml(path + '//data//conet_family_b.graphml')))
+        networks['demo'].append(('conet_family_c.graphml',nx.read_graphml(path + '//data//conet_family_c.graphml')))
     logger.info('Imported ' + str(len(networks)) + ' group(s) of networks.')
     for network in networks:
         if len(networks[network]) < 20:
@@ -256,6 +258,12 @@ def main():
                            'to generate robust tests for centralities or set sizes. \n'
                            'Suppressing warnings, but please be careful with the statistics! \n'
                            'Preferably use groups with at least 20 networks. ')
+    # export intersections
+    for size in args['size']:
+        for group in networks:
+            shared_edges = _intersection(networks[group], float(size), sign=args['sign'], edgelist=True)
+            g = _construct_intersection(networks[group], shared_edges)
+            nx.write_graphml(g, args['fp'] + '_' + group + '_' + str(size) + '_intersection.graphml')
     # first generate null models
     try:
         random, degree = generate_null(networks, n=args['perm'], core=args['core'], fraction=args['cs'],
@@ -314,6 +322,18 @@ def main():
         if args['network']:
             graph_stats = compare_graph_properties(graph_properties, mc=args['stats'])
             graph_stats.to_csv(args['fp'] + '_graph_stats.csv')
+    # check if there is an order in the filenames
+    for group in networks:
+        prefixes = [x[0].split('_')[0] for x in networks[group]]
+        try:
+            prefixes = [int(x) for x in prefixes]
+        except ValueError:
+            pass
+        if all(isinstance(x, int) for x in prefixes):
+            centrality_correlation = correlate_centralities(group, centralities, mc=args['stats'])
+            centrality_correlation.to_csv(args['fp'] + '_centrality_correlation.csv')
+            graph_correlation = correlate_graph_properties(group, graph_properties, mc=args['stats'])
+            graph_correlation.to_csv(args['fp'] + '_centrality_correlation.csv')
     if args['draw']:
         try:
             for x in networks:

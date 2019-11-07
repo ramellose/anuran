@@ -43,6 +43,16 @@ null model comparison, add the flag below.
 anuran -compare
 ```
 
+_anuran_ can also calculate gradients for ordered networks.
+If you have ordered networks, for example by constructing networks along a spatial or temporal gradient, _anuran_ will test whether
+there is a correlation in network properties compared to the null models.
+To use this feature, you need to use a naming convention for your networks.
+Within a folder, order the networks with a number and underscore, like below.
+```
+1_networkname.extension
+2_networkname.extension
+```
+
 _anuran_ generates null models with permutations of the original network.
 By default, two models are generated: one that changes the degree distribution
 and one that does not.

@@ -56,7 +56,7 @@ c.add_edges_from(three)
 nx.set_edge_attributes(c, values=weights, name='weight')
 c = c.to_undirected()
 
-networks = {'a': [a], 'b': [b], 'c': [c]}
+networks = {'a': [('a', a)], 'b': [('b', b)], 'c': [('c', c)]}
 
 
 class TestMain(unittest.TestCase):
@@ -82,9 +82,9 @@ class TestMain(unittest.TestCase):
         """
         a_core = generate_null(networks, n=1, core=2, fraction=[1], prev=[1])[0]['a']['core'][1][1][0]
         b_core = generate_null(networks, n=1, core=2, fraction=[1], prev=[1])[0]['a']['core'][1][1][0]
-        a = list(a_core[0].edges)
+        a = list(a_core[0][1].edges)
         a.sort()
-        b = list(b_core[0].edges)
+        b = list(b_core[0][1].edges)
         b.sort()
         self.assertEqual(a[0], b[0])
 
@@ -111,12 +111,12 @@ class TestMain(unittest.TestCase):
         Checks whether a number associations occurs
         a certain number of times given a core size and prevalence.
         """
-        nets = {'a': [a, b, c]}  # at least 5 nodes necessary for most tests
+        nets = {'a': [('a', a), ('b', b), ('c', c)]}  # at least 5 nodes necessary for most tests
         random, degree = generate_null(nets, n=1, core=2, fraction=[0.3], prev=[0.6])
         core = random['a']['core'][0.3][0.6][0]
         all_edges = list()
         for network in core:
-            all_edges.extend(network.edges)
+            all_edges.extend(network[1].edges)
         counts = {x: 0 for x in list(set(all_edges))}
         for edge in all_edges:
             counts[edge] += 1
@@ -124,7 +124,7 @@ class TestMain(unittest.TestCase):
         for edge in counts:
             if counts[edge] > (0.6 * len(core)):
                 num_shared += 1
-        self.assertGreater(num_shared, 0.3 * len(core[0].edges))
+        self.assertGreater(num_shared, 0.3 * len(core[0][1].edges))
 
 
 if __name__ == '__main__':

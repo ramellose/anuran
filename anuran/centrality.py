@@ -99,7 +99,8 @@ def _generate_ci_rows(data, name, group, networks, fraction, prev):
                                 'Centrality': centrality,
                                 'Upper limit': ci[node][1],
                                 'Lower limit': ci[node][0],
-                                'Values': [_catch(x, node) for x in properties[centrality]]},
+                                'Values': [(x[0], _catch(x[1], node)) for
+                                           x in properties[centrality] if _catch(x[1], node)]},
                                ignore_index=True)
     return data
 
@@ -115,11 +116,11 @@ def generate_confidence_interval(ranking):
     nodes = list()
     for x in ranking:
         if x:
-            nodes.extend(x.keys())
+            nodes.extend(x[1].keys())
     ci = dict.fromkeys(set(nodes))
     for node in ci:
         # first constuct array of ranking
-        ranks = [_catch(x, node) for x in ranking if _catch(x, node)]
+        ranks = [_catch(x[1], node) for x in ranking if _catch(x[1], node)]
         if len(ranks) == 1:
             ci[node] = (np.nan, np.nan)
         else:
@@ -144,9 +145,9 @@ def generate_centralities(networks):
     """
     properties = {x: list() for x in ['Degree', 'Closeness', 'Betweenness']}
     for network in networks:
-        properties['Degree'].append(centrality_percentile(nx.degree_centrality(network)))
-        properties['Closeness'].append(centrality_percentile(nx.closeness_centrality(network)))
-        properties['Betweenness'].append(centrality_percentile(nx.betweenness_centrality(network)))
+        properties['Degree'].append((network[0], centrality_percentile(nx.degree_centrality(network[1]))))
+        properties['Closeness'].append((network[0], centrality_percentile(nx.closeness_centrality(network[1]))))
+        properties['Betweenness'].append((network[0], centrality_percentile(nx.betweenness_centrality(network[1]))))
     return properties
 
 

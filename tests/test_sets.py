@@ -58,7 +58,7 @@ c.add_edges_from(three)
 nx.set_edge_attributes(c, values=weights, name='weight')
 c = c.to_undirected()
 
-networks = {'a': [a], 'b': [b], 'c': [c]}
+networks = {'a': [('a', a)], 'b': [('b', b)], 'c': [('c', c)]}
 
 
 class TestMain(unittest.TestCase):

@@ -58,7 +58,7 @@ c.add_edges_from(three)
 nx.set_edge_attributes(c, values=weights, name='weight')
 c = c.to_undirected()
 
-networks = {'a': [a], 'b': [b], 'c': [c]}
+networks = {'a': [('a', a)], 'b': [('b', b)], 'c': [('c', c)]}
 
 
 class TestMain(unittest.TestCase):
@@ -73,8 +73,8 @@ class TestMain(unittest.TestCase):
         """
         random = {x: {'random': [], 'core': {}} for x in networks}
         degree = {x: {'degree': [], 'core': {}} for x in networks}
-        results = generate_ci_frame(networks, random=random, degree=degree, fractions=None, core=None)
-        totalnodes = np.sum([len(networks[x][0].nodes) for x in networks])
+        results = generate_ci_frame(networks, random=random, degree=degree, fractions=None, prev=None)
+        totalnodes = np.sum([len(networks[x][0][1].nodes) for x in networks])
         self.assertEqual(len(results), totalnodes*3)
 
     def test_generate_centralities(self):
@@ -101,12 +101,14 @@ class TestMain(unittest.TestCase):
         3 times the number of nodes.
         :return:
         """
-        new = {'a': [networks['a'][0], networks['b'][0], networks['c'][0]]}
+        new = {'a': [('a', networks['a'][0][1]),
+                     ('b', networks['b'][0][1]),
+                     ('c', networks['c'][0][1])]}
         results = pd.DataFrame(columns=['Node', 'Network', 'Group', 'Network type', 'Conserved fraction',
                                         'Prevalence of conserved fraction',
                                         'Centrality', 'Upper limit', 'Lower limit', 'Values'])
         results = _generate_ci_rows(data=results, name='a', group='a', networks=new['a'], fraction=None, prev=None)
-        nodes = np.sum(len(x.nodes) for x in networks['a'])
+        nodes = np.sum(len(x[1].nodes) for x in networks['a'])
         self.assertEqual(nodes*3, len(results))
 
     def centrality_percentile(self):

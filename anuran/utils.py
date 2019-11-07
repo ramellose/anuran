@@ -40,7 +40,7 @@ def _generate_null_parallel(values):
         logger.error('Could not unpack dictionary!', exc_info=True)
     nulls = list()
     for i in range(len(networks)):
-        network = networks[i]
+        network = networks[i][1]
         nulls.append(list())
         if fraction:
             # all null models need to preserve the same edges
@@ -54,15 +54,15 @@ def _generate_null_parallel(values):
                     keep_subsets[k].append(edge)
             for j in range(len(networks)):
                 if mode == 'random':
-                    nulls[i].append(_randomize_network(network, keep_subsets[j]))
+                    nulls[i].append((networks[i][0], _randomize_network(network, keep_subsets[j])))
                 elif mode == 'degree':
-                    nulls[i].append(_randomize_dyads(network, keep_subsets[j]))
+                    nulls[i].append((networks[i][0], _randomize_dyads(network, keep_subsets[j])))
         else:
             for j in range(n):
                 if mode == 'random':
-                    nulls[i].append(_randomize_network(network, keep=[]))
+                    nulls[i].append((networks[i][0], _randomize_network(network, keep=[])))
                 elif mode == 'degree':
-                    nulls[i].append(_randomize_dyads(network, keep=[]))
+                    nulls[i].append((networks[i][0], _randomize_dyads(network, keep=[])))
     # nested dict with a single entry can be combined into a dict after multiprocessing
     if fraction:
         params = (mode, name, 'core', fraction, prev)
@@ -210,10 +210,10 @@ def _difference(networks, sign):
     """
     diff = list()
     for network in networks:
-        for edge in network.edges:
+        for edge in network[1].edges:
             if sign:
-                weight = np.sign(network.edges[edge]['weight'])
-                diff.append(edge + (np.sign(network.edges[edge]['weight']),))
+                weight = np.sign(network[1].edges[edge]['weight'])
+                diff.append(edge + (np.sign(network[1].edges[edge]['weight']),))
             else:
                 diff.append(edge)
     unique_edges = 0
@@ -228,7 +228,7 @@ def _difference(networks, sign):
     return unique_edges
 
 
-def _intersection(networks, size, sign):
+def _intersection(networks, size, sign, edgelist=False):
     """
     This function returns a network with the same nodes and edge number as the input network.
     Each edge is swapped via a dyad, so the degree distribution is preserved.
@@ -242,13 +242,15 @@ def _intersection(networks, size, sign):
     :param networks: List of input networks
     :param size: Number of networks that an edge needs to be a part of
     :param sign: If true, the difference take sign information into account.
-    :return: Randomized network
+    :param edgelist: If true, returns the list of edges instead of the edge number.
+    :return: Edge number or list of edges
     """
+    intersection_edges = []
     matches = list()
     for network in networks:
-        for edge in network.edges:
+        for edge in network[1].edges:
             if sign:
-                matches.append(edge + (np.sign(network.edges[edge]['weight']),))
+                matches.append(edge + (np.sign(network[1].edges[edge]['weight']),))
             else:
                 matches.append(edge)
     shared_edges = 0
@@ -268,4 +270,47 @@ def _intersection(networks, size, sign):
             # otherwise intersection size is identical to the difference
             # Should also be bigger than 1 otherwise there is not really an intersection
             shared_edges += 1
-    return shared_edges
+            intersection_edges.append(edge)
+    if edgelist:
+        return intersection_edges
+    else:
+        return shared_edges
+
+
+def _construct_intersection(networks, shared_edges):
+    """
+    From a list of networks and a list of shared edges,
+    this function creates the intersection network
+    with all metadata preserved as lists.
+    :param networks:
+    :param shared_edges:
+    :return:
+    """
+    g = nx.Graph()
+    for edge in shared_edges:
+        g.add_edge(edge[0], edge[1])
+        # add weights
+        try:
+            all_weights = dict()
+            for x in networks:
+                if edge in x[1].edges:
+                    all_weights[x[0]] = x[1].edges[edge[0], edge[1]]['weight']
+            mean_weight = np.mean(list(all_weights.values()))
+            g.edges[edge[0], edge[1]]['weight'] = mean_weight
+            g.edges[edge[0], edge[1]]['all weights'] = str(all_weights)
+        except KeyError:
+            logger.warning('No edge weights in network')
+    for node in g.nodes:
+        # assumes node metadata is same across networks,
+        # and takes first hit metadata
+        found = False
+        i = 0
+        while not found:
+            network = networks[i]
+            i = i + 1
+            if node in network[1].nodes:
+                found = True
+                data = network[1].nodes[node]
+                for val in data:
+                    g.nodes[node][val] = data[val]
+    return g

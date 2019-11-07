@@ -42,7 +42,7 @@ def generate_graph_frame(networks, random, degree, fractions, core):
     :return: List of lists with set sizes
     """
     # Create empty pandas dataframe
-    results = pd.DataFrame(columns=['Network', 'Group', 'Network type', 'Conserved fraction',
+    results = pd.DataFrame(columns=['Network', 'Name', 'Group', 'Network type', 'Conserved fraction',
                                     'Prevalence of conserved fraction',
                                     'Property', 'Value'])
     for x in networks:
@@ -88,12 +88,13 @@ def _generate_graph_rows(data, name, group, networks, fraction, prev):
     for property in properties:
         for network in properties[property]:
             data = data.append({'Network': name,
+                                'Name': network[0],
                                 'Group': group,
                                 'Network type': full_name,
                                 'Conserved fraction': fraction,
                                 'Prevalence of conserved fraction': prev,
                                 'Property': property,
-                                'Value': network},
+                                'Value': network[1]},
                                ignore_index=True)
     return data
 
@@ -113,22 +114,26 @@ def generate_graph_properties(networks):
     for property in property_names:
         properties[property] = list()
     for network in networks:
-        if len(network.nodes) > 0:
-            properties['Assortativity'].append(nx.degree_pearson_correlation_coefficient(network))
-            properties['Connectivity'].append(nx.average_node_connectivity(network))
-            if nx.is_connected(network):
-                properties['Diameter'].append(nx.diameter(network))
-                properties['Radius'].append(nx.radius(network))
-                properties['Average shortest path length'].append(nx.average_shortest_path_length(network))
+        if len(network[1].nodes) > 0:
+            properties['Assortativity'].append((network[0],
+                                                nx.degree_pearson_correlation_coefficient(network[1])))
+            properties['Connectivity'].append((network[0],
+                                               nx.average_node_connectivity(network[1])))
+            if nx.is_connected(network[1]):
+                properties['Diameter'].append((network[0], nx.diameter(network[1])))
+                properties['Radius'].append((network[0], nx.radius(network[1])))
+                properties['Average shortest path length'].append((network[0],
+                                                                   nx.average_shortest_path_length(network[1])))
             else:
-                components = list(nx.connected_components(network))
+                components = list(nx.connected_components(network[1]))
                 sizes = []
                 for component in components:
                     sizes.append(len(component))
-                subnetwork = nx.subgraph(network, components[np.where(np.max(sizes) == sizes)[0][0]])
-                properties['Diameter'].append(nx.diameter(subnetwork))
-                properties['Radius'].append(nx.radius(subnetwork))
-                properties['Average shortest path length'].append(nx.average_shortest_path_length(subnetwork))
+                subnetwork = nx.subgraph(network[1], components[np.where(np.max(sizes) == sizes)[0][0]])
+                properties['Diameter'].append((network[0], nx.diameter(subnetwork)))
+                properties['Radius'].append((network[0], nx.radius(subnetwork)))
+                properties['Average shortest path length'].append((network[0],
+                                                                  nx.average_shortest_path_length(subnetwork)))
         else:
             properties['Assortativity'].append(None)
             properties['Connectivity'].append(None)

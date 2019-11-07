@@ -59,7 +59,12 @@ c.add_edges_from(three)
 nx.set_edge_attributes(c, values=weights, name='weight')
 c = c.to_undirected()
 
-networks = {'a': [a, b, c, a, b, c]} # at least 5 nodes necessary for most tests
+networks = {'a': [('a', a),
+                  ('b', b),
+                  ('c', c),
+                  ('a', a),
+                  ('b', b),
+                  ('c', c)]}
 
 random, degree = generate_null(networks, core=2, n=10)
 
@@ -74,7 +79,7 @@ class TestMain(unittest.TestCase):
         Given a pandas dataframe with centralities for different nodes in groups of networks,
         this function should return a dataframe with statistics on these centralities.
         """
-        centralities = generate_ci_frame(networks, random, degree, fractions=None, core=None)
+        centralities = generate_ci_frame(networks, random, degree, fractions=None, prev=None)
         results = compare_centralities(centralities, mc=None)
         otu_1 = results[results['Node'] == 'OTU_1']
         self.assertGreater(0.5, otu_1[otu_1['Comparison'] == 'Random']['P'].iloc[0])

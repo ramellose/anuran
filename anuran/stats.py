@@ -18,7 +18,7 @@ __status__ = 'Development'
 __license__ = 'Apache 2.0'
 
 import pandas as pd
-from scipy.stats import normaltest, norm, mannwhitneyu
+from scipy.stats import normaltest, norm, mannwhitneyu, spearmanr
 import numpy as np
 from warnings import catch_warnings, simplefilter
 from itertools import combinations
@@ -29,11 +29,87 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
+def correlate_centralities(group, centralities, mc):
+    """
+    Returns correlations for ordered networks and compares these to the null model correlations.
+    The function returns a dataframe comparing correlations in the ordered networks
+    and their randomized versions.
+
+    The centralities dataframe should have the following columns:
+    Node, Network, Group, Network type, Conserved fraction,
+    Prevalence of conserved fraction, Centrality, Upper limit,
+    Lower limit, Values.
+
+    :param group: name of grouped networks
+    :param centralities: Dataframe with centralities
+    :param mc: multiple-testing correction
+    :return: Dataframe of correlations
+    """
+    statsframe = pd.DataFrame(columns=['Node', 'Network', 'Group', 'Measure', 'Spearman rho', 'P'])
+    subcentralities = centralities[centralities['Group'] == group]
+    for index, row in subcentralities.iterrows():
+        ordered_values = sorted(row['Values'], key=lambda x: int(x[0].split("_")[0]))
+        ordered_values = [x[1] for x in ordered_values]
+        rho, p = spearmanr(list(range(len(ordered_values))), ordered_values)
+        stats = {'Node': row["Node"],
+                 'Network': row["Network"],
+                 'Group': row["Group"],
+                 'Measure': row['Centrality'],
+                 'Spearman rho': rho,
+                 'P': p}
+        statsframe = statsframe.append(stats, ignore_index=True)
+    # multiple testing correction
+    if mc and len(statsframe) > 0:
+        # first separate statsframe
+        statsframe = _mc_correction(statsframe, mc)
+    statsframe = statsframe.sort_values('P')
+    return statsframe
+
+
+def correlate_graph_properties(group, graph_properties, mc):
+    """
+    Returns correlations for ordered networks and compares these to the null model correlations.
+    The function returns a dataframe comparing correlations in the ordered networks
+    and their randomized versions.
+
+    Takes a pandas dataframe of graph properties with the following columns:
+    Network, Group, Network type, Conserved fraction, Prevalence of conserved fraction,
+    Property, Value.
+
+    :param group: name of grouped networks
+    :param graph_properties: Dataframe with graph properties
+    :param mc: multiple-testing correction
+    :return: Dataframe of correlations
+    """
+    statsframe = pd.DataFrame(columns=['Network', 'Group', 'Measure', 'Spearman rho', 'P'])
+    subproperties = graph_properties[graph_properties['Group'] == group]
+    for network in set(subproperties['Network']):
+        networkproperties = subproperties[subproperties['Network'] == network]
+        for property in set(subproperties['Property']):
+            networkproperty = networkproperties[networkproperties['Property'] == property]
+            ordered_names = sorted(networkproperty['Name'], key=lambda x: int(x.split("_")[0]))
+            ordered_values = [float(networkproperty[networkproperty['Name'] == x]['Value']) for x in ordered_names]
+            values = [x for x in ordered_values if not np.isnan(x)]
+            rho, p = spearmanr(list(range(len(values))), values)
+            stats = {'Network': networkproperty["Network"].iloc[0],
+                     'Group': networkproperty["Group"].iloc[0],
+                     'Measure': property,
+                     'Spearman rho': rho,
+                     'P': p}
+            statsframe = statsframe.append(stats, ignore_index=True)
+    # multiple testing correction
+    if mc and len(statsframe) > 0:
+        # first separate statsframe
+        statsframe = _mc_correction(statsframe, mc)
+    statsframe = statsframe.sort_values('P')
+    return statsframe
+
+
 def compare_centralities(centralities, mc):
     """
     The centralities dataframe contains a list of all centrality ranks measured across a group of networks.
 
-    The dataframe should have the following columns:
+    The centralities dataframe should have the following columns:
     Node, Network, Group, Network type, Conserved fraction,
     Prevalence of conserved fraction, Centrality, Upper limit,
     Lower limit, Values.
@@ -101,8 +177,8 @@ def compare_centralities(centralities, mc):
                                                      operation=op, p=p[1], ptype='Mann-Whitney')
     # multiple testing correction
     if mc and len(statsframe) > 0:
-        p_adjusted = multipletests(statsframe['P'], method=mc)[1]
-        statsframe['P.adj'] = p_adjusted
+        # first separate statsframe
+        statsframe = _mc_correction(statsframe, mc)
     statsframe = statsframe.sort_values('P')
     return statsframe
 
@@ -149,9 +225,9 @@ def compare_graph_properties(graph_properties, mc):
         group1 = group1[group1['Network'] == 'Input']
         group2 = graph_properties[graph_properties['Group'] == combo[1]]
         group2 = group2[group2['Network'] == 'Input']
-        for op in set(group1['Property']):
-            group1_values = group1[group1['Property'] == op]
-            group2_values = group2[group2['Property'] == op]
+        for op in set(group1['Measure']):
+            group1_values = group1[group1['Measure'] == op]
+            group2_values = group2[group2['Measure'] == op]
             range_1 = [x for x in group1_values['Value'] if x]
             range_2 = [x for x in group2_values['Value'] if x]
             if len(range_1) > 5 and len(range_2) > 5:
@@ -164,8 +240,8 @@ def compare_graph_properties(graph_properties, mc):
                                                  operation=op, p=p[1], ptype='Mann-Whitney')
     # multiple testing correction
     if mc and len(statsframe) > 0:
-        p_adjusted = multipletests(statsframe['P'], method=mc)[1]
-        statsframe['P.adj'] = p_adjusted
+        # first separate statsframe
+        statsframe = _mc_correction(statsframe, mc)
     statsframe = statsframe.sort_values('P')
     return statsframe
 
@@ -216,8 +292,8 @@ def compare_set_sizes(set_sizes, mc):
                                                  operation=op, p=p, ptype='Set sizes')
     # multiple testing correction
     if mc and len(statsframe) > 0:
-        p_adjusted = multipletests(statsframe['P'], method=mc)[1]
-        statsframe['P.adj'] = p_adjusted
+        # first separate statsframe
+        statsframe = _mc_correction(statsframe, mc)
     statsframe = statsframe.sort_values('P')
     return statsframe
 
@@ -262,3 +338,21 @@ def _value_outside_range(value, values):
     else:
         pval = 1
     return pval
+
+
+def _mc_correction(data, mc):
+    """
+    Applies multiple-testing correction to a dataset generated with _generate_stat_rows.
+
+    :param data: Dataset with statistics results
+    :param mc: Type of multiple testing correction
+    :return: Dataset with added P.adj colum
+    """
+    newframe = pd.DataFrame(columns=list(data.columns) + ['P.adj'])
+    for property in set(data['Measure']):
+        subframe = data[data['Measure'] == property]
+        subframe.is_copy = False
+        p_adjusted = multipletests(subframe['P'], method=mc)[1]
+        subframe['P.adj'] = p_adjusted
+        newframe = newframe.append(subframe, ignore_index=True)
+    return newframe
