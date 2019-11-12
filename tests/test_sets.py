@@ -71,8 +71,8 @@ class TestMain(unittest.TestCase):
         perm = 10
         nperm = 10
         random, degree = generate_null(networks, core=2, n=perm)
-        results = generate_sizes(networks, random=random, core=2,
-                                 degree=degree, prev=None, fractions=False,
+        results = generate_sizes(networks, random_models=random, core=2,
+                                 degree_models=degree, prev=None, fractions=False,
                                  perm=nperm, sizes=[1], sign=True, set_operation=['difference', 'intersection'])
         # 126: 2 set operations * 21 networks * 3 groups
         self.assertEqual(len(results), 126)
@@ -113,7 +113,7 @@ class TestMain(unittest.TestCase):
         nperm = 10
         new = {'a': [networks['a'][0], networks['b'][0], networks['c'][0]]}
         random, degree = generate_null(new, core=2, n=perm)
-        results = generate_sample_sizes(new, random=random, degree=degree,
+        results = generate_sample_sizes(new, random_models=random, degree_models=degree,
                                         sign=True, prev=False, core=2,
                                         fractions=False, perm=perm, sizes=[1], limit=False,
                                         set_operation=['difference', 'intersection'], number=[1, 2, 3])
@@ -128,7 +128,7 @@ class TestMain(unittest.TestCase):
         fractions = [0.2, 0.6]
         prev = [1]
         random, degree = generate_null(new, n=perm, core=2, fraction=fractions, prev=prev)
-        results = generate_sample_sizes(new, random=random, degree=degree,
+        results = generate_sample_sizes(new, random_models=random, degree_models=degree,
                                         sign=True, prev=[1], core=2,
                                         fractions=[0.2, 0.6], perm=perm, sizes=[1], limit=False,
                                         set_operation=['difference', 'intersection'], number=[1, 2, 3])
