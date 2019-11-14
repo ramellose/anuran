@@ -295,7 +295,7 @@ def _construct_intersection(networks, shared_edges):
             for x in networks:
                 if edge in x[1].edges:
                     all_weights[x[0]] = x[1].edges[edge[0], edge[1]]['weight']
-            mean_weight = np.mean(list(all_weights.values()))
+            mean_weight = float(np.mean(list(all_weights.values())))
             g.edges[edge[0], edge[1]]['weight'] = mean_weight
             g.edges[edge[0], edge[1]]['all weights'] = str(all_weights)
         except KeyError:
