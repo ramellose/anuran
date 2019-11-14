@@ -183,6 +183,7 @@ def _generate_rows(values):
                      'Prevalence of conserved fraction': prev,
                      'Set type': 'Difference',
                      'Set size': _difference(networks, sign),
+                     'Set type (absolute)': None,
                      'Samples': len(networks)})
     if 'intersection' in set_operation:
         for size in sizes:

@@ -350,8 +350,7 @@ def _mc_correction(data, mc):
     """
     newframe = pd.DataFrame(columns=list(data.columns) + ['P.adj'])
     for property in set(data['Measure']):
-        subframe = data[data['Measure'] == property]
-        subframe.is_copy = False
+        subframe = data[data['Measure'] == property].copy()
         p_adjusted = multipletests(subframe['P'], method=mc)[1]
         subframe['P.adj'] = p_adjusted
         newframe = newframe.append(subframe, ignore_index=True)
