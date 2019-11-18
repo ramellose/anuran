@@ -144,7 +144,7 @@ def set_anuran():
                         dest='nperm',
                         required=False,
                         type=int,
-                        help='Number of sets to calculate from the null models. \n'
+                        help='Number of sets, centralities and graph values to calculate from the null models. \n'
                              'The total number of possible sets is equal to \n'
                              'the number of null models raised to the number of networks.\n '
                              'This value becomes huge quickly, so a random subset of possible sets is taken.\n '
@@ -285,7 +285,8 @@ def main():
     if args['centrality']:
         try:
             centralities = generate_ci_frame(networks, random, degree,
-                                             fractions=args['cs'], prev=args['prev'])
+                                             fractions=args['cs'], prev=args['prev'],
+                                             perm=args['nperm'])
             centralities.to_csv(args['fp'] + '_centralities.csv')
             logger.info('Centralities exported to: ' + args['fp'] + '_centralities.csv')
         except Exception:
@@ -294,7 +295,8 @@ def main():
     if args['network']:
         try:
             graph_properties = generate_graph_frame(networks, random, degree,
-                                                    fractions=args['cs'], core=args['prev'])
+                                                    fractions=args['cs'], core=args['prev'],
+                                                    perm=args['nperm'])
             graph_properties.to_csv(args['fp'] + 'graph_properties.csv')
             logger.info('Graph properties exported to: ' + args['fp'] + '_graph_properties.csv')
         except Exception:

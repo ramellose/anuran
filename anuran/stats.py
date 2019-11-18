@@ -280,16 +280,23 @@ def compare_set_sizes(set_sizes, mc):
             for nulltype in set(op_nulls['Network']):
                 vals = op_nulls[op_nulls['Network'] == nulltype]['Set size']
                 if not any(nulls[nulls['Network'] == nulltype]['Conserved fraction']) and not np.all(vals == 0)\
-                        and not np.all(elem == list(vals)[0] for elem in vals):
+                        and not np.all([elem == list(vals)[0] for elem in vals]):
                     # usually, core models do not follow a normal distribution
+                    # hence, the normal test does not check models with a core
                     with catch_warnings():
                         simplefilter("ignore")
+                        if len(test) < 20:
+                            logger.warning('Z-score normal tests are not valid for less than 20 permutations. \n'
+                                           'Please change the nperm parameter to a larger value for this test.')
                         test = normaltest(vals)
                         if test[1] < 0.05:
                             logger.warning('The values do not appear to follow a normal distribution for: ' + nulltype)
-                p = _value_outside_range(size, vals)
-                statsframe = _generate_stat_rows(statsframe, group=group, comparison=nulltype,
-                                                 operation=op, p=p, ptype='Set sizes')
+                if not any(nulls[nulls['Network'] == nulltype]['Conserved fraction']):
+                # positive control models hardly ever meet normal distribution,
+                # so tests are not carried out here
+                    p = _value_outside_range(size, vals)
+                    statsframe = _generate_stat_rows(statsframe, group=group, comparison=nulltype,
+                                                     operation=op, p=p, ptype='Set sizes')
     # multiple testing correction
     if mc and len(statsframe) > 0:
         # first separate statsframe

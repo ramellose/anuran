@@ -17,7 +17,7 @@ import numpy as np
 import os
 
 
-def generate_graph_frame(networks, random, degree, fractions, core):
+def generate_graph_frame(networks, random, degree, fractions, core, perm):
     """
     This function estimates graph-level properties of all networks provided in
     the network, random and degree lists.
@@ -50,10 +50,10 @@ def generate_graph_frame(networks, random, degree, fractions, core):
         results = _generate_graph_rows(name='Input', data=results, group=group,
                                        networks=networks[x], fraction=None, prev=None)
         # we only need to compute the sizes once
-        degreeperm = [sample(degree[x]['degree'][r], 1)[0] for r in range(len(degree[x]['degree']))]
+        degreeperm = [sample(degree[x]['degree'][r], 1)[0] for r in range(perm)]
         results = _generate_graph_rows(name='Degree', data=results, group=group,
                                        networks=degreeperm, fraction=None, prev=None)
-        randomperm = [sample(random[x]['random'][r], 1)[0] for r in range(len(random[x]['random']))]
+        randomperm = [sample(random[x]['random'][r], 1)[0] for r in range(perm)]
         results = _generate_graph_rows(name='Random', data=results, group=group,
                                        networks=randomperm, fraction=None, prev=None)
         if fractions:
