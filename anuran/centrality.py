@@ -52,13 +52,14 @@ def generate_ci_frame(networks, random, degree, fractions, prev, perm):
         group = os.path.basename(x)
         results = _generate_ci_rows(name='Input', data=results, group=group,
                                     networks=networks[x], fraction=None, prev=None)
-        # we only need to compute the sizes once
-        degreeperm = [sample(degree[x]['degree'][r], 1)[0] for r in range(perm)]
-        results = _generate_ci_rows(name='Degree', data=results, group=group,
-                                    networks=degreeperm, fraction=None, prev=None)
-        randomperm = [sample(random[x]['random'][r], 1)[0] for r in range(perm)]
-        results = _generate_ci_rows(name='Random', data=results, group=group,
-                                    networks=randomperm, fraction=None, prev=None)
+        # construct the subsampled model sets nperm times
+        for i in range(perm):
+            degreeperm = [sample(degree[x]['degree'][r], 1)[0] for r in range(len(networks[x]))]
+            results = _generate_ci_rows(name='Degree', data=results, group=group,
+                                        networks=degreeperm, fraction=None, prev=None)
+            randomperm = [sample(random[x]['random'][r], 1)[0] for r in range(len(networks[x]))]
+            results = _generate_ci_rows(name='Random', data=results, group=group,
+                                        networks=randomperm, fraction=None, prev=None)
         if fractions:
             for frac in fractions:
                 for c in prev:

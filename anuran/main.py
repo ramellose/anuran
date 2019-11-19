@@ -248,8 +248,8 @@ def main():
         networks = {'demo': list()}
         path = os.path.dirname(anuran.__file__)
         networks['demo'].append(('conet_family_a.graphml', nx.read_graphml(path + '//data//conet_family_a.graphml')))
-        networks['demo'].append(('conet_family_b.graphml',nx.read_graphml(path + '//data//conet_family_b.graphml')))
-        networks['demo'].append(('conet_family_c.graphml',nx.read_graphml(path + '//data//conet_family_c.graphml')))
+        networks['demo'].append(('conet_family_b.graphml', nx.read_graphml(path + '//data//conet_family_b.graphml')))
+        networks['demo'].append(('conet_family_c.graphml', nx.read_graphml(path + '//data//conet_family_c.graphml')))
     logger.info('Imported ' + str(len(networks)) + ' group(s) of networks.')
     for network in networks:
         if len(networks[network]) < 20:
