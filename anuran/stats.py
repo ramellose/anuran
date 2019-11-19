@@ -285,7 +285,7 @@ def compare_set_sizes(set_sizes, mc):
                     # hence, the normal test does not check models with a core
                     with catch_warnings():
                         simplefilter("ignore")
-                        if len(test) < 20:
+                        if len(vals) < 20:
                             logger.warning('Z-score normal tests are not valid for less than 20 permutations. \n'
                                            'Please change the nperm parameter to a larger value for this test.')
                         test = normaltest(vals)
