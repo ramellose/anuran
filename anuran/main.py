@@ -33,7 +33,8 @@ import logging.handlers
 import anuran
 from anuran.utils import _intersection, _construct_intersection
 from anuran.nulls import generate_null
-from anuran.sets import generate_sizes, generate_sample_sizes, draw_sets, draw_samples, draw_centralities
+from anuran.sets import generate_sizes, generate_sample_sizes
+from anuran.draw import draw_sets, draw_samples, draw_centralities, draw_graphs
 from anuran.centrality import generate_ci_frame
 from anuran.graphvals import generate_graph_frame
 from anuran.stats import compare_set_sizes, compare_centralities, compare_graph_properties, \
@@ -347,6 +348,9 @@ def main():
                 if args['sample']:
                     subset_samples = samples[samples['Group'] == x]
                     draw_samples(subset_samples, args['fp'] + '_' + x)
+                if args['graph']:
+                    subset_graphs = samples[samples['Group'] == x]
+                    draw_graphs(subset_graphs, args['fp'] + '_' + x)
         except Exception:
             logger.error('Could not draw data!', exc_info=True)
             exit()
