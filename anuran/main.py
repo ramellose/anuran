@@ -348,7 +348,7 @@ def main():
                 if args['sample']:
                     subset_samples = samples[samples['Group'] == x]
                     draw_samples(subset_samples, args['fp'] + '_' + x)
-                if args['graph']:
+                if args['network']:
                     subset_graphs = graph_properties[graph_properties['Group'] == x]
                     draw_graphs(subset_graphs, args['fp'] + '_' + x)
         except Exception:
