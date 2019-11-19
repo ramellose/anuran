@@ -349,7 +349,7 @@ def main():
                     subset_samples = samples[samples['Group'] == x]
                     draw_samples(subset_samples, args['fp'] + '_' + x)
                 if args['graph']:
-                    subset_graphs = samples[samples['Group'] == x]
+                    subset_graphs = graph_properties[graph_properties['Group'] == x]
                     draw_graphs(subset_graphs, args['fp'] + '_' + x)
         except Exception:
             logger.error('Could not draw data!', exc_info=True)
