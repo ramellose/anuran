@@ -298,7 +298,7 @@ def main():
             graph_properties = generate_graph_frame(networks, random, degree,
                                                     fractions=args['cs'], core=args['prev'],
                                                     perm=args['nperm'])
-            graph_properties.to_csv(args['fp'] + 'graph_properties.csv')
+            graph_properties.to_csv(args['fp'] + '_graph_properties.csv')
             logger.info('Graph properties exported to: ' + args['fp'] + '_graph_properties.csv')
         except Exception:
             logger.error('Could not estimate graph properties!', exc_info=True)
