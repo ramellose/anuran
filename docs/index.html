@@ -1,0 +1,637 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Welcome to anuran’s documentation! &#8212; anuran 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-anuran-s-documentation">
+<h1>Welcome to anuran’s documentation!<a class="headerlink" href="#welcome-to-anuran-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="contents">
+<h1>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+<div class="section" id="module-anuran.sets">
+<span id="set-size-functions"></span><h1>Set size functions<a class="headerlink" href="#module-anuran.sets" title="Permalink to this headline">¶</a></h1>
+<p>The functions in this module construct Pandas dataframes with set sizes for different operations.</p>
+<dl class="function">
+<dt id="anuran.sets.generate_sample_sizes">
+<code class="descclassname">anuran.sets.</code><code class="descname">generate_sample_sizes</code><span class="sig-paren">(</span><em>networks</em>, <em>random_models</em>, <em>degree_models</em>, <em>sign</em>, <em>set_operation</em>, <em>core</em>, <em>fractions</em>, <em>prev</em>, <em>perm</em>, <em>sizes</em>, <em>limit</em>, <em>number</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/sets.html#generate_sample_sizes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.sets.generate_sample_sizes" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function wraps the the generate_sizes function
+but it only gives a random subset of the input networks and null models.
+This shows the effect of increasing sample number on set size.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>networks</strong> – List of input networks</li>
+<li><strong>random_models</strong> – List of permuted input networks without preserved degree distribution</li>
+<li><strong>degree_models</strong> – List of permuted input networks with preserved degree distribution</li>
+<li><strong>sign</strong> – If true, sets take sign information into account.</li>
+<li><strong>set_operation</strong> – Type of set operation to carry out</li>
+<li><strong>core</strong> – Number of processor cores</li>
+<li><strong>fractions</strong> – List with fractions of shared interactions</li>
+<li><strong>prev</strong> – List with prevalence of shared interactions</li>
+<li><strong>perm</strong> – Number of sets to take from null models</li>
+<li><strong>sizes</strong> – Size of intersection to calculate. By default 1 (edge should be in all networks).</li>
+<li><strong>limit</strong> – Maximum number of resamples.</li>
+<li><strong>number</strong> – Sample number to test.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of lists with set sizes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="anuran.sets.generate_sizes">
+<code class="descclassname">anuran.sets.</code><code class="descname">generate_sizes</code><span class="sig-paren">(</span><em>networks</em>, <em>random_models</em>, <em>degree_models</em>, <em>sign</em>, <em>set_operation</em>, <em>core</em>, <em>fractions</em>, <em>prev</em>, <em>perm</em>, <em>sizes</em>, <em>combos=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/sets.html#generate_sizes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.sets.generate_sizes" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function carries out set operations on all networks provided in
+the network, random and degree lists.
+The random and degree lists are structured as follows:
+—List corresponding to each original network (length networks)</p>
+<blockquote>
+<div>—List of permutations per original network (length n in generate_null)</div></blockquote>
+<p>The core list is structured as follows:
+—List of all shared fractions (length fractions)</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>—List corresponding to core prevalence(length core)</dt>
+<dd>—List of permutations per original network (length networks)</dd>
+</dl>
+</div></blockquote>
+<p>The function returns a pandas dataframe with the size of the intersection,
+the type of model and the shared fraction as a separate column.
+The length of the dataset is equal to the number of original networks,
+the number of permuted sets for the random models and the number of permuted sets
+for the degree-preserving model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>networks</strong> – List of input networks</li>
+<li><strong>random_models</strong> – Dictionary with permuted input networks without preserved degree distribution</li>
+<li><strong>degree_models</strong> – Dictionary with permuted input networks with preserved degree distribution</li>
+<li><strong>sign</strong> – If true, sets take sign information into account.</li>
+<li><strong>set_operation</strong> – Type of set operation to carry outo</li>
+<li><strong>core</strong> – Number of processor cores</li>
+<li><strong>fractions</strong> – List with fractions of shared interactions</li>
+<li><strong>prev</strong> – List with prevalence of shared interactions</li>
+<li><strong>perm</strong> – Number of sets to take from null models</li>
+<li><strong>sizes</strong> – Size of intersection to calculate. By default 1 (edge should be in all networks).</li>
+<li><strong>combos</strong> – Dictionary of networks to combine per network</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of lists with set sizes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="centrality-functions">
+<h1>Centrality functions<a class="headerlink" href="#centrality-functions" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-anuran.centrality"></span><p>The functions in this module calculate intersections or differences of networks.
+The first function is a wrapper that
+subsamples networks from a list of null models to output a dataframe of set sizes.</p>
+<dl class="function">
+<dt id="anuran.centrality.centrality_percentile">
+<code class="descclassname">anuran.centrality.</code><code class="descname">centrality_percentile</code><span class="sig-paren">(</span><em>centrality</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/centrality.html#centrality_percentile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.centrality.centrality_percentile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a dictionary of centralities, this function returns the percentile score of
+nodes in a graph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>centrality</strong> – Dictionary with nodes as keys and centralities as values.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="anuran.centrality.generate_centralities">
+<code class="descclassname">anuran.centrality.</code><code class="descname">generate_centralities</code><span class="sig-paren">(</span><em>networks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/centrality.html#generate_centralities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.centrality.generate_centralities" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs lists with centrality rankings of nodes in multiple networks.
+Instead of using the absolute degree or betweenness centrality, this takes metric bias into account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>networks</strong> – List of input networks</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas dataframe with rankings</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="anuran.centrality.generate_ci_frame">
+<code class="descclassname">anuran.centrality.</code><code class="descname">generate_ci_frame</code><span class="sig-paren">(</span><em>networks</em>, <em>random</em>, <em>degree</em>, <em>fractions</em>, <em>prev</em>, <em>perm</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/centrality.html#generate_ci_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.centrality.generate_ci_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function estimates centralities from all networks provided in
+the network, random and degree lists.
+The random and degree lists are structured as follows:
+—List corresponding to each original network (length networks)</p>
+<blockquote>
+<div>—List of permutations per original network (length n in generate_null)</div></blockquote>
+<p>The core list is structured as follows:
+—List of all shared fractions (length fractions)</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>—List corresponding to core prevalence(length core)</dt>
+<dd>—List of permutations per original network (length networks)</dd>
+</dl>
+</div></blockquote>
+<p>The function returns a pandas dataframe with the size of the intersection,
+the type of model and the shared fraction as a separate column.
+The length of the dataset is equal to the number of original networks,
+the number of permuted sets for the random models and the number of permuted sets
+for the degree-preserving model.</p>
+<p>‘None’ values reflect that the species in question was not found in a network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>networks</strong> – List of input networks</li>
+<li><strong>random</strong> – Dictionary with permuted input networks without preserved degree distribution</li>
+<li><strong>degree</strong> – Dictionary with permuted input networks with preserved degree distribution</li>
+<li><strong>fractions</strong> – List with fractions of shared interactions</li>
+<li><strong>prev</strong> – List with prevalence of shared interactions</li>
+<li><strong>perm</strong> – Number of sets to take from null models</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of lists with set sizes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="anuran.centrality.generate_confidence_interval">
+<code class="descclassname">anuran.centrality.</code><code class="descname">generate_confidence_interval</code><span class="sig-paren">(</span><em>ranking</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/centrality.html#generate_confidence_interval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.centrality.generate_confidence_interval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a list with centrality rankings calculated from multiple networks,
+this function calculates the confidence interval.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ranking</strong> – List of centrality rankings for each network</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dictionary with nodes as keys and tuples of confidence intervals as values</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="graph-level-functions">
+<h1>Graph-level functions<a class="headerlink" href="#graph-level-functions" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-anuran.graphvals"></span><p>The functions in this module calculate different graph-level properties.</p>
+<p>The first function is a wrapper that
+subsamples networks from a list of null models to output a dataframe of set sizes.</p>
+<dl class="function">
+<dt id="anuran.graphvals.generate_graph_frame">
+<code class="descclassname">anuran.graphvals.</code><code class="descname">generate_graph_frame</code><span class="sig-paren">(</span><em>networks</em>, <em>random</em>, <em>degree</em>, <em>fractions</em>, <em>core</em>, <em>perm</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/graphvals.html#generate_graph_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.graphvals.generate_graph_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function estimates graph-level properties of all networks provided in
+the network, random and degree lists.
+The random and degree lists are structured as follows:
+—List corresponding to each original network (length networks)</p>
+<blockquote>
+<div>—List of permutations per original network (length n in generate_null)</div></blockquote>
+<p>The core list is structured as follows:
+—List of all shared fractions (length fractions)</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>—List corresponding to core prevalence(length core)</dt>
+<dd>—List of permutations per original network (length networks)</dd>
+</dl>
+</div></blockquote>
+<p>The function returns a pandas dataframe with the size of the intersection,
+the type of model and the shared fraction as a separate column.
+The length of the dataset is equal to the number of original networks,
+the number of permuted sets for the random models and the number of permuted sets
+for the degree-preserving model.
+:param networks: List of input networks
+:param random: Dictionary with permuted input networks without preserved degree distribution
+:param degree: Dictionary with permuted input networks with preserved degree distribution
+:param fractions: List with fractions of shared interactions
+:param core: List with prevalence of shared interactions
+:param perm: Number of sets to take from null models
+:return: List of lists with set sizes</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="anuran.graphvals.generate_graph_properties">
+<code class="descclassname">anuran.graphvals.</code><code class="descname">generate_graph_properties</code><span class="sig-paren">(</span><em>networks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/graphvals.html#generate_graph_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.graphvals.generate_graph_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs lists with centrality rankings of nodes in multiple networks.
+Instead of using the absolute degree or betweenness centrality, this takes metric bias into account.</p>
+<p>If the graph is not connected, the values are calculated for the largest connected component.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>networks</strong> – List of input networks</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas dataframe with rankings</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="null-model-functions">
+<h1>Null model functions<a class="headerlink" href="#null-model-functions" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-anuran.nulls"></span><p>The null models module contains functions for constructing permutations of input networks.
+Generation of null models is done on the adjacency matrix for speed;
+the NetworkX representation is unfortunately slower.
+The functions can either change (random model) or preserve (degree model) the degree distribution.</p>
+<p>The functions in this module also calculate intersections or differences of networks.
+The first function is a wrapper that
+subsamples networks from a list of null models to output a dataframe of set sizes.</p>
+<p>These functions run operations in parallel. utils.py contains the operations they carry out.</p>
+<dl class="function">
+<dt id="anuran.nulls.generate_null">
+<code class="descclassname">anuran.nulls.</code><code class="descname">generate_null</code><span class="sig-paren">(</span><em>networks</em>, <em>n</em>, <em>core</em>, <em>fraction=False</em>, <em>prev=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/nulls.html#generate_null"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.nulls.generate_null" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes a list of networks.
+For each network, a list with length n is generated,
+with each item in the list being a permutation of the original network.
+This is returned as a list of lists with this structure:
+—List corresponding to each original network (length networks)</p>
+<blockquote>
+<div>—List of permutations per original network (length n)</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>networks</strong> – List of input NetworkX objects</li>
+<li><strong>n</strong> – Number of randomized networks per input network</li>
+<li><strong>core</strong> – Number of processor cores</li>
+<li><strong>fraction</strong> – Fraction of conserved interactions</li>
+<li><strong>prev</strong> – Prevalence of core. If provided, null models have conserved interactions.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of lists with randomized networks</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="statistics-functions">
+<h1>Statistics functions<a class="headerlink" href="#statistics-functions" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-anuran.stats"></span><p>The functions in this module take previously calculated properties
+and assesses whether it is likely that there are differences between these properties
+by reporting p-values.</p>
+<p>Three properties can be assessed for significance:
+1. Set sizes
+2. Centrality scores
+3. Graph properties</p>
+<p>For all properties, the properties are compared to both the null models
+and different groups of networks (if included).</p>
+<dl class="function">
+<dt id="anuran.stats.compare_centralities">
+<code class="descclassname">anuran.stats.</code><code class="descname">compare_centralities</code><span class="sig-paren">(</span><em>centralities</em>, <em>mc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/stats.html#compare_centralities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.stats.compare_centralities" title="Permalink to this definition">¶</a></dt>
+<dd><p>The centralities dataframe contains a list of all centrality ranks measured across a group of networks.</p>
+<p>The centralities dataframe should have the following columns:
+Node, Network, Group, Network type, Conserved fraction,
+Prevalence of conserved fraction, Centrality, Upper limit,
+Lower limit, Values.</p>
+<p>This function carries out a Mann-Whitney test to test whether the ranks are different across
+the two groups that are being compared.
+This means that it can compare groups with different n.
+Consequently, a group is compared to all networks from a specific group.
+Since it is possible to generate more than one network per original network,
+this means that it is possible to compare ranks for 6 networks to ranks of 6*10 networks.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>centralities</strong> – Dataframe with centralities</li>
+<li><strong>mc</strong> – Method for multiple-testing correction</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pandas dataframe with p-values for comparisons</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="anuran.stats.compare_graph_properties">
+<code class="descclassname">anuran.stats.</code><code class="descname">compare_graph_properties</code><span class="sig-paren">(</span><em>graph_properties</em>, <em>mc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/stats.html#compare_graph_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.stats.compare_graph_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes a dataframe of graph properties.
+Each graph property is compared to other groups with the Mann-Whitney test.</p>
+<p>Takes a pandas dataframe of graph properties with the following columns:
+Network, Group, Network type, Conserved fraction, Prevalence of conserved fraction,
+Property, Value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>graph_properties</strong> – Dataframe with graph properties</li>
+<li><strong>mc</strong> – Method for multiple-testing correction</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pandas dataframe with p-values for comparisons</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="anuran.stats.compare_set_sizes">
+<code class="descclassname">anuran.stats.</code><code class="descname">compare_set_sizes</code><span class="sig-paren">(</span><em>set_sizes</em>, <em>mc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/stats.html#compare_set_sizes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.stats.compare_set_sizes" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes a dataframe of set sizes.
+Each set size is compared against a group (generated from null models);
+the p-value is computed by assessing how many standard deviations the set size is outside
+the distribution calculated from the null models.</p>
+<p>Only the random and degree models, without a core,
+are likely to follow a normal distribution and therefore meet conditions for this test.</p>
+<p>Takes a pandas dataframe of set sizes with the following columns:
+Network, Group, Network type, Conserved fraction, Prevalence of conserved fraction,
+Set type, Set size, Set type (absolute)</p>
+<p>The
+:param set_sizes: Dataframe with set sizes
+:param mc: Method for multiple-testing correction
+:return: pandas dataframe with p-values for comparisons</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="anuran.stats.correlate_centralities">
+<code class="descclassname">anuran.stats.</code><code class="descname">correlate_centralities</code><span class="sig-paren">(</span><em>group</em>, <em>centralities</em>, <em>mc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/stats.html#correlate_centralities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.stats.correlate_centralities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns correlations for ordered networks and compares these to the null model correlations.
+The function returns a dataframe comparing correlations in the ordered networks
+and their randomized versions.</p>
+<p>The centralities dataframe should have the following columns:
+Node, Network, Group, Network type, Conserved fraction,
+Prevalence of conserved fraction, Centrality, Upper limit,
+Lower limit, Values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>group</strong> – name of grouped networks</li>
+<li><strong>centralities</strong> – Dataframe with centralities</li>
+<li><strong>mc</strong> – multiple-testing correction</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dataframe of correlations</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="anuran.stats.correlate_graph_properties">
+<code class="descclassname">anuran.stats.</code><code class="descname">correlate_graph_properties</code><span class="sig-paren">(</span><em>group</em>, <em>graph_properties</em>, <em>mc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/stats.html#correlate_graph_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.stats.correlate_graph_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns correlations for ordered networks and compares these to the null model correlations.
+The function returns a dataframe comparing correlations in the ordered networks
+and their randomized versions.</p>
+<p>Takes a pandas dataframe of graph properties with the following columns:
+Network, Group, Network type, Conserved fraction, Prevalence of conserved fraction,
+Property, Value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>group</strong> – name of grouped networks</li>
+<li><strong>graph_properties</strong> – Dataframe with graph properties</li>
+<li><strong>mc</strong> – multiple-testing correction</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Dataframe of correlations</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-anuran.utils">
+<span id="utility-functions"></span><h1>Utility functions<a class="headerlink" href="#module-anuran.utils" title="Permalink to this headline">¶</a></h1>
+<p>The utils module contains functions used by other modules for multiprocessing.</p>
+</div>
+<div class="section" id="module-anuran.draw">
+<span id="drawing-functions"></span><h1>Drawing functions<a class="headerlink" href="#module-anuran.draw" title="Permalink to this headline">¶</a></h1>
+<p>The functions in this module visualize set sizes and other anuran outputs.
+Draw_sets visualizes the set sizes of the  null models and original networks.
+Draw_samples shows the distribution of set sizes as the number of networks increases,
+for both null models and the input networks.
+Draw_centralities plots the upper limit of the confidence interval against the lower limit.
+Draw_graphs shows the graph properties for each of the networks used by anuran.</p>
+<dl class="function">
+<dt id="anuran.draw.draw_centralities">
+<code class="descclassname">anuran.draw.</code><code class="descname">draw_centralities</code><span class="sig-paren">(</span><em>data</em>, <em>fp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/draw.html#draw_centralities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.draw.draw_centralities" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function accepts a pandas dataframe
+with 5 columns:
+Node, Network, Network type, Conserved fraction, Centrality, Upper limit, Lower limit
+For every centrality a scatter plot is generated with the upper- and lower limits
+on the x and y axes respectively.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> – Pandas data frame</li>
+<li><strong>fp</strong> – Filepath with prefix for name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="anuran.draw.draw_graphs">
+<code class="descclassname">anuran.draw.</code><code class="descname">draw_graphs</code><span class="sig-paren">(</span><em>data</em>, <em>fp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/draw.html#draw_graphs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.draw.draw_graphs" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function accepts a pandas dataframe
+with 5 columns:
+Network, Name, Group, Network type, Conserved fraction, Property, Value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> – Pandas data frame</li>
+<li><strong>fp</strong> – Filepath with prefix for name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="anuran.draw.draw_samples">
+<code class="descclassname">anuran.draw.</code><code class="descname">draw_samples</code><span class="sig-paren">(</span><em>data</em>, <em>fp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/draw.html#draw_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.draw.draw_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function accepts a pandas dataframe
+with 6 columns:
+Network, Network type, Conserved fraction, Set type, Set size
+For every combination of set type a faceted box and whiskers plot is generated
+that visualizes the distribution of set sizes per network type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> – Pandas data frame</li>
+<li><strong>fp</strong> – Filepath with prefix for name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="anuran.draw.draw_sets">
+<code class="descclassname">anuran.draw.</code><code class="descname">draw_sets</code><span class="sig-paren">(</span><em>data</em>, <em>fp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/anuran/draw.html#draw_sets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anuran.draw.draw_sets" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function accepts a pandas dataframe
+with 5 columns:
+Network, Network type, Conserved fraction, Set type, Set size
+For every combination of set type a faceted box and whiskers plot is generated
+that visualizes the distribution of set sizes per network type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> – Pandas data frame</li>
+<li><strong>fp</strong> – Filepath with prefix for name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">anuran</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Lisa Röttjers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

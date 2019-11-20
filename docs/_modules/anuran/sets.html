@@ -1,0 +1,303 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>anuran.sets &#8212; anuran 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for anuran.sets</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The functions in this module construct Pandas dataframes with set sizes for different operations.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Lisa Rottjers&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;lisa.rottjers@kuleuven.be&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Development&#39;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;Apache 2.0&#39;</span>
+
+<span class="kn">import</span> <span class="nn">logging.handlers</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">combinations</span>
+<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">binom</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+<span class="kn">from</span> <span class="nn">anuran.utils</span> <span class="k">import</span> <span class="n">_generate_rows</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="generate_sizes"><a class="viewcode-back" href="../../index.html#anuran.sets.generate_sizes">[docs]</a><span class="k">def</span> <span class="nf">generate_sizes</span><span class="p">(</span><span class="n">networks</span><span class="p">,</span> <span class="n">random_models</span><span class="p">,</span> <span class="n">degree_models</span><span class="p">,</span> <span class="n">sign</span><span class="p">,</span>
+                   <span class="n">set_operation</span><span class="p">,</span> <span class="n">core</span><span class="p">,</span> <span class="n">fractions</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="n">perm</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">combos</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function carries out set operations on all networks provided in</span>
+<span class="sd">    the network, random and degree lists.</span>
+<span class="sd">    The random and degree lists are structured as follows:</span>
+<span class="sd">    ---List corresponding to each original network (length networks)</span>
+<span class="sd">        ---List of permutations per original network (length n in generate_null)</span>
+<span class="sd">    The core list is structured as follows:</span>
+<span class="sd">    ---List of all shared fractions (length fractions)</span>
+<span class="sd">        ---List corresponding to core prevalence(length core)</span>
+<span class="sd">            ---List of permutations per original network (length networks)</span>
+<span class="sd">    The function returns a pandas dataframe with the size of the intersection,</span>
+<span class="sd">    the type of model and the shared fraction as a separate column.</span>
+<span class="sd">    The length of the dataset is equal to the number of original networks,</span>
+<span class="sd">    the number of permuted sets for the random models and the number of permuted sets</span>
+<span class="sd">    for the degree-preserving model.</span>
+
+<span class="sd">    :param networks: List of input networks</span>
+<span class="sd">    :param random_models: Dictionary with permuted input networks without preserved degree distribution</span>
+<span class="sd">    :param degree_models: Dictionary with permuted input networks with preserved degree distribution</span>
+<span class="sd">    :param sign: If true, sets take sign information into account.</span>
+<span class="sd">    :param set_operation: Type of set operation to carry outo</span>
+<span class="sd">    :param core: Number of processor cores</span>
+<span class="sd">    :param fractions: List with fractions of shared interactions</span>
+<span class="sd">    :param prev: List with prevalence of shared interactions</span>
+<span class="sd">    :param perm: Number of sets to take from null models</span>
+<span class="sd">    :param sizes: Size of intersection to calculate. By default 1 (edge should be in all networks).</span>
+<span class="sd">    :param combos: Dictionary of networks to combine per network</span>
+<span class="sd">    :return: List of lists with set sizes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create empty pandas dataframe</span>
+    <span class="n">all_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Network&#39;</span><span class="p">,</span> <span class="s1">&#39;Group&#39;</span><span class="p">,</span> <span class="s1">&#39;Network type&#39;</span><span class="p">,</span> <span class="s1">&#39;Conserved fraction&#39;</span><span class="p">,</span>
+                                        <span class="s1">&#39;Prevalence of conserved fraction&#39;</span><span class="p">,</span>
+                                        <span class="s1">&#39;Set type&#39;</span><span class="p">,</span> <span class="s1">&#39;Set size&#39;</span><span class="p">,</span> <span class="s1">&#39;Set type (absolute)&#39;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">networks</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">combos</span><span class="p">:</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">combos</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">combined_networks</span> <span class="o">=</span> <span class="n">_sample_combinations</span><span class="p">(</span><span class="n">combos</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">networks</span><span class="o">=</span><span class="n">networks</span><span class="p">,</span>
+                                                 <span class="n">random_models</span><span class="o">=</span><span class="n">random_models</span><span class="p">,</span> <span class="n">degree_models</span><span class="o">=</span><span class="n">degree_models</span><span class="p">,</span>
+                                                 <span class="n">group</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">fractions</span><span class="o">=</span><span class="n">fractions</span><span class="p">,</span> <span class="n">prev</span><span class="o">=</span><span class="n">prev</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="n">perm</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="n">sign</span><span class="p">,</span>
+                                                 <span class="n">set_operation</span><span class="o">=</span><span class="n">set_operation</span><span class="p">,</span> <span class="n">sizes</span><span class="o">=</span><span class="n">sizes</span><span class="p">)</span>
+        <span class="c1"># run size inference in parallel</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">core</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">_generate_rows</span><span class="p">,</span> <span class="n">combined_networks</span><span class="p">)</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="n">all_results</span> <span class="o">=</span> <span class="n">all_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">all_results</span></div>
+
+
+<div class="viewcode-block" id="generate_sample_sizes"><a class="viewcode-back" href="../../index.html#anuran.sets.generate_sample_sizes">[docs]</a><span class="k">def</span> <span class="nf">generate_sample_sizes</span><span class="p">(</span><span class="n">networks</span><span class="p">,</span> <span class="n">random_models</span><span class="p">,</span>
+                          <span class="n">degree_models</span><span class="p">,</span> <span class="n">sign</span><span class="p">,</span>
+                          <span class="n">set_operation</span><span class="p">,</span> <span class="n">core</span><span class="p">,</span> <span class="n">fractions</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="n">perm</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function wraps the the generate_sizes function</span>
+<span class="sd">    but it only gives a random subset of the input networks and null models.</span>
+<span class="sd">    This shows the effect of increasing sample number on set size.</span>
+
+<span class="sd">    :param networks: List of input networks</span>
+<span class="sd">    :param random_models: List of permuted input networks without preserved degree distribution</span>
+<span class="sd">    :param degree_models: List of permuted input networks with preserved degree distribution</span>
+<span class="sd">    :param sign: If true, sets take sign information into account.</span>
+<span class="sd">    :param set_operation: Type of set operation to carry out</span>
+<span class="sd">    :param core: Number of processor cores</span>
+<span class="sd">    :param fractions: List with fractions of shared interactions</span>
+<span class="sd">    :param prev: List with prevalence of shared interactions</span>
+<span class="sd">    :param perm: Number of sets to take from null models</span>
+<span class="sd">    :param sizes: Size of intersection to calculate. By default 1 (edge should be in all networks).</span>
+<span class="sd">    :param limit: Maximum number of resamples.</span>
+<span class="sd">    :param number: Sample number to test.</span>
+<span class="sd">    :return: List of lists with set sizes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">all_combinations</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">networks</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">networks</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">number</span><span class="p">:</span>
+            <span class="n">seq</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">number</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">seq</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">networks</span><span class="p">[</span><span class="n">x</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">all_combinations</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">binom</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">networks</span><span class="p">[</span><span class="n">x</span><span class="p">]),</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">max_num</span> <span class="o">=</span> <span class="n">n</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">limit</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+                    <span class="n">n</span> <span class="o">=</span> <span class="n">limit</span>
+            <span class="c1"># for sampling random numbers</span>
+            <span class="c1"># if the number of combinations is small enough,</span>
+            <span class="c1"># we can use the iterator</span>
+            <span class="c1"># if not, better to sample networks randomly</span>
+            <span class="c1"># gives possibility of duplicates</span>
+            <span class="c1"># however, better than having to store huge iterator as list</span>
+            <span class="k">if</span> <span class="n">max_num</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
+                <span class="n">combos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">networks</span><span class="p">[</span><span class="n">x</span><span class="p">])),</span> <span class="n">i</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">combos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                    <span class="n">combos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">networks</span><span class="p">[</span><span class="n">x</span><span class="p">])),</span> <span class="n">i</span><span class="p">))</span>
+            <span class="n">all_combinations</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">combos</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">generate_sizes</span><span class="p">(</span><span class="n">networks</span><span class="o">=</span><span class="n">networks</span><span class="p">,</span> <span class="n">random_models</span><span class="o">=</span><span class="n">random_models</span><span class="p">,</span> <span class="n">degree_models</span><span class="o">=</span><span class="n">degree_models</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="n">sign</span><span class="p">,</span>
+                             <span class="n">set_operation</span><span class="o">=</span><span class="n">set_operation</span><span class="p">,</span> <span class="n">core</span><span class="o">=</span><span class="n">core</span><span class="p">,</span> <span class="n">fractions</span><span class="o">=</span><span class="n">fractions</span><span class="p">,</span>
+                             <span class="n">prev</span><span class="o">=</span><span class="n">prev</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="n">perm</span><span class="p">,</span> <span class="n">sizes</span><span class="o">=</span><span class="n">sizes</span><span class="p">,</span> <span class="n">combos</span><span class="o">=</span><span class="n">all_combinations</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+<span class="k">def</span> <span class="nf">_sample_combinations</span><span class="p">(</span><span class="n">networks</span><span class="p">,</span> <span class="n">random_models</span><span class="p">,</span> <span class="n">degree_models</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">fractions</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="n">perm</span><span class="p">,</span> <span class="n">sign</span><span class="p">,</span> <span class="n">set_operation</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">combos</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function generates an iterable containing all information required</span>
+<span class="sd">    to add new rows to a pandas dataframe.</span>
+<span class="sd">    This iterable can then be supplied to a multiprocessing pool to speed up calculations.</span>
+
+<span class="sd">    :param combos: List of networks to combine</span>
+<span class="sd">    :param networks: List of networks belonging to group x</span>
+<span class="sd">    :param random_models: List of randomized null models belonging to group x</span>
+<span class="sd">    :param degree_models: List of degree-preserving null models belonging to group x</span>
+<span class="sd">    :param group: Name of group x</span>
+<span class="sd">    :param fractions: Size of core</span>
+<span class="sd">    :param prev: Prevalence of core</span>
+<span class="sd">    :param perm: Number of sets to take from null models</span>
+<span class="sd">    :param sign: If true, sets take sign information into account.</span>
+<span class="sd">    :param set_operation: Type of set operation to carry out</span>
+<span class="sd">    :param sizes: Size of intersection to calculate. By default 1 (edge should be in all networks).</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">all_networks</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">combos</span><span class="p">:</span>
+        <span class="n">combos</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">([</span><span class="n">network</span> <span class="k">for</span> <span class="n">network</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">networks</span><span class="p">[</span><span class="n">group</span><span class="p">]))])]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">combos</span><span class="p">:</span>
+        <span class="n">subnetworks</span> <span class="o">=</span> <span class="p">[</span><span class="n">networks</span><span class="p">[</span><span class="n">group</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">item</span><span class="p">]</span>
+        <span class="n">all_networks</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;networks&#39;</span><span class="p">:</span> <span class="n">subnetworks</span><span class="p">,</span>
+                             <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Input&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="n">group</span><span class="p">,</span>
+                             <span class="s1">&#39;set operation&#39;</span><span class="p">:</span> <span class="n">set_operation</span><span class="p">,</span>
+                             <span class="s1">&#39;sizes&#39;</span><span class="p">:</span> <span class="n">sizes</span><span class="p">,</span>
+                             <span class="s1">&#39;sign&#39;</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+                             <span class="s1">&#39;fraction&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                             <span class="s1">&#39;prev&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
+        <span class="n">subrandom</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;random&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">random_models</span><span class="p">[</span><span class="n">group</span><span class="p">][</span><span class="s1">&#39;random&#39;</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">item</span><span class="p">]}</span>
+        <span class="n">subdegree</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;degree&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">degree_models</span><span class="p">[</span><span class="n">group</span><span class="p">][</span><span class="s1">&#39;degree&#39;</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">item</span><span class="p">]}</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">perm</span><span class="p">):</span>
+            <span class="n">degreeperm</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">subdegree</span><span class="p">[</span><span class="s1">&#39;degree&#39;</span><span class="p">][</span><span class="n">r</span><span class="p">],</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">subdegree</span><span class="p">[</span><span class="s1">&#39;degree&#39;</span><span class="p">]))]</span>
+            <span class="n">all_networks</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;networks&#39;</span><span class="p">:</span> <span class="n">degreeperm</span><span class="p">,</span>
+                                 <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Degree&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">group</span><span class="p">),</span>
+                                 <span class="s1">&#39;set operation&#39;</span><span class="p">:</span> <span class="n">set_operation</span><span class="p">,</span>
+                                 <span class="s1">&#39;sizes&#39;</span><span class="p">:</span> <span class="n">sizes</span><span class="p">,</span>
+                                 <span class="s1">&#39;sign&#39;</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+                                 <span class="s1">&#39;fraction&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                                 <span class="s1">&#39;prev&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
+            <span class="n">randomperm</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">subrandom</span><span class="p">[</span><span class="s1">&#39;random&#39;</span><span class="p">][</span><span class="n">r</span><span class="p">],</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">subrandom</span><span class="p">[</span><span class="s1">&#39;random&#39;</span><span class="p">]))]</span>
+            <span class="n">all_networks</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;networks&#39;</span><span class="p">:</span> <span class="n">randomperm</span><span class="p">,</span>
+                                 <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Random&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="n">group</span><span class="p">,</span>
+                                 <span class="s1">&#39;set operation&#39;</span><span class="p">:</span> <span class="n">set_operation</span><span class="p">,</span>
+                                 <span class="s1">&#39;sizes&#39;</span><span class="p">:</span> <span class="n">sizes</span><span class="p">,</span>
+                                 <span class="s1">&#39;sign&#39;</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+                                 <span class="s1">&#39;fraction&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                                 <span class="s1">&#39;prev&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
+        <span class="n">subrandom</span><span class="p">[</span><span class="s1">&#39;core&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">subdegree</span><span class="p">[</span><span class="s1">&#39;core&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">fractions</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">frac</span> <span class="ow">in</span> <span class="n">fractions</span><span class="p">:</span>
+                <span class="n">subrandom</span><span class="p">[</span><span class="s1">&#39;core&#39;</span><span class="p">][</span><span class="n">frac</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+                <span class="n">subdegree</span><span class="p">[</span><span class="s1">&#39;core&#39;</span><span class="p">][</span><span class="n">frac</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">prev</span><span class="p">:</span>
+                    <span class="n">subrandom</span><span class="p">[</span><span class="s1">&#39;core&#39;</span><span class="p">][</span><span class="n">frac</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+                    <span class="n">subdegree</span><span class="p">[</span><span class="s1">&#39;core&#39;</span><span class="p">][</span><span class="n">frac</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">networks</span><span class="p">[</span><span class="n">group</span><span class="p">])):</span>
+                        <span class="n">degreeperm</span> <span class="o">=</span> <span class="p">[</span><span class="n">degree_models</span><span class="p">[</span><span class="n">group</span><span class="p">][</span><span class="s1">&#39;core&#39;</span><span class="p">][</span><span class="n">frac</span><span class="p">][</span><span class="n">c</span><span class="p">][</span><span class="n">n</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">item</span><span class="p">]</span>
+                        <span class="n">all_networks</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;networks&#39;</span><span class="p">:</span> <span class="n">degreeperm</span><span class="p">,</span>
+                                             <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Degree&#39;</span><span class="p">,</span>
+                                             <span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="n">group</span><span class="p">,</span>
+                                             <span class="s1">&#39;set operation&#39;</span><span class="p">:</span> <span class="n">set_operation</span><span class="p">,</span>
+                                             <span class="s1">&#39;sizes&#39;</span><span class="p">:</span> <span class="n">sizes</span><span class="p">,</span>
+                                             <span class="s1">&#39;sign&#39;</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+                                             <span class="s1">&#39;fraction&#39;</span><span class="p">:</span> <span class="n">frac</span><span class="p">,</span>
+                                             <span class="s1">&#39;prev&#39;</span><span class="p">:</span> <span class="n">c</span><span class="p">})</span>
+                        <span class="n">randomperm</span> <span class="o">=</span> <span class="p">[</span><span class="n">random_models</span><span class="p">[</span><span class="n">group</span><span class="p">][</span><span class="s1">&#39;core&#39;</span><span class="p">][</span><span class="n">frac</span><span class="p">][</span><span class="n">c</span><span class="p">][</span><span class="n">n</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">item</span><span class="p">]</span>
+                        <span class="n">all_networks</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;networks&#39;</span><span class="p">:</span> <span class="n">randomperm</span><span class="p">,</span>
+                                             <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Random&#39;</span><span class="p">,</span>
+                                             <span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="n">group</span><span class="p">,</span>
+                                             <span class="s1">&#39;set operation&#39;</span><span class="p">:</span> <span class="n">set_operation</span><span class="p">,</span>
+                                             <span class="s1">&#39;sizes&#39;</span><span class="p">:</span> <span class="n">sizes</span><span class="p">,</span>
+                                             <span class="s1">&#39;sign&#39;</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
+                                             <span class="s1">&#39;fraction&#39;</span><span class="p">:</span> <span class="n">frac</span><span class="p">,</span>
+                                             <span class="s1">&#39;prev&#39;</span><span class="p">:</span> <span class="n">c</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">all_networks</span>
+
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">anuran</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Lisa Röttjers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

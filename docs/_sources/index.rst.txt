@@ -1,0 +1,54 @@
+.. anuran documentation master file, created by
+   sphinx-quickstart on Wed Nov 20 10:32:11 2019.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to anuran's documentation!
+==================================
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+Contents
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
+
+Set size functions
+=====================
+.. automodule:: anuran.sets
+   :members:
+
+Centrality functions
+=================
+.. automodule:: anuran.centrality
+   :members:
+
+Graph-level functions
+===================
+.. automodule:: anuran.graphvals
+   :members:
+
+Null model functions
+===================
+.. automodule:: anuran.nulls
+   :members:
+
+Statistics functions
+===================
+.. automodule:: anuran.stats
+   :members:
+
+Utility functions
+===================
+.. automodule:: anuran.utils
+   :members:
+
+Drawing functions
+===================
+.. automodule:: anuran.draw
+   :members:
+

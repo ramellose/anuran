@@ -1,0 +1,454 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>anuran.main &#8212; anuran 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for anuran.main</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">anuran: Null models for replicate networks.</span>
+<span class="sd">The script takes a network as input and uses this to generate null models.</span>
+<span class="sd">The output of the null models is presented as a csv of set sizes</span>
+<span class="sd">and a t-test is used to assess whether set sizes are different than expected from the null model.</span>
+<span class="sd">Detailed explanations are available in the headers of each file.</span>
+
+<span class="sd">anuran uses the file extension to import networks.</span>
+<span class="sd">Generation of null models is done on the adjacency matrix for speed;</span>
+<span class="sd">the NetworkX representation is unfortunately slower.</span>
+
+<span class="sd">The demo data for anuran was downloaded from the following publication:</span>
+<span class="sd">Meyer, K. M., Memiaghe, H., Korte, L., Kenfack, D., Alonso, A., &amp; Bohannan, B. J. (2018).</span>
+<span class="sd">Why do microbes exhibit weak biogeographic patterns?. The ISME journal, 12(6), 1404.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Lisa Rottjers&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;lisa.rottjers@kuleuven.be&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Development&#39;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;Apache 2.0&#39;</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="k">import</span> <span class="n">cpu_count</span>
+<span class="kn">from</span> <span class="nn">pbr.version</span> <span class="k">import</span> <span class="n">VersionInfo</span>
+<span class="kn">import</span> <span class="nn">logging.handlers</span>
+
+<span class="kn">import</span> <span class="nn">anuran</span>
+<span class="kn">from</span> <span class="nn">anuran.utils</span> <span class="k">import</span> <span class="n">_intersection</span><span class="p">,</span> <span class="n">_construct_intersection</span>
+<span class="kn">from</span> <span class="nn">anuran.nulls</span> <span class="k">import</span> <span class="n">generate_null</span>
+<span class="kn">from</span> <span class="nn">anuran.sets</span> <span class="k">import</span> <span class="n">generate_sizes</span><span class="p">,</span> <span class="n">generate_sample_sizes</span>
+<span class="kn">from</span> <span class="nn">anuran.draw</span> <span class="k">import</span> <span class="n">draw_sets</span><span class="p">,</span> <span class="n">draw_samples</span><span class="p">,</span> <span class="n">draw_centralities</span><span class="p">,</span> <span class="n">draw_graphs</span>
+<span class="kn">from</span> <span class="nn">anuran.centrality</span> <span class="k">import</span> <span class="n">generate_ci_frame</span>
+<span class="kn">from</span> <span class="nn">anuran.graphvals</span> <span class="k">import</span> <span class="n">generate_graph_frame</span>
+<span class="kn">from</span> <span class="nn">anuran.stats</span> <span class="k">import</span> <span class="n">compare_set_sizes</span><span class="p">,</span> <span class="n">compare_centralities</span><span class="p">,</span> <span class="n">compare_graph_properties</span><span class="p">,</span> \
+    <span class="n">correlate_centralities</span><span class="p">,</span> <span class="n">correlate_graph_properties</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+<span class="c1"># handler to sys.stdout</span>
+<span class="n">sh</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+<span class="n">sh</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(name)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">sh</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">sh</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="set_anuran"><a class="viewcode-back" href="../../index.html#anuran.main.set_anuran">[docs]</a><span class="k">def</span> <span class="nf">set_anuran</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;This parser gets input settings for running anuran.</span>
+<span class="sd">    It requires an input format that can be read by NetworkX.</span>
+<span class="sd">    Make sure to include the extension in the input filename</span>
+<span class="sd">    as this is used to infer the file type.&quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Run the microbial association network clustering algorithm.&#39;</span>
+                    <span class="s1">&#39;If --central is added, centrality is calculated. &#39;</span>
+                    <span class="s1">&#39;Exporting as .cyjs allows for import into Cytoscape with &#39;</span>
+                    <span class="s1">&#39;a cluster- and phylogeny-informed layout.&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-i&#39;</span><span class="p">,</span> <span class="s1">&#39;--input_graphs&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;graph&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Locations of input network files. The format is detected based on the extension; </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;at the moment, .graphml, .txt (weighted edgelist), .gml and .cyjs are accepted. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;If you set -i to &quot;demo&quot;, a demo dataset will be loaded. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;If you want to compare different sets of networks, </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;specify this by including multiple locations. &#39;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="s1">&#39;--output&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;fp&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Output filename. Specify full file path without extension.&#39;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-set&#39;</span><span class="p">,</span> <span class="s1">&#39;--set_type&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;set&#39;</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Types of sets to compare. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;By default, both the difference and intersection are calculated.&#39;</span><span class="p">,</span>
+                        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;difference&#39;</span><span class="p">,</span> <span class="s1">&#39;intersection&#39;</span><span class="p">],</span>
+                        <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;difference&#39;</span><span class="p">,</span> <span class="s1">&#39;intersection&#39;</span><span class="p">])</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-size&#39;</span><span class="p">,</span> <span class="s1">&#39;--intersection_size&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;size&#39;</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;If specified, associations only shared by a number of networks &#39;</span>
+                             <span class="s1">&#39;times the specified size fraction are included. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;You can specify multiple numbers. By default, the full intersection is calculated.&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-sign&#39;</span><span class="p">,</span> <span class="s1">&#39;--edge_sign&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;sign&#39;</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;If flagged, signs of edge weights are not taken into account. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;The set difference then includes edges that have a unique edge sign in one network. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;The set intersection then only includes edges that have the same sign across networks.&#39;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_false&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-sample&#39;</span><span class="p">,</span> <span class="s1">&#39;--resample&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Resample your networks to observe the impact of increasing sample number. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;when you increase the network number up until the total. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;Specify an upper limit of resamples, or True if you want all possible resamples. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;By default, the upper limit equal to the binomial coefficient of the input networks. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;If the limit is higher than this coefficient, all possible combinations are resampled.&#39;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-n&#39;</span><span class="p">,</span> <span class="s1">&#39;--sample_number&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;If you have a lot of samples, specify the sample numbers to test here. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;For example: -n 4 8 12 will test the effect of acquiring 4, 8, and 12 samples. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;By default, all sample numbers are tested.&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-cs&#39;</span><span class="p">,</span> <span class="s1">&#39;--core_size&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;cs&#39;</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;If specified, true positive null models &#39;</span>
+                             <span class="s1">&#39; include a set fraction of shared interactions. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;You can specify multiple fractions. &#39;</span>
+                             <span class="s1">&#39;By default, null models have no shared interactions and &#39;</span>
+                             <span class="s1">&#39;sets are computed for all randomized networks.</span><span class="se">\n</span><span class="s1">. &#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-prev&#39;</span><span class="p">,</span> <span class="s1">&#39;--core_prevalence&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;prev&#39;</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Specify the prevalence of the core. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;By default, 1; each interaction is present in all models.&#39;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-perm&#39;</span><span class="p">,</span> <span class="s1">&#39;--permutations&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;perm&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Number of null models to generate for each input network. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;Default: 10. &#39;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-nperm&#39;</span><span class="p">,</span> <span class="s1">&#39;--permutationsets&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;nperm&#39;</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Number of sets, centralities and graph values to calculate from the null models. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;The total number of possible sets is equal to </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;the number of null models raised to the number of networks.</span><span class="se">\n</span><span class="s1"> &#39;</span>
+                             <span class="s1">&#39;This value becomes huge quickly, so a random subset of possible sets is taken.</span><span class="se">\n</span><span class="s1"> &#39;</span>
+                             <span class="s1">&#39;Default: 50. &#39;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="s1">&#39;--centrality&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;centrality&#39;</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;If true, extracts centrality ranking from networks </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;and compares these to rankings extracted from null models. &#39;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-net&#39;</span><span class="p">,</span> <span class="s1">&#39;--network&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;network&#39;</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;If true, extracts network-level properties </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;and compares these to properties of randomized networks. &#39;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-compare&#39;</span><span class="p">,</span> <span class="s1">&#39;--compare_networks&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;comparison&#39;</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;If true, networks in the folders specified by the input parameter </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;are compared for different emergent properties. &#39;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-draw&#39;</span><span class="p">,</span> <span class="s1">&#39;--draw_figures&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;draw&#39;</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;If flagged, draws figures showing the set sizes.&#39;</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-stats&#39;</span><span class="p">,</span> <span class="s1">&#39;--statistics&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;stats&#39;</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Specify True or a multiple testing correction method to </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;calculate p-values for comparisons. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;The available methods are listed in the docs for statsmodels.stats.multitest, </span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;and include bonferroni, sidak, simes-hochberg, fdr_bh and others. &#39;</span><span class="p">,</span>
+                        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;bonferroni&#39;</span><span class="p">,</span> <span class="s1">&#39;sidak&#39;</span><span class="p">,</span> <span class="s1">&#39;holm-sidak&#39;</span><span class="p">,</span> <span class="s1">&#39;holm&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;simes-hochberg&#39;</span><span class="p">,</span> <span class="s1">&#39;hommel&#39;</span><span class="p">,</span> <span class="s1">&#39;fdr_bh&#39;</span><span class="p">,</span> <span class="s1">&#39;fdr_by&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;fdr_tsbh&#39;</span><span class="p">,</span> <span class="s1">&#39;fdr_tsbky&#39;</span><span class="p">],</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-core&#39;</span><span class="p">,</span> <span class="s1">&#39;-processor_cores&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;core&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Number of processing cores to use. </span><span class="se">\n</span><span class="s1"> &#39;</span>
+                             <span class="s1">&#39;By default, CPU count - 2. &#39;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="n">cpu_count</span><span class="p">()</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-version&#39;</span><span class="p">,</span> <span class="s1">&#39;--version&#39;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;version&#39;</span><span class="p">,</span>
+                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Version number.&#39;</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span></div>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">set_anuran</span><span class="p">()</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="nb">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]:</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="n">VersionInfo</span><span class="p">(</span><span class="s1">&#39;anuran&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Version &#39;</span> <span class="o">+</span> <span class="n">info</span><span class="o">.</span><span class="n">version_string</span><span class="p">())</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;graph&#39;</span><span class="p">]:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Please give an input location.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;graph&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="p">[</span><span class="s1">&#39;demo&#39;</span><span class="p">]:</span>
+        <span class="n">networks</span> <span class="o">=</span> <span class="p">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="nb">list</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;graph&#39;</span><span class="p">]}</span>
+        <span class="c1"># code for importing from multiple folders</span>
+        <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;graph&#39;</span><span class="p">]:</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">location</span> <span class="o">+</span> <span class="s2">&quot;**/*.graphml&quot;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
+            <span class="n">files</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">location</span> <span class="o">+</span> <span class="s2">&quot;**/*.txt&quot;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)])</span>
+            <span class="n">files</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">location</span> <span class="o">+</span> <span class="s2">&quot;**/*.gml&quot;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)])</span>
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+                <span class="n">extension</span> <span class="o">=</span> <span class="n">filename</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;graphml&#39;</span><span class="p">:</span>
+                        <span class="n">network</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">read_graphml</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;txt&#39;</span><span class="p">:</span>
+                        <span class="n">network</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">read_weighted_edgelist</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;gml&#39;</span><span class="p">:</span>
+                        <span class="n">network</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">read_gml</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Format not accepted. &#39;</span>
+                                       <span class="s1">&#39;Please specify the filename including extension (e.g. test.graphml).&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                        <span class="n">exit</span><span class="p">()</span>
+                    <span class="c1"># need to make sure the graphml function does not arbitrarily assign node ID</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">nodes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]:</span>
+                            <span class="k">if</span> <span class="n">network</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">nodes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">list</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">nodes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
+                                <span class="n">network</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">relabel_nodes</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">get_node_attributes</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">))</span>
+                    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;One of the imported networks contains no nodes.&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">networks</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">location</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file</span><span class="p">),</span> <span class="n">nx</span><span class="o">.</span><span class="n">to_undirected</span><span class="p">(</span><span class="n">network</span><span class="p">)))</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not import network file!&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">exit</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;graph&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;demo&#39;</span><span class="p">]:</span>
+        <span class="n">networks</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;demo&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">()}</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">anuran</span><span class="o">.</span><span class="vm">__file__</span><span class="p">)</span>
+        <span class="n">networks</span><span class="p">[</span><span class="s1">&#39;demo&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;conet_family_a.graphml&#39;</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">read_graphml</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;//data//conet_family_a.graphml&#39;</span><span class="p">)))</span>
+        <span class="n">networks</span><span class="p">[</span><span class="s1">&#39;demo&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;conet_family_b.graphml&#39;</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">read_graphml</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;//data//conet_family_b.graphml&#39;</span><span class="p">)))</span>
+        <span class="n">networks</span><span class="p">[</span><span class="s1">&#39;demo&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;conet_family_c.graphml&#39;</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">read_graphml</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;//data//conet_family_c.graphml&#39;</span><span class="p">)))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Imported &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">networks</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39; group(s) of networks.&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">network</span> <span class="ow">in</span> <span class="n">networks</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">networks</span><span class="p">[</span><span class="n">network</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;One of the groups (&#39;</span> <span class="o">+</span> <span class="n">network</span> <span class="o">+</span>
+                           <span class="s1">&#39;) does not contain enough networks &#39;</span>
+                           <span class="s1">&#39;to generate robust tests for centralities or set sizes. </span><span class="se">\n</span><span class="s1">&#39;</span>
+                           <span class="s1">&#39;Suppressing warnings, but please be careful with the statistics! </span><span class="se">\n</span><span class="s1">&#39;</span>
+                           <span class="s1">&#39;Preferably use groups with at least 20 networks. &#39;</span><span class="p">)</span>
+    <span class="c1"># export intersections</span>
+    <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">networks</span><span class="p">:</span>
+            <span class="n">shared_edges</span> <span class="o">=</span> <span class="n">_intersection</span><span class="p">(</span><span class="n">networks</span><span class="p">[</span><span class="n">group</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="n">sign</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;sign&#39;</span><span class="p">],</span> <span class="n">edgelist</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">_construct_intersection</span><span class="p">(</span><span class="n">networks</span><span class="p">[</span><span class="n">group</span><span class="p">],</span> <span class="n">shared_edges</span><span class="p">)</span>
+            <span class="n">nx</span><span class="o">.</span><span class="n">write_graphml</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">group</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_intersection.graphml&#39;</span><span class="p">)</span>
+    <span class="c1"># first generate null models</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">random</span><span class="p">,</span> <span class="n">degree</span> <span class="o">=</span> <span class="n">generate_null</span><span class="p">(</span><span class="n">networks</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;perm&#39;</span><span class="p">],</span> <span class="n">core</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;core&#39;</span><span class="p">],</span> <span class="n">fraction</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;cs&#39;</span><span class="p">],</span>
+                                       <span class="n">prev</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;prev&#39;</span><span class="p">])</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not generate null models!&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">exit</span><span class="p">()</span>
+    <span class="n">set_sizes</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">set_sizes</span> <span class="o">=</span> <span class="n">generate_sizes</span><span class="p">(</span><span class="n">networks</span><span class="p">,</span> <span class="n">random</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">core</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;core&#39;</span><span class="p">],</span>
+                                   <span class="n">sign</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;sign&#39;</span><span class="p">],</span> <span class="n">set_operation</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;set&#39;</span><span class="p">],</span>
+                                   <span class="n">fractions</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;cs&#39;</span><span class="p">],</span> <span class="n">prev</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;prev&#39;</span><span class="p">],</span>
+                                   <span class="n">perm</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;nperm&#39;</span><span class="p">],</span> <span class="n">sizes</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">])</span>
+        <span class="n">set_sizes</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_sets.csv&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Set sizes exported to: &#39;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_sets.csv&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to calculate set sizes!&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">exit</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;centrality&#39;</span><span class="p">]:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">centralities</span> <span class="o">=</span> <span class="n">generate_ci_frame</span><span class="p">(</span><span class="n">networks</span><span class="p">,</span> <span class="n">random</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span>
+                                             <span class="n">fractions</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;cs&#39;</span><span class="p">],</span> <span class="n">prev</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;prev&#39;</span><span class="p">],</span>
+                                             <span class="n">perm</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;nperm&#39;</span><span class="p">])</span>
+            <span class="n">centralities</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_centralities.csv&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Centralities exported to: &#39;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_centralities.csv&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not rank centralities!&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">exit</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;network&#39;</span><span class="p">]:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">graph_properties</span> <span class="o">=</span> <span class="n">generate_graph_frame</span><span class="p">(</span><span class="n">networks</span><span class="p">,</span> <span class="n">random</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span>
+                                                    <span class="n">fractions</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;cs&#39;</span><span class="p">],</span> <span class="n">core</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;prev&#39;</span><span class="p">],</span>
+                                                    <span class="n">perm</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;nperm&#39;</span><span class="p">])</span>
+            <span class="n">graph_properties</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;graph_properties.csv&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Graph properties exported to: &#39;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_graph_properties.csv&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not estimate graph properties!&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">exit</span><span class="p">()</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;sample&#39;</span><span class="p">]:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">generate_sample_sizes</span><span class="p">(</span><span class="n">networks</span><span class="p">,</span> <span class="n">random</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span>
+                                            <span class="n">sign</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;sign&#39;</span><span class="p">],</span> <span class="n">set_operation</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;set&#39;</span><span class="p">],</span> <span class="n">core</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;core&#39;</span><span class="p">],</span>
+                                            <span class="n">fractions</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;cs&#39;</span><span class="p">],</span> <span class="n">perm</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;nperm&#39;</span><span class="p">],</span> <span class="n">prev</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;prev&#39;</span><span class="p">],</span>
+                                            <span class="n">sizes</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">],</span> <span class="n">limit</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;sample&#39;</span><span class="p">],</span> <span class="n">number</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;number&#39;</span><span class="p">])</span>
+            <span class="n">samples</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_subsampled_sets.csv&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Subsampled set sizes exported to: &#39;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_subsampled_sets.csv&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to subsample networks!&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">exit</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;True&#39;</span><span class="p">:</span>
+            <span class="n">args</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1"># add code for pvalue estimation</span>
+        <span class="n">set_stats</span> <span class="o">=</span> <span class="n">compare_set_sizes</span><span class="p">(</span><span class="n">set_sizes</span><span class="p">,</span> <span class="n">mc</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">])</span>
+        <span class="n">set_stats</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_set_stats.csv&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;centrality&#39;</span><span class="p">]:</span>
+            <span class="n">central_stats</span> <span class="o">=</span> <span class="n">compare_centralities</span><span class="p">(</span><span class="n">centralities</span><span class="p">,</span> <span class="n">mc</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">])</span>
+            <span class="n">central_stats</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_centrality_stats.csv&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;network&#39;</span><span class="p">]:</span>
+            <span class="n">graph_stats</span> <span class="o">=</span> <span class="n">compare_graph_properties</span><span class="p">(</span><span class="n">graph_properties</span><span class="p">,</span> <span class="n">mc</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">])</span>
+            <span class="n">graph_stats</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_graph_stats.csv&#39;</span><span class="p">)</span>
+    <span class="c1"># check if there is an order in the filenames</span>
+    <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">networks</span><span class="p">:</span>
+        <span class="n">prefixes</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">networks</span><span class="p">[</span><span class="n">group</span><span class="p">]]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">prefixes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">prefixes</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">prefixes</span><span class="p">):</span>
+            <span class="n">centrality_correlation</span> <span class="o">=</span> <span class="n">correlate_centralities</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">centralities</span><span class="p">,</span> <span class="n">mc</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">])</span>
+            <span class="n">centrality_correlation</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_centrality_correlation.csv&#39;</span><span class="p">)</span>
+            <span class="n">graph_correlation</span> <span class="o">=</span> <span class="n">correlate_graph_properties</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">graph_properties</span><span class="p">,</span> <span class="n">mc</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">])</span>
+            <span class="n">graph_correlation</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_centrality_correlation.csv&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;draw&#39;</span><span class="p">]:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">networks</span><span class="p">:</span>
+                <span class="n">subset_sizes</span> <span class="o">=</span> <span class="n">set_sizes</span><span class="p">[</span><span class="n">set_sizes</span><span class="p">[</span><span class="s1">&#39;Group&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">]</span>
+                <span class="n">draw_sets</span><span class="p">(</span><span class="n">subset_sizes</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;centrality&#39;</span><span class="p">]:</span>
+                    <span class="n">subset_centralities</span> <span class="o">=</span> <span class="n">centralities</span><span class="p">[</span><span class="n">centralities</span><span class="p">[</span><span class="s1">&#39;Group&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">]</span>
+                    <span class="n">draw_centralities</span><span class="p">(</span><span class="n">subset_centralities</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;sample&#39;</span><span class="p">]:</span>
+                    <span class="n">subset_samples</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;Group&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">]</span>
+                    <span class="n">draw_samples</span><span class="p">(</span><span class="n">subset_samples</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;network&#39;</span><span class="p">]:</span>
+                    <span class="n">subset_graphs</span> <span class="o">=</span> <span class="n">graph_properties</span><span class="p">[</span><span class="n">graph_properties</span><span class="p">[</span><span class="s1">&#39;Group&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">]</span>
+                    <span class="n">draw_graphs</span><span class="p">(</span><span class="n">subset_graphs</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not draw data!&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">exit</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;anuran completed all tasks.&#39;</span><span class="p">)</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">anuran</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Lisa Röttjers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
