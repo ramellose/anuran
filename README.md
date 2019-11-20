@@ -22,13 +22,15 @@ pip install git+https://github.com/ramellose/anuran.git
 For a quick demo, run _anuran_ as follows, with the output filepath changed to something suitable for your system.
 When specifying the filepath, include the full path and a prefix for naming files.
 For example, _anuran_ will save a csv file to anuran_demo_sets.csv with the command below.
+
 ```
-anuran -i demo -o C://Documents//anuran_demo -draw -sample 10
+anuran -i demo -o C://Documents//anuran_demo -draw -perm 10 -nperm 10
 ```
 
 The demo data for _anuran_ was downloaded from the following publication:
 Meyer, K. M., Memiaghe, H., Korte, L., Kenfack, D., Alonso, A., & Bohannan, B. J. (2018).
 Why do microbes exhibit weak biogeographic patterns?. The ISME journal, 12(6), 1404.
+For a more elaborate demo analysis, please check out [the vignette](https://ramellose.github.io/anuran/demo_anuran.html).
 
 To run the script, only two arguments are required: input and output filepaths.
 The script recognizes gml, graphml and txt files by their extension.
