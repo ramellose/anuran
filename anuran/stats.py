@@ -98,7 +98,7 @@ def correlate_graph_properties(group, graph_properties, mc):
                      'P': p}
             statsframe = statsframe.append(stats, ignore_index=True)
     # multiple testing correction
-    if type(mc) == str  and len(statsframe) > 0:
+    if type(mc) == str and len(statsframe) > 0:
         # first separate statsframe
         statsframe = _mc_correction(statsframe, mc)
     statsframe = statsframe.sort_values('P')
@@ -239,7 +239,7 @@ def compare_graph_properties(graph_properties, mc):
                 statsframe = _generate_stat_rows(statsframe, group=combo[0], comparison=combo[1],
                                                  operation=op, p=p[1], ptype='Mann-Whitney')
     # multiple testing correction
-    if type(mc) == str  and len(statsframe) > 0:
+    if type(mc) == str and len(statsframe) > 0:
         # first separate statsframe
         statsframe = _mc_correction(statsframe, mc)
     statsframe = statsframe.sort_values('P')
@@ -298,7 +298,7 @@ def compare_set_sizes(set_sizes, mc):
                     statsframe = _generate_stat_rows(statsframe, group=group, comparison=nulltype,
                                                      operation=op, p=p, ptype='Set sizes')
     # multiple testing correction
-    if mc and len(statsframe) > 0:
+    if type(mc) == str and len(statsframe) > 0:
         # first separate statsframe
         statsframe = _mc_correction(statsframe, mc)
     statsframe = statsframe.sort_values('P')

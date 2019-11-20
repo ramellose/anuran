@@ -343,7 +343,7 @@ def main():
         try:
             for x in networks:
                 subset_sizes = set_sizes[set_sizes['Group'] == x]
-                draw_sets(set_sizes, args['fp'] + '_' + x)
+                draw_sets(subset_sizes, args['fp'] + '_' + x)
                 if args['centrality']:
                     subset_centralities = centralities[centralities['Group'] == x]
                     draw_centralities(subset_centralities, args['fp'] + '_' + x)
