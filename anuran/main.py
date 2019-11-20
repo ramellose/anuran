@@ -184,7 +184,7 @@ def set_anuran():
                              'calculate p-values for comparisons. \n'
                              'The available methods are listed in the docs for statsmodels.stats.multitest, \n'
                              'and include bonferroni, sidak, simes-hochberg, fdr_bh and others. ',
-                        choices=[False, True, 'bonferroni', 'sidak', 'holm-sidak', 'holm',
+                        choices=['True', 'bonferroni', 'sidak', 'holm-sidak', 'holm',
                                  'simes-hochberg', 'hommel', 'fdr_bh', 'fdr_by',
                                  'fdr_tsbh', 'fdr_tsbky'],
                         default=False)
@@ -316,6 +316,8 @@ def main():
             logger.error('Failed to subsample networks!', exc_info=True)
             exit()
     if args['stats']:
+        if args['stats'] == 'True':
+            args['stats'] = True
         # add code for pvalue estimation
         set_stats = compare_set_sizes(set_sizes, mc=args['stats'])
         set_stats.to_csv(args['fp'] + '_set_stats.csv')
