@@ -73,7 +73,7 @@ class TestMain(unittest.TestCase):
         """
         random = {x: {'random': [], 'core': {}} for x in networks}
         degree = {x: {'degree': [], 'core': {}} for x in networks}
-        results = generate_ci_frame(networks, random=random, degree=degree, fractions=None, prev=None)
+        results = generate_ci_frame(networks, random=random, degree=degree, fractions=None, prev=None, perm=3)
         totalnodes = np.sum([len(networks[x][0][1].nodes) for x in networks])
         self.assertEqual(len(results), totalnodes*3)
 

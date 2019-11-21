@@ -33,8 +33,9 @@ import logging.handlers
 import anuran
 from anuran.utils import _intersection, _construct_intersection
 from anuran.nulls import generate_null
-from anuran.sets import generate_sizes, generate_sample_sizes
-from anuran.draw import draw_sets, draw_samples, draw_centralities, draw_graphs
+from anuran.sets import generate_sizes, generate_sample_sizes, generate_size_differences
+from anuran.draw import draw_sets, draw_samples, draw_centralities, \
+    draw_graphs, draw_set_differences
 from anuran.centrality import generate_ci_frame
 from anuran.graphvals import generate_graph_frame
 from anuran.stats import compare_set_sizes, compare_centralities, compare_graph_properties, \
@@ -279,6 +280,8 @@ def main():
                                    fractions=args['cs'], prev=args['prev'],
                                    perm=args['nperm'], sizes=args['size'])
         set_sizes.to_csv(args['fp'] + '_sets.csv')
+        set_differences = generate_size_differences(set_sizes, sizes=args['size'])
+        set_differences.to_csv(args['fp'] + '_set_differences.csv')
         logger.info('Set sizes exported to: ' + args['fp'] + '_sets.csv')
     except Exception:
         logger.error('Failed to calculate set sizes!', exc_info=True)
@@ -344,6 +347,8 @@ def main():
             for x in networks:
                 subset_sizes = set_sizes[set_sizes['Group'] == x]
                 draw_sets(subset_sizes, args['fp'] + '_' + x)
+                subset_differences = set_differences[set_differences['Group'] == x]
+                draw_set_differences(subset_differences, args['fp'] + '_' + x)
                 if args['centrality']:
                     subset_centralities = centralities[centralities['Group'] == x]
                     draw_centralities(subset_centralities, args['fp'] + '_' + x)

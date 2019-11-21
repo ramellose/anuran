@@ -15,6 +15,7 @@ from scipy.special import binom
 import os
 import multiprocessing as mp
 from anuran.utils import _generate_rows
+from numpy import median
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -71,6 +72,72 @@ def generate_sizes(networks, random_models, degree_models, sign,
         for result in results:
             all_results = all_results.append(result, ignore_index=True)
     return all_results
+
+
+def generate_size_differences(data, sizes):
+    """
+    Since the intersections are nested,
+    e.g. a 0.9 intersection is always nested inside a 0.5 intersection,
+    we can divide the intersections over a range.
+    So if we have the 0.9 and the 1 intersection, we know what number
+    of edges belong to that range.
+
+    This function takes the dataframe from the generate_sizes function,
+    and calculates the intersections associated with the intervals.
+
+    For the null models, the median set size per interval is returned.
+
+    The input dataframe should have the following columns:
+    'Conserved fraction', 'Group', 'Network', 'Network type',
+    'Prevalence of conserved fraction', 'Samples', 'Set size', 'Set type',
+    'Set type (absolute)'
+
+    The returned dataframe only contains the intersection intervals.
+
+    :param data: Dictionary with permuted input networks without preserved degree distribution
+    :param sizes: Size of intersection to calculate. By default 1 (edge should be in all networks).
+    :return: Dataframe with intersection intervals
+    """
+    # Create empty pandas dataframe
+    intersection_differences = pd.DataFrame(columns=['Interval', 'Set size', 'Group',
+                                                     'Network'])
+    for x in set(data['Group']):
+        grouped_data = data[data['Group'] == x]
+        for name in set(grouped_data['Network']):
+            subdata = grouped_data[grouped_data['Network'] == name]
+            difference = subdata[subdata['Set type'].str.contains('Difference')]
+            subdata = subdata[subdata['Set type'].str.contains('Intersection')]
+            sizes.sort(reverse=True)
+            intersections = dict()
+            for i in range(len(sizes)):
+                interval_data = subdata[subdata['Set type'].str.contains(' ' + str(sizes[i]))]
+                intersections[sizes[i]] = median(interval_data['Set size'])
+            for i in range(len(sizes)):
+                if i == 0:
+                    # this is the interval up to 1
+                    intersection_differences = intersection_differences.append({'Interval': str(sizes[i]) +
+                                                                                '->' + str(1),
+                                                                                'Set size': intersections[sizes[i]],
+                                                                                'Group': x,
+                                                                                'Network': name},
+                                                                               ignore_index=True)
+                if i == len(sizes) - 1:
+                    # this is the interval up to 1
+                    intersection_differences = intersection_differences.append({'Interval': str(0) +
+                                                                                '->' + str(sizes[i]),
+                                                                                'Set size': median(difference['Set size']),
+                                                                                'Group': x,
+                                                                                'Network': name},
+                                                                               ignore_index=True)
+                else:
+                    intersection_differences = intersection_differences.append({'Interval': str(sizes[i-1]) +
+                                                                                '->' + str(sizes[i]),
+                                                                                'Set size': intersections[sizes[i-1]] -
+                                                                                intersections[sizes[i]],
+                                                                                'Group': x,
+                                                                                'Network': name},
+                                                                               ignore_index=True)
+    return intersection_differences
 
 
 def generate_sample_sizes(networks, random_models,

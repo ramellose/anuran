@@ -12,7 +12,7 @@ __license__ = 'Apache 2.0'
 import unittest
 import networkx as nx
 from anuran.nulls import generate_null
-from anuran.sets import generate_sizes, generate_sample_sizes
+from anuran.sets import generate_sizes, generate_sample_sizes, generate_size_differences
 from anuran.utils import _difference, _intersection, _generate_rows
 from scipy.special import binom
 import pandas as pd
@@ -155,6 +155,21 @@ class TestMain(unittest.TestCase):
             all_results = results.append(result, ignore_index=True)
         self.assertEqual(float(all_results[all_results['Set type'] ==
                                            'Intersection 1'].iloc[0]['Set type (absolute)']), 3.0)
+
+    def test_generate_size_differences(self):
+        """
+        Tests whether the size differences are returned correctly.
+        :return:
+        """
+        perm = 10
+        nperm = 10
+        new = {'a': [networks['a'][0], networks['a'][0], networks['b'][0]]}
+        random, degree = generate_null(new, core=2, n=perm)
+        results = generate_sizes(new, random_models=random, core=2,
+                                 degree_models=degree, prev=None, fractions=False,
+                                 perm=nperm, sizes=[0.6, 1], sign=True, set_operation=['difference', 'intersection'])
+        results = generate_size_differences(results, sizes=[0.6, 1])
+        self.assertEqual(results['Set size'].iloc[0], 4.0)
 
 
 if __name__ == '__main__':

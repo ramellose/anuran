@@ -36,6 +36,34 @@ def draw_sets(data, fp):
     fig.fig.clf()
 
 
+def draw_set_differences(data, fp):
+    """
+    This function accepts a pandas dataframe with 4 columns:
+    Interval, Set size, Group, Network.
+
+    The interval is the median for the null model networks.
+
+    The function writes a bar plot of the intervals to path.
+
+    :param data:
+    :param fp:
+    :return:
+    """
+    sns.set_style(style="whitegrid")
+    interval_dict = {}
+    for val in set(data['Interval']):
+        startnum = float(val.split('->')[0])
+        interval_dict[startnum] = val
+    keys = list(interval_dict.keys())
+    keys.sort(reverse=False)
+    order_intervals = [interval_dict[x] for x in keys]
+    fig = sns.catplot(x='Interval', y='Set size', col='Network', color='Gray',
+                      data=data, kind='bar', order=order_intervals)
+    fig.set_xticklabels(rotation=30)
+    fig.savefig(fp + "_setdifferences.png")
+    fig.fig.clf()
+
+
 def draw_centralities(data, fp):
     """
     This function accepts a pandas dataframe

@@ -79,7 +79,7 @@ class TestMain(unittest.TestCase):
         Given a pandas dataframe with centralities for different nodes in groups of networks,
         this function should return a dataframe with statistics on these centralities.
         """
-        centralities = generate_ci_frame(networks, random, degree, fractions=None, prev=None)
+        centralities = generate_ci_frame(networks, random, degree, fractions=None, prev=None, perm=10)
         results = compare_centralities(centralities, mc=None)
         otu_1 = results[results['Node'] == 'OTU_1']
         self.assertGreater(0.5, otu_1[otu_1['Comparison'] == 'Random']['P'].iloc[0])
@@ -89,7 +89,7 @@ class TestMain(unittest.TestCase):
         Given a pandas dataframe with graph properties for different nodes in groups of networks,
         this function should return a dataframe with statistics on these graph properties.
         """
-        graph_values = generate_graph_frame(networks, random, degree, fractions=None, core=None)
+        graph_values = generate_graph_frame(networks, random, degree, fractions=None, core=None, perm=10)
         # values are identical for most properties
         graph_values = graph_values[graph_values['Property'] == 'Assortativity']
         graph_values = graph_values[graph_values['Network'] != 'Degree']

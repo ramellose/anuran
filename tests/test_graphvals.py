@@ -71,7 +71,7 @@ class TestMain(unittest.TestCase):
         degree = {x: {'degree': [], 'core': {}} for x in networks}
         frame = generate_graph_frame(networks, random=random,
                                      degree=degree,
-                                     fractions=None, core=None)
+                                     fractions=None, core=None, perm=10)
         # check that length of dataframe is equal to the set of properties times
         # the number of networks
         self.assertEqual(len(frame), len(set(frame['Property']))*len(networks))

@@ -51,10 +51,10 @@ def generate_graph_frame(networks, random, degree, fractions, core, perm):
                                        networks=networks[x], fraction=None, prev=None)
         # construct the subsampled model sets nperm times
         for i in range(perm):
-            degreeperm = [sample(degree[x]['degree'][r], 1)[0] for r in range(len(networks[x]))]
+            degreeperm = [sample(degree[x]['degree'][r], 1)[0] for r in range(len(degree[x]['degree']))]
             results = _generate_graph_rows(name='Degree', data=results, group=group,
                                            networks=degreeperm, fraction=None, prev=None)
-            randomperm = [sample(random[x]['random'][r], 1)[0] for r in range(len(networks[x]))]
+            randomperm = [sample(random[x]['random'][r], 1)[0] for r in range(len(random[x]['random']))]
             results = _generate_graph_rows(name='Random', data=results, group=group,
                                            networks=randomperm, fraction=None, prev=None)
         if fractions:
