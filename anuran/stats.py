@@ -57,7 +57,7 @@ def correlate_centralities(group, centralities, mc):
                  'Measure': row['Centrality'],
                  'Spearman rho': rho,
                  'P': p}
-        statsframe = statsframe.append(stats, ignore_index=True)
+        statsframe = statsframe.append(stats, ignore_index=True, sort=False)
     # multiple testing correction
     if type(mc) == str and len(statsframe) > 0:
         # first separate statsframe
@@ -96,7 +96,7 @@ def correlate_graph_properties(group, graph_properties, mc):
                      'Measure': property,
                      'Spearman rho': rho,
                      'P': p}
-            statsframe = statsframe.append(stats, ignore_index=True)
+            statsframe = statsframe.append(stats, ignore_index=True, sort=False)
     # multiple testing correction
     if type(mc) == str and len(statsframe) > 0:
         # first separate statsframe
@@ -324,7 +324,7 @@ def _generate_stat_rows(data, group, comparison, operation, p, ptype, node=None)
                'P.type': ptype}
     if node:
         new_row['Node'] = node
-    data = data.append(new_row, ignore_index=True)
+    data = data.append(new_row, ignore_index=True, sort=False)
     return data
 
 
@@ -360,5 +360,5 @@ def _mc_correction(data, mc):
         subframe = data[data['Measure'] == property].copy()
         p_adjusted = multipletests(subframe['P'], method=mc)[1]
         subframe['P.adj'] = p_adjusted
-        newframe = newframe.append(subframe, ignore_index=True)
+        newframe = newframe.append(subframe, ignore_index=True, sort=False)
     return newframe

@@ -70,7 +70,7 @@ def generate_sizes(networks, random_models, degree_models, sign,
         results = pool.map(_generate_rows, combined_networks)
         pool.close()
         for result in results:
-            all_results = all_results.append(result, ignore_index=True)
+            all_results = all_results.append(result, ignore_index=True, sort=False)
     return all_results
 
 
@@ -120,7 +120,8 @@ def generate_size_differences(data, sizes):
                                                                                 'Set size': intersections[sizes[i]],
                                                                                 'Group': x,
                                                                                 'Network': name},
-                                                                               ignore_index=True)
+                                                                               ignore_index=True,
+                                                                               sort=False)
                 if i == len(sizes) - 1:
                     # this is the interval up to 1
                     intersection_differences = intersection_differences.append({'Interval': str(0) +
@@ -128,7 +129,8 @@ def generate_size_differences(data, sizes):
                                                                                 'Set size': median(difference['Set size']),
                                                                                 'Group': x,
                                                                                 'Network': name},
-                                                                               ignore_index=True)
+                                                                               ignore_index=True,
+                                                                               sort=False)
                 else:
                     intersection_differences = intersection_differences.append({'Interval': str(sizes[i-1]) +
                                                                                 '->' + str(sizes[i]),
@@ -136,7 +138,8 @@ def generate_size_differences(data, sizes):
                                                                                 intersections[sizes[i]],
                                                                                 'Group': x,
                                                                                 'Network': name},
-                                                                               ignore_index=True)
+                                                                               ignore_index=True,
+                                                                               sort=False)
     return intersection_differences
 
 

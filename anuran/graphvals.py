@@ -96,7 +96,8 @@ def _generate_graph_rows(data, name, group, networks, fraction, prev):
                                 'Prevalence of conserved fraction': prev,
                                 'Property': property,
                                 'Value': network[1]},
-                               ignore_index=True)
+                               ignore_index=True,
+                               sort=False)
     return data
 
 
