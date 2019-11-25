@@ -111,35 +111,38 @@ def generate_size_differences(data, sizes):
             intersections = dict()
             for i in range(len(sizes)):
                 interval_data = subdata[subdata['Set type'].str.contains(' ' + str(sizes[i]))]
-                intersections[sizes[i]] = median(interval_data['Set size'])
+                intersections[sizes[i]] = interval_data['Set size']
             for i in range(len(sizes)):
                 if i == 0:
                     # this is the interval up to 1
-                    intersection_differences = intersection_differences.append({'Interval': str(sizes[i]) +
-                                                                                '->' + str(1),
-                                                                                'Set size': intersections[sizes[i]],
-                                                                                'Group': x,
-                                                                                'Network': name},
-                                                                               ignore_index=True,
-                                                                               sort=False)
+                    for value in intersections[sizes[i]]:
+                        intersection_differences = intersection_differences.append({'Interval': str(sizes[i]) +
+                                                                                    '->' + str(1),
+                                                                                    'Set size': intersections[sizes[i]],
+                                                                                    'Group': x,
+                                                                                    'Network': name},
+                                                                                   ignore_index=True,
+                                                                                   sort=False)
                 elif i == len(sizes) - 1:
                     # this is the interval up to 1
-                    intersection_differences = intersection_differences.append({'Interval': str(0) +
-                                                                                '->' + str(sizes[i]),
-                                                                                'Set size': median(difference['Set size']),
-                                                                                'Group': x,
-                                                                                'Network': name},
-                                                                               ignore_index=True,
-                                                                               sort=False)
+                    for value in difference['Set size']:
+                        intersection_differences = intersection_differences.append({'Interval': str(0) +
+                                                                                    '->' + str(sizes[i]),
+                                                                                    'Set size': value,
+                                                                                    'Group': x,
+                                                                                    'Network': name},
+                                                                                   ignore_index=True,
+                                                                                   sort=False)
                 else:
-                    intersection_differences = intersection_differences.append({'Interval': str(sizes[i]) +
-                                                                                '->' + str(sizes[i-1]),
-                                                                                'Set size': intersections[sizes[i]] -
-                                                                                intersections[sizes[i-1]],
-                                                                                'Group': x,
-                                                                                'Network': name},
-                                                                               ignore_index=True,
-                                                                               sort=False)
+                    for k in len(intersections[sizes[i]]):
+                        intersection_differences = intersection_differences.append({'Interval': str(sizes[i]) +
+                                                                                    '->' + str(sizes[i-1]),
+                                                                                    'Set size': intersections[sizes[i]].iloc[k] -
+                                                                                    intersections[sizes[i-1]].iloc[k],
+                                                                                    'Group': x,
+                                                                                    'Network': name},
+                                                                                   ignore_index=True,
+                                                                                   sort=False)
     return intersection_differences
 
 
