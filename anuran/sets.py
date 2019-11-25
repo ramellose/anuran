@@ -112,7 +112,7 @@ def generate_size_differences(data, sizes):
             for i in range(len(sizes)):
                 interval_data = subdata[subdata['Set type'].str.contains(' ' + str(sizes[i]))]
                 intersections[sizes[i]] = median(interval_data['Set size'])
-            for i in range(len(sizes)):
+            for i in range(len(sizes)-1):
                 if i == 0:
                     # this is the interval up to 1
                     intersection_differences = intersection_differences.append({'Interval': str(sizes[i]) +
