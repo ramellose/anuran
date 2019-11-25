@@ -105,6 +105,9 @@ def generate_size_differences(data, sizes):
         grouped_data = data[data['Group'] == x]
         for name in set(grouped_data['Network']):
             subdata = grouped_data[grouped_data['Network'] == name]
+            networktype = subdata['Network type'].iloc[0]
+            frac = subdata['Conserved fraction'].iloc[0]
+            prev = subdata['Prevalence of conserved fraction'].iloc[0]
             difference = subdata[subdata['Set type'].str.contains('Difference')]
             subdata = subdata[subdata['Set type'].str.contains('Intersection')]
             sizes.sort(reverse=True)
@@ -120,9 +123,11 @@ def generate_size_differences(data, sizes):
                                                                                     '->' + str(1),
                                                                                     'Set size': value,
                                                                                     'Group': x,
-                                                                                    'Network': name},
-                                                                                   ignore_index=True,
-                                                                                   sort=False)
+                                                                                    'Network': name,
+                                                                                    'Network type': networktype,
+                                                                                    'Conserved fraction': frac,
+                                                                                    'Prevalence of conserved fraction': prev},
+                                                                                   ignore_index=True)
                 elif i == len(sizes) - 1:
                     # this is the interval up to 1
                     for value in difference['Set size']:
@@ -130,9 +135,11 @@ def generate_size_differences(data, sizes):
                                                                                     '->' + str(sizes[i]),
                                                                                     'Set size': value,
                                                                                     'Group': x,
-                                                                                    'Network': name},
-                                                                                   ignore_index=True,
-                                                                                   sort=False)
+                                                                                    'Network': name,
+                                                                                    'Network type': networktype,
+                                                                                    'Conserved fraction': frac,
+                                                                                    'Prevalence of conserved fraction': prev},
+                                                                                   ignore_index=True,)
                 else:
                     for k in range(len(intersections[sizes[i]])):
                         intersection_differences = intersection_differences.append({'Interval': str(sizes[i]) +
@@ -140,9 +147,11 @@ def generate_size_differences(data, sizes):
                                                                                     'Set size': intersections[sizes[i]].iloc[k] -
                                                                                     intersections[sizes[i-1]].iloc[k],
                                                                                     'Group': x,
-                                                                                    'Network': name},
-                                                                                   ignore_index=True,
-                                                                                   sort=False)
+                                                                                    'Network': name,
+                                                                                    'Network type': networktype,
+                                                                                    'Conserved fraction': frac,
+                                                                                    'Prevalence of conserved fraction': prev},
+                                                                                   ignore_index=True)
     return intersection_differences
 
 

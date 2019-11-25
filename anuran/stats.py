@@ -267,19 +267,23 @@ def compare_set_sizes(set_sizes, mc):
     :return: pandas dataframe with p-values for comparisons
     """
     statsframe = pd.DataFrame(columns=['Group', 'Comparison', 'Measure', 'P', 'P.type'])
+    if 'Set type' in set_sizes.columns:
+        property = 'Set type'
+    else:
+        property = 'Interval'
     # first do comparison to null models
     for group in set(set_sizes['Group']):
         groupset = set_sizes[set_sizes['Group'] == group]
         # split up set in input and null models
         orig = groupset[groupset['Network type'] == 'Input networks']
         nulls = groupset[groupset['Network type'] != 'Input networks']
-        for op in set(orig['Set type']):
-            size = orig[orig['Set type'] == op]['Set size'].iloc[0]
-            op_nulls = nulls[nulls['Set type'] == op]
+        for op in set(orig[property]):
+            size = orig[orig[property] == op]['Set size'].iloc[0]
+            op_nulls = nulls[nulls[property] == op]
             # we construct a value range from each network type
             for nulltype in set(op_nulls['Network']):
                 vals = op_nulls[op_nulls['Network'] == nulltype]['Set size']
-                if not any(nulls[nulls['Network'] == nulltype]['Conserved fraction']) and not np.all(vals == 0)\
+                if all(np.isnan(nulls[nulls['Network'] == nulltype]['Conserved fraction'])) and not np.all(vals == 0)\
                         and not np.all([elem == list(vals)[0] for elem in vals]):
                     # usually, core models do not follow a normal distribution
                     # hence, the normal test does not check models with a core
@@ -291,9 +295,6 @@ def compare_set_sizes(set_sizes, mc):
                         test = normaltest(vals)
                         if test[1] < 0.05:
                             logger.warning('The values do not appear to follow a normal distribution for: ' + nulltype)
-                if not any(nulls[nulls['Network'] == nulltype]['Conserved fraction']):
-                # positive control models hardly ever meet normal distribution,
-                # so tests are not carried out here
                     p = _value_outside_range(size, vals)
                     statsframe = _generate_stat_rows(statsframe, group=group, comparison=nulltype,
                                                      operation=op, p=p, ptype='Set sizes')
@@ -324,7 +325,7 @@ def _generate_stat_rows(data, group, comparison, operation, p, ptype, node=None)
                'P.type': ptype}
     if node:
         new_row['Node'] = node
-    data = data.append(new_row, ignore_index=True, sort=False)
+    data = data.append(new_row, ignore_index=True)
     return data
 
 
@@ -360,5 +361,5 @@ def _mc_correction(data, mc):
         subframe = data[data['Measure'] == property].copy()
         p_adjusted = multipletests(subframe['P'], method=mc)[1]
         subframe['P.adj'] = p_adjusted
-        newframe = newframe.append(subframe, ignore_index=True, sort=False)
+        newframe = newframe.append(subframe, ignore_index=True)
     return newframe

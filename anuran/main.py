@@ -324,6 +324,8 @@ def main():
         # add code for pvalue estimation
         set_stats = compare_set_sizes(set_sizes, mc=args['stats'])
         set_stats.to_csv(args['fp'] + '_set_stats.csv')
+        difference_stats = compare_set_sizes(set_differences, mc=args['stats'])
+        difference_stats.to_csv(args['fp'] + '_difference_stats.csv')
         if args['centrality']:
             central_stats = compare_centralities(centralities, mc=args['stats'])
             central_stats.to_csv(args['fp'] + '_centrality_stats.csv')
