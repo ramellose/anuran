@@ -134,7 +134,7 @@ def generate_size_differences(data, sizes):
                                                                                    ignore_index=True,
                                                                                    sort=False)
                 else:
-                    for k in len(intersections[sizes[i]]):
+                    for k in range(len(intersections[sizes[i]])):
                         intersection_differences = intersection_differences.append({'Interval': str(sizes[i]) +
                                                                                     '->' + str(sizes[i-1]),
                                                                                     'Set size': intersections[sizes[i]].iloc[k] -
