@@ -132,10 +132,10 @@ def generate_size_differences(data, sizes):
                                                                                ignore_index=True,
                                                                                sort=False)
                 else:
-                    intersection_differences = intersection_differences.append({'Interval': str(sizes[i-1]) +
-                                                                                '->' + str(sizes[i]),
+                    intersection_differences = intersection_differences.append({'Interval': str(sizes[i]) +
+                                                                                '->' + str(sizes[i-1]),
                                                                                 'Set size': intersections[sizes[i]] -
-                                                                                            intersections[sizes[i-1]],
+                                                                                intersections[sizes[i-1]],
                                                                                 'Group': x,
                                                                                 'Network': name},
                                                                                ignore_index=True,
