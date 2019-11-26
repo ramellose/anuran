@@ -172,7 +172,7 @@ def _generate_rows(values):
     except KeyError:
         logger.error('Could not unpack dictionary!', exc_info=True)
     full_name = name + ' networks'
-    if not type(fraction) == str:
+    if type(fraction) == str:
         name += ' size: ' + str(fraction) + ' prev:' + str(prev)
     data = list()
     if 'difference' in set_operation:
