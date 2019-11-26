@@ -283,7 +283,8 @@ def compare_set_sizes(set_sizes, mc):
             # we construct a value range from each network type
             for nulltype in set(op_nulls['Network']):
                 vals = op_nulls[op_nulls['Network'] == nulltype]['Set size']
-                if all(np.isnan(list(nulls[nulls['Network'] == nulltype]['Conserved fraction']))) and not np.all(vals == 0)\
+                if all(np.isnan([float(x) for x in nulls[nulls['Network'] == nulltype]['Conserved fraction']])) \
+                        and not np.all(vals == 0)\
                         and not np.all([elem == list(vals)[0] for elem in vals]):
                     # usually, core models do not follow a normal distribution
                     # hence, the normal test does not check models with a core
@@ -298,7 +299,7 @@ def compare_set_sizes(set_sizes, mc):
                     p = _value_outside_range(size, vals)
                     statsframe = _generate_stat_rows(statsframe, group=group, comparison=nulltype,
                                                      operation=op, p=p, ptype='Set sizes')
-    # multiple testing correction
+# multiple testing correction
     if type(mc) == str and len(statsframe) > 0:
         # first separate statsframe
         statsframe = _mc_correction(statsframe, mc)
