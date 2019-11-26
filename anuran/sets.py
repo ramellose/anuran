@@ -9,13 +9,13 @@ __license__ = 'Apache 2.0'
 
 import logging.handlers
 import pandas as pd
+import numpy as np
 import random
 from itertools import combinations
 from scipy.special import binom
 import os
 import multiprocessing as mp
 from anuran.utils import _generate_rows
-from numpy import median
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -70,7 +70,7 @@ def generate_sizes(networks, random_models, degree_models, sign,
         results = pool.map(_generate_rows, combined_networks)
         pool.close()
         for result in results:
-            all_results = all_results.append(result, ignore_index=True, sort=False)
+            all_results = all_results.append(result, ignore_index=True)
     return all_results
 
 
@@ -239,8 +239,8 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
                              'set operation': set_operation,
                              'sizes': sizes,
                              'sign': sign,
-                             'fraction': None,
-                             'prev': None})
+                             'fraction': np.nan,
+                             'prev': np.nan})
         subrandom = {'random': [random_models[group]['random'][y] for y in item]}
         subdegree = {'degree': [degree_models[group]['degree'][y] for y in item]}
         for j in range(perm):
@@ -251,8 +251,8 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
                                  'set operation': set_operation,
                                  'sizes': sizes,
                                  'sign': sign,
-                                 'fraction': None,
-                                 'prev': None})
+                                 'fraction': np.nan,
+                                 'prev': np.nan})
             randomperm = [random.sample(subrandom['random'][r], 1)[0] for r in range(len(subrandom['random']))]
             all_networks.append({'networks': randomperm,
                                  'name': 'Random',
@@ -260,8 +260,8 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
                                  'set operation': set_operation,
                                  'sizes': sizes,
                                  'sign': sign,
-                                 'fraction': None,
-                                 'prev': None})
+                                 'fraction': np.nan,
+                                 'prev': np.nan})
         subrandom['core'] = {}
         subdegree['core'] = {}
         if fractions:

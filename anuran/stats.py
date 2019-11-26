@@ -57,7 +57,7 @@ def correlate_centralities(group, centralities, mc):
                  'Measure': row['Centrality'],
                  'Spearman rho': rho,
                  'P': p}
-        statsframe = statsframe.append(stats, ignore_index=True, sort=False)
+        statsframe = statsframe.append(stats, ignore_index=True)
     # multiple testing correction
     if type(mc) == str and len(statsframe) > 0:
         # first separate statsframe
@@ -96,7 +96,7 @@ def correlate_graph_properties(group, graph_properties, mc):
                      'Measure': property,
                      'Spearman rho': rho,
                      'P': p}
-            statsframe = statsframe.append(stats, ignore_index=True, sort=False)
+            statsframe = statsframe.append(stats, ignore_index=True)
     # multiple testing correction
     if type(mc) == str and len(statsframe) > 0:
         # first separate statsframe
@@ -283,7 +283,7 @@ def compare_set_sizes(set_sizes, mc):
             # we construct a value range from each network type
             for nulltype in set(op_nulls['Network']):
                 vals = op_nulls[op_nulls['Network'] == nulltype]['Set size']
-                if all(np.isnan(nulls[nulls['Network'] == nulltype]['Conserved fraction'])) and not np.all(vals == 0)\
+                if all(np.isnan(list(nulls[nulls['Network'] == nulltype]['Conserved fraction']))) and not np.all(vals == 0)\
                         and not np.all([elem == list(vals)[0] for elem in vals]):
                     # usually, core models do not follow a normal distribution
                     # hence, the normal test does not check models with a core
