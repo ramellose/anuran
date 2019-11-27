@@ -48,15 +48,15 @@ def generate_graph_frame(networks, random, degree, fractions, core, perm):
     for x in networks:
         group = os.path.basename(x)
         results = _generate_graph_rows(name='Input', data=results, group=group,
-                                       networks=networks[x], fraction=None, prev=None)
+                                       networks=networks[x], fraction=None, prev=None, perm=None)
         # construct the subsampled model sets nperm times
         for i in range(perm):
             degreeperm = [sample(degree[x]['degree'][r], 1)[0] for r in range(len(degree[x]['degree']))]
             results = _generate_graph_rows(name='Degree', data=results, group=group,
-                                           networks=degreeperm, fraction=None, prev=None)
+                                           networks=degreeperm, fraction=None, prev=None, perm=i)
             randomperm = [sample(random[x]['random'][r], 1)[0] for r in range(len(random[x]['random']))]
             results = _generate_graph_rows(name='Random', data=results, group=group,
-                                           networks=randomperm, fraction=None, prev=None)
+                                           networks=randomperm, fraction=None, prev=None, perm=i)
         if fractions:
             for frac in fractions:
                 for c in core:
@@ -64,13 +64,13 @@ def generate_graph_frame(networks, random, degree, fractions, core, perm):
                         degreeperm = degree[x]['core'][frac][c][network]
                         randomperm = random[x]['core'][frac][c][network]
                         results = _generate_graph_rows(name='Degree', data=results, group=group,
-                                                       networks=degreeperm, fraction=frac, prev=c)
+                                                       networks=degreeperm, fraction=frac, prev=c, perm=None)
                         results = _generate_graph_rows(name='Random', data=results, group=group,
-                                                       networks=randomperm, fraction=frac, prev=c)
+                                                       networks=randomperm, fraction=frac, prev=c, perm=None)
     return results
 
 
-def _generate_graph_rows(data, name, group, networks, fraction, prev):
+def _generate_graph_rows(data, name, group, networks, fraction, prev, perm):
     """
     Generates Pandas rows with network measures for a list of networks.
 
@@ -80,6 +80,7 @@ def _generate_graph_rows(data, name, group, networks, fraction, prev):
     :param networks: List of NetworkX objects
     :param fraction: If a null model with core is provided, adds the core fraction to the row
     :param prev: If a null model with core is provided, adds the core prevalence to the row
+    :param perm: iteration of graph subsampling, necessary for permutation testing
     :return: Pandas dataframe with added rows
     """
     full_name = name + ' networks'
@@ -95,9 +96,9 @@ def _generate_graph_rows(data, name, group, networks, fraction, prev):
                                 'Conserved fraction': fraction,
                                 'Prevalence of conserved fraction': prev,
                                 'Property': property,
-                                'Value': network[1]},
-                               ignore_index=True,
-                               sort=False)
+                                'Value': network[1],
+                                'iteration': perm},
+                               ignore_index=True)
     return data
 
 

@@ -103,8 +103,7 @@ def _generate_ci_rows(data, name, group, networks, fraction, prev):
                                 'Lower limit': ci[node][0],
                                 'Values': [(x[0], _catch(x[1], node)) for
                                            x in properties[centrality] if _catch(x[1], node)]},
-                               ignore_index=True,
-                               sort=False)
+                               ignore_index=True)
     return data
 
 

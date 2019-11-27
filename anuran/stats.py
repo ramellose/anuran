@@ -139,19 +139,26 @@ def compare_centralities(centralities, mc):
             for nulltype in set(all_null_values['Network']):
                 null_values = all_null_values[all_null_values['Network'] == nulltype]
                 for node in orig_values['Node']:
-                    range_1 = [x for x in orig_values[orig_values['Node'] == node]['Values'].iloc[0] if x]
+                    range_1 = [x[1] for x in orig_values[orig_values['Node'] == node]['Values'].iloc[0] if x]
                     range_2 = list()
                     if len(null_values[null_values['Node'] == node]) > 0:
-                        range_2 = [x for x in null_values[null_values['Node'] == node]['Values'].iloc[0] if x]
+                        # there are nperm ranges for each node
+                        # since the randomized models are resampled n times
+                        # so we get a permutation statistic: number of permutations
+                        # with different centralities from null
+                        utest = list()
+                        for k in range(len(null_values[null_values['Node'] == node]['Values'])):
+                            range_2 = [x[1] for x in null_values[null_values['Node'] == node]['Values'].iloc[k] if x]
                         # nodes that are in original networks may not be in randomized networks
-                    if len(range_1) > 5 and len(range_2) > 5:
-                        # comparison is likely to return strange results if there are not enough observations
-                        # 5 is actually still too small but warning is in main.py
-                        with catch_warnings():
-                            simplefilter("ignore")
-                            p = mannwhitneyu(range_1, range_2)
+                            if len(range_1) > 5 and len(range_2) > 5:
+                                # comparison is likely to return strange results if there are not enough observations
+                                # 5 is actually still too small but warning is in main.py
+                                with catch_warnings():
+                                    simplefilter("ignore")
+                                    utest.append(mannwhitneyu(range_1, range_2)[1])
+                        p = 1 - (1/len(utest) * (len([x for x in utest if x < 0.01])))
                         statsframe = _generate_stat_rows(statsframe, node=node, group=group, comparison=nulltype,
-                                                         operation=op, p=p[1], ptype='Mann-Whitney')
+                                                         operation=op, p=p, ptype='Mann-Whitney')
     combos = combinations(set(centralities['Group']), 2)
     for combo in combos:
         group1 = centralities[centralities['Group'] == combo[0]]
@@ -163,6 +170,7 @@ def compare_centralities(centralities, mc):
             group2_values = group2[group2['Centrality'] == op]
             for node in group1_values['Node']:
                 range_1 = [x for x in group1_values[group1_values['Node'] == node]['Values'].iloc[0] if x]
+                # we only need to access iloc 0 since there is one range per group
                 range_2 = list()
                 if len(group2_values[group2_values['Node'] == node]) > 0:
                     range_2 = [x for x in group2_values[group2_values['Node'] == node]['Values'].iloc[0] if x]
@@ -210,15 +218,19 @@ def compare_graph_properties(graph_properties, mc):
             for nulltype in set(all_null_values['Network']):
                 null_values = all_null_values[all_null_values['Network'] == nulltype]
                 range_1 = [x for x in orig_values['Value'] if x]
-                range_2 = [x for x in null_values['Value'] if x]
-                if len(range_1) > 5 and len(range_2) > 5:
-                    # comparison is likely to return strange results if there are not enough observations
-                    # 5 is actually still too small but warning is in main.py
-                    with catch_warnings():
-                        simplefilter("ignore")
-                        p = mannwhitneyu(range_1, range_2)
-                    statsframe = _generate_stat_rows(statsframe, group=group, comparison=nulltype,
-                                                     operation=op, p=p[1], ptype='Mann-Whitney')
+                utest = list()
+                for perm in set(null_values['iteration']):
+                    permvalues = null_values[null_values['iteration'] == perm]
+                    range_2 = [x for x in permvalues['Value'] if x]
+                    if len(range_1) > 5 and len(range_2) > 5:
+                        # comparison is likely to return strange results if there are not enough observations
+                        # 5 is actually still too small but warning is in main.py
+                        with catch_warnings():
+                            simplefilter("ignore")
+                            utest.append(mannwhitneyu(range_1, range_2)[1])
+                p = 1 - (1 / len(utest) * (len([x for x in utest if x < 0.01])))
+                statsframe = _generate_stat_rows(statsframe, group=group, comparison=nulltype,
+                                                 operation=op, p=p[1], ptype='Mann-Whitney')
     combos = combinations(set(graph_properties['Group']), 2)
     for combo in combos:
         group1 = graph_properties[graph_properties['Group'] == combo[0]]
