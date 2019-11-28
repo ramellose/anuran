@@ -46,30 +46,35 @@ def generate_null(networks, n, core, fraction=False, prev=False):
     # firt generate list of network models that need to be generated
     all_models = list()
     for x in networks:
-        all_models.append({'networks': networks[x],
-                           'name': x,
-                           'fraction': None,
-                           'prev': None,
-                           'n': n,
-                           'mode': 'random'})
-        all_models.append({'networks': networks[x],
-                           'name': x,
-                           'fraction': None,
-                           'prev': None,
-                           'n': n,
-                           'mode': 'degree'})
+        for y in networks[x]:
+            all_models.append({'network': y,
+                               'networks': len(networks[x]),
+                               'name': x,
+                               'fraction': None,
+                               'prev': None,
+                               'n': n,
+                               'mode': 'random'})
+            all_models.append({'network': y,
+                               'networks': len(networks[x]),
+                               'name': x,
+                               'fraction': None,
+                               'prev': None,
+                               'n': n,
+                               'mode': 'degree'})
         if fraction:
             for frac in fraction:
                 all_results['random'][x]['core'][frac] = dict()
                 all_results['degree'][x]['core'][frac] = dict()
                 for p in prev:
-                    all_models.append({'networks': networks[x],
+                    all_models.append({'network': y,
+                                       'networks': len(networks[x]),
                                        'name': x,
                                        'fraction': frac,
                                        'prev': p,
                                        'n': n,
                                        'mode': 'random'})
-                    all_models.append({'networks': networks[x],
+                    all_models.append({'network': y,
+                                       'networks': len(networks[x]),
                                        'name': x,
                                        'fraction': frac,
                                        'prev': p,
@@ -80,7 +85,7 @@ def generate_null(networks, n, core, fraction=False, prev=False):
     results = pool.map(_generate_null_parallel, all_models)
     pool.close()
     for result in results:
-        if len(result[0]) == 3:
+        if len(result[0]) == 4:
             all_results[result[0][0]][result[0][1]][result[0][2]] = result[1]
         else:
             all_results[result[0][0]][result[0][1]][result[0][2]][result[0][3]][result[0][4]] = result[1]

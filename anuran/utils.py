@@ -30,6 +30,7 @@ def _generate_null_parallel(values):
     :return: Dictionaries containing null models
     """
     try:
+        network = values['network']
         networks = values['networks']
         name = values['name']
         fraction = values['fraction']
@@ -39,40 +40,37 @@ def _generate_null_parallel(values):
     except KeyError:
         logger.error('Could not unpack dictionary!', exc_info=True)
     nulls = list()
-    for i in range(len(networks)):
-        network = networks[i][1]
-        nulls.append(list())
-        if fraction:
-            # all null models need to preserve the same edges
-            keep = sample(network.edges, round(len(network.edges) * float(fraction)))
-            # create lists to distribute edges over according to core prevalence
-            keep_subsets = [[] for x in networks]
-            occurrence = round(float(prev) * len(networks))
-            for edge in keep:
-                indices = sample(range(len(networks)), occurrence)
-                for k in indices:
-                    keep_subsets[k].append(edge)
-            timeout = False
-            for j in range(len(networks)):
-                if mode == 'random':
-                    nulls[i].append((networks[i][0], _randomize_network(network, keep_subsets[j])))
-                elif mode == 'degree':
-                    deg = _randomize_dyads(network, keep_subsets[j], timeout=timeout)
-                    nulls[i].append((networks[i][0], deg[0]))
-                    timeout = deg[1]
-            if timeout:
-                logger.warning('Could not create good degree-preserving core models for network ' + str(i))
-        else:
-            timeout = False
-            for j in range(n):
-                if mode == 'random':
-                    nulls[i].append((networks[i][0], _randomize_network(network, keep=[])))
-                elif mode == 'degree':
-                    deg = _randomize_dyads(network, keep=[], timeout=timeout)
-                    nulls[i].append((networks[i][0], deg[0]))
-                    timeout = deg[1]
-            if timeout:
-                logger.warning('Could not create good degree-preserving models for network ' + str(i))
+    if fraction:
+        # all null models need to preserve the same edges
+        keep = sample(network.edges, round(len(network.edges) * float(fraction)))
+        # create lists to distribute edges over according to core prevalence
+        keep_subsets = [[] for x in networks]
+        occurrence = round(float(prev) * networks)
+        for edge in keep:
+            indices = sample(range(networks), occurrence)
+            for k in indices:
+                keep_subsets[k].append(edge)
+        timeout = False
+        for j in range(networks):
+            if mode == 'random':
+                nulls.append((network[0], _randomize_network(network[1], keep_subsets[j])))
+            elif mode == 'degree':
+                deg = _randomize_dyads(network[1], keep_subsets[j], timeout=timeout)
+                nulls.append((network[0], deg[0]))
+                timeout = deg[1]
+        if timeout:
+            logger.warning('Could not create good degree-preserving core models for network ' + str(i))
+    else:
+        timeout = False
+        for j in range(n):
+            if mode == 'random':
+                nulls.append((network[0], _randomize_network(network[1], keep=[])))
+            elif mode == 'degree':
+                deg = _randomize_dyads(network[1], keep=[], timeout=timeout)
+                nulls.append((network[0], deg[0]))
+                timeout = deg[1]
+        if timeout:
+            logger.warning('Could not create good degree-preserving models for network ' + network[0])
     # nested dict with a single entry can be combined into a dict after multiprocessing
     if fraction:
         params = (mode, name, 'core', fraction, prev)
