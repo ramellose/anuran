@@ -231,7 +231,7 @@ def compare_graph_properties(graph_properties, mc):
                             utest.append(mannwhitneyu(range_1, range_2)[1])
                 p = 1 - (1 / len(utest) * (len([x for x in utest if x < 0.01])))
                 statsframe = _generate_stat_rows(statsframe, group=group, comparison=nulltype,
-                                                 operation=op, p=p[1], ptype='Mann-Whitney')
+                                                 operation=op, p=p, ptype='Mann-Whitney')
     combos = combinations(set(graph_properties['Group']), 2)
     for combo in combos:
         group1 = graph_properties[graph_properties['Group'] == combo[0]]
