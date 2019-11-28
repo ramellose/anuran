@@ -68,7 +68,7 @@ def _generate_null_parallel(values):
                 if mode == 'random':
                     nulls[i].append((networks[i][0], _randomize_network(network, keep=[])))
                 elif mode == 'degree':
-                    deg = _randomize_dyads(network, keep=[])
+                    deg = _randomize_dyads(network, keep=[], timeout=timeout)
                     nulls[i].append((networks[i][0], deg[0]))
                     timeout = deg[1]
             if timeout:
