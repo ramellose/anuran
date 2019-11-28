@@ -156,9 +156,10 @@ def compare_centralities(centralities, mc):
                                 with catch_warnings():
                                     simplefilter("ignore")
                                     utest.append(mannwhitneyu(range_1, range_2)[1])
-                        p = 1 - (1/len(utest) * (len([x for x in utest if x < 0.01])))
-                        statsframe = _generate_stat_rows(statsframe, node=node, group=group, comparison=nulltype,
-                                                         operation=op, p=p, ptype='Mann-Whitney')
+                        if len(utest) > 0:
+                            p = 1 - (1/len(utest) * (len([x for x in utest if x < 0.01])))
+                            statsframe = _generate_stat_rows(statsframe, node=node, group=group, comparison=nulltype,
+                                                             operation=op, p=p, ptype='Mann-Whitney')
     combos = combinations(set(centralities['Group']), 2)
     for combo in combos:
         group1 = centralities[centralities['Group'] == combo[0]]
