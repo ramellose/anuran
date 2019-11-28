@@ -52,17 +52,27 @@ def _generate_null_parallel(values):
                 indices = sample(range(len(networks)), occurrence)
                 for k in indices:
                     keep_subsets[k].append(edge)
+            timeout = False
             for j in range(len(networks)):
                 if mode == 'random':
                     nulls[i].append((networks[i][0], _randomize_network(network, keep_subsets[j])))
                 elif mode == 'degree':
-                    nulls[i].append((networks[i][0], _randomize_dyads(network, keep_subsets[j])))
+                    deg = _randomize_dyads(network, keep_subsets[j], timeout=timeout)
+                    nulls[i].append((networks[i][0], deg[0]))
+                    timeout = deg[1]
+            if timeout:
+                logger.warning('Could not create good degree-preserving models for network ' + str(i))
         else:
+            timeout = False
             for j in range(n):
                 if mode == 'random':
                     nulls[i].append((networks[i][0], _randomize_network(network, keep=[])))
                 elif mode == 'degree':
-                    nulls[i].append((networks[i][0], _randomize_dyads(network, keep=[])))
+                    deg = _randomize_dyads(network, keep=[])
+                    nulls[i].append((networks[i][0], deg[0]))
+                    timeout = deg[1]
+            if timeout:
+                logger.warning('Could not create good degree-preserving models for network ' + str(i))
     # nested dict with a single entry can be combined into a dict after multiprocessing
     if fraction:
         params = (mode, name, 'core', fraction, prev)
@@ -101,13 +111,14 @@ def _randomize_network(network, keep):
     return null
 
 
-def _randomize_dyads(network, keep):
+def _randomize_dyads(network, keep, timeout):
     """
     This function returns a network with the same nodes and edge number as the input network.
     Each edge is swapped rather than moved, so the degree distribution is preserved.
 
     :param network: NetworkX object
     :param keep: List of conserved edges
+    :param timeout: If true, previous iterations of this function timed out.
     :return: Randomized network with preserved degree distribution
     """
     null = nx.Graph().to_undirected()
@@ -118,15 +129,20 @@ def _randomize_dyads(network, keep):
     # this should usually fully randomize the network
     swaps = 2 * len(network.edges)
     # creates a list of lists with each of the sublists containing nodes with same degree
+    # if the previous iteration produced a timeout,
+    # maxcount is reduced to 10 to speed up computation
+    if timeout:
+        maxcount = 10
+    else:
+        maxcount = 100
     timeout = False
     for swap in range(swaps):
         success = False
         count = 0
         while not success and not timeout:
             # samples a set of nodes with swappable edges
-            if count > 100:
+            if count > maxcount:
                 timeout = True
-                logger.warning('Could not create good degree-preserving models!')
             dyad = sample(null.edges, 2)
             # samples two nodes that could have edges swapped
             if (dyad[0][0], dyad[1][0]) in null.edges:
@@ -148,7 +164,7 @@ def _randomize_dyads(network, keep):
                 null.remove_edge(dyad[0][0], dyad[0][1])
                 null.remove_edge(dyad[1][0], dyad[1][1])
                 success = True
-    return null
+    return null, timeout
 
 
 def _generate_rows(values):
