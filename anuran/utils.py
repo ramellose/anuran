@@ -128,11 +128,11 @@ def _randomize_dyads(network, keep, timeout):
     swaps = 2 * len(network.edges)
     # creates a list of lists with each of the sublists containing nodes with same degree
     # if the previous iteration produced a timeout,
-    # maxcount is reduced to 10 to speed up computation
+    # maxcount is reduced to 100 to speed up computation
     if timeout:
-        maxcount = 10
-    else:
         maxcount = 100
+    else:
+        maxcount = 10000000 # large number, but should allow deg model
     timeout = False
     for swap in range(swaps):
         success = False
