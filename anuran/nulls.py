@@ -61,27 +61,27 @@ def generate_null(networks, n, core, fraction=False, prev=False):
                                'prev': None,
                                'n': n,
                                'mode': 'degree'})
-        if fraction:
-            for frac in fraction:
-                all_results['random'][x]['core'][frac] = dict()
-                all_results['degree'][x]['core'][frac] = dict()
-                for p in prev:
-                    all_results['random'][x]['core'][frac][p] = list()
-                    all_results['degree'][x]['core'][frac][p] = list()
-                    all_models.append({'network': y,
-                                       'networks': len(networks[x]),
-                                       'name': x,
-                                       'fraction': frac,
-                                       'prev': p,
-                                       'n': n,
-                                       'mode': 'random'})
-                    all_models.append({'network': y,
-                                       'networks': len(networks[x]),
-                                       'name': x,
-                                       'fraction': frac,
-                                       'prev': p,
-                                       'n': n,
-                                       'mode': 'degree'})
+            if fraction:
+                for frac in fraction:
+                    all_results['random'][x]['core'][frac] = dict()
+                    all_results['degree'][x]['core'][frac] = dict()
+                    for p in prev:
+                        all_results['random'][x]['core'][frac][p] = list()
+                        all_results['degree'][x]['core'][frac][p] = list()
+                        all_models.append({'network': y,
+                                           'networks': len(networks[x]),
+                                           'name': x,
+                                           'fraction': frac,
+                                           'prev': p,
+                                           'n': n,
+                                           'mode': 'random'})
+                        all_models.append({'network': y,
+                                           'networks': len(networks[x]),
+                                           'name': x,
+                                           'fraction': frac,
+                                           'prev': p,
+                                           'n': n,
+                                           'mode': 'degree'})
     # run size inference in parallel
     pool = mp.Pool(core)
     results = pool.map(_generate_null_parallel, all_models)
