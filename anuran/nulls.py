@@ -85,7 +85,7 @@ def generate_null(networks, n, core, fraction=False, prev=False):
     results = pool.map(_generate_null_parallel, all_models)
     pool.close()
     for result in results:
-        if len(result[0]) == 4:
+        if len(result[0]) == 3:
             all_results[result[0][0]][result[0][1]][result[0][2]] = result[1]
         else:
             all_results[result[0][0]][result[0][1]][result[0][2]][result[0][3]][result[0][4]] = result[1]
