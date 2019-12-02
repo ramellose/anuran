@@ -66,6 +66,8 @@ def generate_null(networks, n, core, fraction=False, prev=False):
                 all_results['random'][x]['core'][frac] = dict()
                 all_results['degree'][x]['core'][frac] = dict()
                 for p in prev:
+                    all_results['random'][x]['core'][frac][p] = list()
+                    all_results['degree'][x]['core'][frac][p] = list()
                     all_models.append({'network': y,
                                        'networks': len(networks[x]),
                                        'name': x,
@@ -86,9 +88,11 @@ def generate_null(networks, n, core, fraction=False, prev=False):
     pool.close()
     for result in results:
         if len(result[0]) == 3:
-            all_results[result[0][0]][result[0][1]][result[0][2]] = result[1]
+            # dict: null model, group name, null type
+            all_results[result[0][0]][result[0][1]][result[0][2]].append(result[1])
         else:
-            all_results[result[0][0]][result[0][1]][result[0][2]][result[0][3]][result[0][4]] = result[1]
+            # dict: null model, group name, null type, frac, prev
+            all_results[result[0][0]][result[0][1]][result[0][2]][result[0][3]][result[0][4]].append(result[1])
     return all_results['random'], all_results['degree']
 
 
