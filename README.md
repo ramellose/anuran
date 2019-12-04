@@ -13,6 +13,19 @@ This version is still in early alpha and has been tested for Python 3.6.
 
 ## Getting Started
 
+First set up a [virtual environment](https://docs.python-guide.org/dev/virtualenvs/):
+```
+virtualenv venv
+# Linux
+source venv/bin/activate
+
+# Windows
+venv/Scripts/activate
+
+# Once you are done with anuran:
+deactivate
+```
+
 To install _anuran_, run:
 ```
 pip install git+https://github.com/ramellose/anuran.git
