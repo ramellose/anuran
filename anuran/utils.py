@@ -59,7 +59,7 @@ def _generate_null_parallel(values):
                 nulls.append((network[0], deg[0]))
                 timeout = deg[1]
         if timeout:
-            logger.warning('Could not create good degree-preserving core models for network ' + str(i))
+            logger.warning('Could not create good degree-preserving core models for network ' + str(j))
     else:
         timeout = False
         for j in range(n):
