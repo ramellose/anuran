@@ -55,7 +55,7 @@ def generate_sizes(networks, random_models, degree_models, sign,
     # Create empty pandas dataframe
     all_results = pd.DataFrame(columns=['Network', 'Group', 'Network type', 'Conserved fraction',
                                         'Prevalence of conserved fraction',
-                                        'Set type', 'Set size', 'Set type (absolute)', 'iteration'])
+                                        'Set type', 'Set size', 'Set type (absolute)'])
     for x in networks:
         if combos:
             c = combos[x]
@@ -240,8 +240,7 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
                              'sizes': sizes,
                              'sign': sign,
                              'fraction': np.nan,
-                             'prev': np.nan,
-                             'iteration': None})
+                             'prev': np.nan})
         subrandom = {'random': [random_models[group]['random'][y] for y in item]}
         subdegree = {'degree': [degree_models[group]['degree'][y] for y in item]}
         for j in range(perm):
@@ -253,8 +252,7 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
                                  'sizes': sizes,
                                  'sign': sign,
                                  'fraction': np.nan,
-                                 'prev': np.nan,
-                                 'iteration': j})
+                                 'prev': np.nan})
             randomperm = [random.sample(subrandom['random'][r], 1)[0] for r in range(len(subrandom['random']))]
             all_networks.append({'networks': randomperm,
                                  'name': 'Random',
@@ -263,8 +261,7 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
                                  'sizes': sizes,
                                  'sign': sign,
                                  'fraction': np.nan,
-                                 'prev': np.nan,
-                                 'iteration': j})
+                                 'prev': np.nan})
         subrandom['core'] = {}
         subdegree['core'] = {}
         if fractions:
@@ -283,8 +280,7 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
                                              'sizes': sizes,
                                              'sign': sign,
                                              'fraction': frac,
-                                             'prev': c,
-                                             'iteration': None})
+                                             'prev': c})
                         randomperm = [random_models[group]['core'][frac][c][n][y] for y in item]
                         all_networks.append({'networks': randomperm,
                                              'name': 'Random',
@@ -293,8 +289,7 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
                                              'sizes': sizes,
                                              'sign': sign,
                                              'fraction': frac,
-                                             'prev': c,
-                                             'iteration': None})
+                                             'prev': c})
     return all_networks
 
 

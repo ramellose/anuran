@@ -183,7 +183,6 @@ def _generate_rows(values):
         prev = values['prev']
         sign = values['sign']
         sizes = values['sizes']
-        iter = values['iteration']
     except KeyError:
         logger.error('Could not unpack dictionary!', exc_info=True)
     full_name = name + ' networks'
@@ -199,8 +198,7 @@ def _generate_rows(values):
                      'Set type': 'Difference',
                      'Set size': _difference(networks, sign),
                      'Set type (absolute)': None,
-                     'Samples': len(networks),
-                     'iteration': iter})
+                     'Samples': len(networks)})
     if 'intersection' in set_operation:
         for size in sizes:
             data.append({'Network': name,
@@ -211,8 +209,7 @@ def _generate_rows(values):
                          'Set type': 'Intersection ' + str(size),
                          'Set size': _intersection(networks, float(size), sign),
                          'Set type (absolute)': str(len(networks) * float(size)),
-                         'Samples': len(networks),
-                         'iteration': iter})
+                         'Samples': len(networks)})
     return data
 
 
