@@ -93,7 +93,7 @@ class TestMain(unittest.TestCase):
                                       'Prevalence of conserved fraction',
                                       'Property', 'Value'])
         frame = _generate_graph_rows(data=frame, name='test', group='a',
-                                     networks=networks['a'], fraction=None, prev=None)
+                                     networks=networks['a'], fraction=None, prev=None, perm=3)
         self.assertEqual(len(frame), 5)
 
 

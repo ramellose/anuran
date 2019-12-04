@@ -129,7 +129,8 @@ def _randomize_dyads(network, keep, timeout):
     # creates a list of lists with each of the sublists containing nodes with same degree
     # if the previous iteration produced a timeout,
     # maxcount is reduced to 100 to speed up computation
-    if timeout:
+    # for very small networks, the number of tries is also reduced
+    if timeout or len(null) < 100:
         maxcount = 100
     else:
         maxcount = 10000000 # large number, but should allow deg model
