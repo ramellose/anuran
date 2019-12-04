@@ -169,6 +169,8 @@ class TestMain(unittest.TestCase):
                                  degree_models=degree, prev=None, fractions=False,
                                  perm=nperm, sizes=[0.6, 1], sign=True, set_operation=['difference', 'intersection'])
         results = generate_size_differences(results, sizes=[0.6, 1])
+        results = results[results['Network'] == 'Input']
+        results = results[results['Interval'] == '1->1']
         self.assertEqual(results['Set size'].iloc[0], 4.0)
 
 

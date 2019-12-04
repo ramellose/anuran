@@ -101,9 +101,9 @@ class TestMain(unittest.TestCase):
         """
         Checks whether a network with swapped dyads is returned.
         """
-        random = _randomize_dyads(a, keep=[])
+        random = _randomize_dyads(a, keep=[], timeout=False)
         orig_deg = np.sort(nx.degree(a))
-        new_deg = np.sort(nx.degree(random))
+        new_deg = np.sort(nx.degree(random[0]))
         self.assertTrue((orig_deg == new_deg).all())
 
     def test_generate_core_random(self):
