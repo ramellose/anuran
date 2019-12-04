@@ -40,9 +40,9 @@ For example, _anuran_ will save a csv file to anuran_demo_sets.csv with the comm
 anuran -i demo -o C://Documents//anuran_demo -draw -perm 10 -nperm 10
 ```
 
-The demo data for _anuran_ was downloaded from the following publication:
+The demo data for _anuran_ was downloaded from the following publication: <br />
 Meyer, K. M., Memiaghe, H., Korte, L., Kenfack, D., Alonso, A., & Bohannan, B. J. (2018).
-Why do microbes exhibit weak biogeographic patterns?. The ISME journal, 12(6), 1404.
+Why do microbes exhibit weak biogeographic patterns?. The ISME journal, 12(6), 1404. <br />
 For a more elaborate demo analysis, please check out [the vignette](https://ramellose.github.io/anuran/demo_anuran.html).
 
 To run the script, only two arguments are required: input and output filepaths.
