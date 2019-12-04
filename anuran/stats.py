@@ -313,7 +313,7 @@ def compare_set_sizes(set_sizes, mc):
                     p = _value_outside_range(size, vals)
                     statsframe = _generate_stat_rows(statsframe, group=group, comparison=nulltype,
                                                      operation=op, p=p, ptype='Set sizes')
-# multiple testing correction
+    # multiple testing correction
     if type(mc) == str and len(statsframe) > 0:
         # first separate statsframe
         statsframe = _mc_correction(statsframe, mc)
