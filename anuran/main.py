@@ -216,7 +216,7 @@ def main():
         logger.info('Please give an input location.')
     if not args['fp']:
         logger.info('No file path given, writing to current directory.')
-        args['fp'] = os.getcwd()
+        args['fp'] = os.getcwd() + '/'
     if args['graph'] != ['demo']:
         networks = {os.path.basename(x): list() for x in args['graph']}
         new_graph = []
