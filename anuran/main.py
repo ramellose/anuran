@@ -218,13 +218,18 @@ def main():
         logger.info('No file path given, writing to current directory.')
         args['fp'] = os.getcwd()
     if args['graph'] != ['demo']:
-        if not os.path.isdir(args['graph']):
-            if os.path.isdir(os.getcwd() + '/' + args['graph']):
-                args['graph'] = os.getcwd() + '/' + args['graph']
-            else:
-                logger.error('Could not find the specified directory. Is your file path correct?')
-                exit()
         networks = {os.path.basename(x): list() for x in args['graph']}
+        new_graph = []
+        for location in args['graph']:
+            if not os.path.isdir(location):
+                if os.path.isdir(os.getcwd() + '/' + location):
+                    new_graph.append(os.getcwd() + '/' + location)
+                else:
+                    logger.error('Could not find the specified directory. Is your file path correct?')
+                    exit()
+            else:
+                new_graph.append(location)
+        args['graph'] = new_graph
         # code for importing from multiple folders
         for location in args['graph']:
             files = [f for f in glob.glob(location + "**/*.graphml", recursive=True)]
