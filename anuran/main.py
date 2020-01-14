@@ -214,7 +214,16 @@ def main():
         exit(0)
     if not args['graph']:
         logger.info('Please give an input location.')
+    if not args['fp']:
+        logger.info('No file path given, writing to current directory.')
+        args['fp'] = os.getcwd()
     if args['graph'] != ['demo']:
+        if not os.path.isdir(args['graph']):
+            if os.path.isdir(os.getcwd() + '/' + args['graph']):
+                args['graph'] = os.getcwd() + '/' + args['graph']
+            else:
+                logger.error('Could not find the specified directory. Is your file path correct?')
+                exit()
         networks = {os.path.basename(x): list() for x in args['graph']}
         # code for importing from multiple folders
         for location in args['graph']:
