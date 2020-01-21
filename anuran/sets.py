@@ -140,6 +140,16 @@ def generate_size_differences(data, sizes):
                                                                                     'Conserved fraction': frac,
                                                                                     'Prevalence of conserved fraction': prev},
                                                                                    ignore_index=True,)
+                    for value in intersections[sizes[i]]:
+                        intersection_differences = intersection_differences.append({'Interval': str(sizes[i]) +
+                                                                                    '->' + str(sizes[i-1]),
+                                                                                    'Set size': value,
+                                                                                    'Group': x,
+                                                                                    'Network': name,
+                                                                                    'Network type': networktype,
+                                                                                    'Conserved fraction': frac,
+                                                                                    'Prevalence of conserved fraction': prev},
+                                                                                   ignore_index=True)
                 else:
                     for k in range(len(intersections[sizes[i]])):
                         intersection_differences = intersection_differences.append({'Interval': str(sizes[i]) +
