@@ -2,6 +2,7 @@
 Toolbox for identification of non-random associations
 
 [![Build Status](https://travis-ci.com/ramellose/anuran.svg?token=9mhqeTh13MErxyrk5zR8&branch=master)](https://travis-ci.com/ramellose/anuran)
+[![HitCount](http://hits.dwyl.com/ramellose/anuran.svg)](http://hits.dwyl.com/ramellose/anuran)
 
 This toolbox is intended to identify conserved or unique patterns across multiple networks.
 While carrying out set operations on such networks can help you find such associations,
