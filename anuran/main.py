@@ -266,6 +266,18 @@ def main():
                            'to generate robust tests for centralities or set sizes. \n'
                            'Suppressing warnings, but please be careful with the statistics! \n'
                            'Preferably use groups with at least 20 networks. ')
+    model_calcs(networks, args)
+    logger.info('anuran completed all tasks.')
+    exit(0)
+
+
+def model_calcs(networks, args):
+    """
+    Function for generating null models and carrying out calculations.
+    :param networks: Dictionary with folder name as key and values as tuples (name, network object).
+    :param args: Settings for running anuran
+    :return:
+    """
     # export intersections
     for size in args['size']:
         for group in networks:
@@ -369,8 +381,6 @@ def main():
         except Exception:
             logger.error('Could not draw data!', exc_info=True)
             exit()
-    logger.info('anuran completed all tasks.')
-    exit(0)
 
 
 if __name__ == '__main__':
