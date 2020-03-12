@@ -179,7 +179,6 @@ def _generate_rows(values):
         name = values['name']
         networks = values['networks']
         group = values['group']
-        set_operation = values['set operation']
         fraction = values['fraction']
         prev = values['prev']
         sign = values['sign']

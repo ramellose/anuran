@@ -102,7 +102,7 @@ class TestMain(unittest.TestCase):
         this function should return a dataframe with statistics on these set sizes.
         """
         set_values = generate_sizes(networks, random, degree, fractions=None, prev=None, core=2,
-                                    sign=True, perm=10, sizes=[0.6, 1], set_operation=['difference', 'intersection'])
+                                    sign=True, perm=10, sizes=[0.6, 1])
         results = compare_set_sizes(set_values, mc=None)
         results = results[results['Comparison'] == 'Random']
         results = results[results['Measure'] == 'Intersection 0.6']
@@ -113,7 +113,7 @@ class TestMain(unittest.TestCase):
         Given a pandas dataframe with results, this function should add a row.
         """
         set_values = generate_sizes(networks, random, degree, fractions=None, prev=None, core=2,
-                                    sign=True, perm=10, sizes=[0.6, 1], set_operation=['difference', 'intersection'])
+                                    sign=True, perm=10, sizes=[0.6, 1])
         results = compare_set_sizes(set_values, mc=None)
         new_results = _generate_stat_rows(results, group='b', comparison='test',
                                           operation='test', p='0.05', ptype='test', node=None)
