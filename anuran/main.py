@@ -76,14 +76,6 @@ def set_anuran():
                         dest='fp',
                         help='Output filename. Specify full file path without extension.',
                         default=None, required=False)
-    parser.add_argument('-set', '--set_type',
-                        dest='set',
-                        required=False,
-                        help='Types of sets to compare. \n'
-                             'By default, both the difference and intersection are calculated.',
-                        choices=['difference', 'intersection'],
-                        nargs='+',
-                        default=['difference', 'intersection'])
     parser.add_argument('-size', '--intersection_size',
                         dest='size',
                         required=False,
@@ -290,7 +282,7 @@ def main():
     set_sizes = None
     try:
         set_sizes = generate_sizes(networks, random, degree, core=args['core'],
-                                   sign=args['sign'], set_operation=args['set'],
+                                   sign=args['sign'],
                                    fractions=args['cs'], prev=args['prev'],
                                    perm=args['nperm'], sizes=args['size'])
         set_sizes.to_csv(args['fp'] + '_sets.csv')
@@ -324,7 +316,7 @@ def main():
     if args['sample']:
         try:
             samples = generate_sample_sizes(networks, random, degree,
-                                            sign=args['sign'], set_operation=args['set'], core=args['core'],
+                                            sign=args['sign'], core=args['core'],
                                             fractions=args['cs'], perm=args['nperm'], prev=args['prev'],
                                             sizes=args['size'], limit=args['sample'], number=args['number'])
             samples.to_csv(args['fp'] + '_subsampled_sets.csv')

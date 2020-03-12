@@ -190,27 +190,25 @@ def _generate_rows(values):
     if type(fraction) == str:
         name += ' size: ' + str(fraction) + ' prev:' + str(prev)
     data = list()
-    if 'difference' in set_operation:
+    data.append({'Network': name,
+                 'Group': group,
+                 'Network type': full_name,
+                 'Conserved fraction': fraction,
+                 'Prevalence of conserved fraction': prev,
+                 'Set type': 'Difference',
+                 'Set size': _difference(networks, sign),
+                 'Set type (absolute)': None,
+                 'Samples': len(networks)})
+    for size in sizes:
         data.append({'Network': name,
                      'Group': group,
                      'Network type': full_name,
                      'Conserved fraction': fraction,
                      'Prevalence of conserved fraction': prev,
-                     'Set type': 'Difference',
-                     'Set size': _difference(networks, sign),
-                     'Set type (absolute)': None,
+                     'Set type': 'Intersection ' + str(size),
+                     'Set size': _intersection(networks, float(size), sign),
+                     'Set type (absolute)': str(len(networks) * float(size)),
                      'Samples': len(networks)})
-    if 'intersection' in set_operation:
-        for size in sizes:
-            data.append({'Network': name,
-                         'Group': group,
-                         'Network type': full_name,
-                         'Conserved fraction': fraction,
-                         'Prevalence of conserved fraction': prev,
-                         'Set type': 'Intersection ' + str(size),
-                         'Set size': _intersection(networks, float(size), sign),
-                         'Set type (absolute)': str(len(networks) * float(size)),
-                         'Samples': len(networks)})
     return data
 
 

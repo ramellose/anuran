@@ -22,7 +22,7 @@ logger.setLevel(logging.INFO)
 
 
 def generate_sizes(networks, random_models, degree_models, sign,
-                   set_operation, core, fractions, prev, perm, sizes, combos=None):
+                   core, fractions, prev, perm, sizes, combos=None):
     """
     This function carries out set operations on all networks provided in
     the network, random and degree lists.
@@ -43,7 +43,6 @@ def generate_sizes(networks, random_models, degree_models, sign,
     :param random_models: Dictionary with permuted input networks without preserved degree distribution
     :param degree_models: Dictionary with permuted input networks with preserved degree distribution
     :param sign: If true, sets take sign information into account.
-    :param set_operation: Type of set operation to carry outo
     :param core: Number of processor cores
     :param fractions: List with fractions of shared interactions
     :param prev: List with prevalence of shared interactions
@@ -64,7 +63,7 @@ def generate_sizes(networks, random_models, degree_models, sign,
         combined_networks = _sample_combinations(combos=c, networks=networks,
                                                  random_models=random_models, degree_models=degree_models,
                                                  group=x, fractions=fractions, prev=prev, perm=perm, sign=sign,
-                                                 set_operation=set_operation, sizes=sizes)
+                                                 sizes=sizes)
         # run size inference in parallel
         pool = mp.Pool(core)
         results = pool.map(_generate_rows, combined_networks)
@@ -167,7 +166,7 @@ def generate_size_differences(data, sizes):
 
 def generate_sample_sizes(networks, random_models,
                           degree_models, sign,
-                          set_operation, core, fractions, prev, perm, sizes, limit, number):
+                          core, fractions, prev, perm, sizes, limit, number):
     """
     This function wraps the the generate_sizes function
     but it only gives a random subset of the input networks and null models.
@@ -177,7 +176,6 @@ def generate_sample_sizes(networks, random_models,
     :param random_models: List of permuted input networks without preserved degree distribution
     :param degree_models: List of permuted input networks with preserved degree distribution
     :param sign: If true, sets take sign information into account.
-    :param set_operation: Type of set operation to carry out
     :param core: Number of processor cores
     :param fractions: List with fractions of shared interactions
     :param prev: List with prevalence of shared interactions
@@ -214,12 +212,12 @@ def generate_sample_sizes(networks, random_models,
                     combos.append(random.sample(range(len(networks[x])), i))
             all_combinations[x].extend(combos)
     results = generate_sizes(networks=networks, random_models=random_models, degree_models=degree_models, sign=sign,
-                             set_operation=set_operation, core=core, fractions=fractions,
+                             core=core, fractions=fractions,
                              prev=prev, perm=perm, sizes=sizes, combos=all_combinations)
     return results
 
 
-def _sample_combinations(networks, random_models, degree_models, group, fractions, prev, perm, sign, set_operation, sizes, combos=None):
+def _sample_combinations(networks, random_models, degree_models, group, fractions, prev, perm, sign, sizes, combos=None):
     """
     This function generates an iterable containing all information required
     to add new rows to a pandas dataframe.
@@ -234,7 +232,6 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
     :param prev: Prevalence of core
     :param perm: Number of sets to take from null models
     :param sign: If true, sets take sign information into account.
-    :param set_operation: Type of set operation to carry out
     :param sizes: Size of intersection to calculate. By default 1 (edge should be in all networks).
     :return:
     """
@@ -246,7 +243,6 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
         all_networks.append({'networks': subnetworks,
                              'name': 'Input',
                              'group': group,
-                             'set operation': set_operation,
                              'sizes': sizes,
                              'sign': sign,
                              'fraction': np.nan,
@@ -258,7 +254,6 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
             all_networks.append({'networks': degreeperm,
                                  'name': 'Degree',
                                  'group': os.path.basename(group),
-                                 'set operation': set_operation,
                                  'sizes': sizes,
                                  'sign': sign,
                                  'fraction': np.nan,
@@ -267,7 +262,6 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
             all_networks.append({'networks': randomperm,
                                  'name': 'Random',
                                  'group': group,
-                                 'set operation': set_operation,
                                  'sizes': sizes,
                                  'sign': sign,
                                  'fraction': np.nan,
@@ -286,7 +280,6 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
                         all_networks.append({'networks': degreeperm,
                                              'name': 'Degree',
                                              'group': group,
-                                             'set operation': set_operation,
                                              'sizes': sizes,
                                              'sign': sign,
                                              'fraction': frac,
@@ -295,7 +288,6 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
                         all_networks.append({'networks': randomperm,
                                              'name': 'Random',
                                              'group': group,
-                                             'set operation': set_operation,
                                              'sizes': sizes,
                                              'sign': sign,
                                              'fraction': frac,
