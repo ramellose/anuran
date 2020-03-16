@@ -203,7 +203,7 @@ def main():
     if args['version']:
         info = VersionInfo('anuran')
         logger.info('Version ' + info.version_string())
-        exit(0)
+        sys.exit(0)
     if not args['graph']:
         logger.info('Please give an input location.')
     if not args['fp']:
@@ -218,7 +218,7 @@ def main():
                     new_graph.append(os.getcwd() + '/' + location)
                 else:
                     logger.error('Could not find the specified directory. Is your file path correct?')
-                    exit()
+                    sys.exit()
             else:
                 new_graph.append(location)
         args['graph'] = new_graph
@@ -240,7 +240,7 @@ def main():
                     else:
                         logger.warning('Format not accepted. '
                                        'Please specify the filename including extension (e.g. test.graphml).', exc_info=True)
-                        exit()
+                        sys.exit()
                     # need to make sure the graphml function does not arbitrarily assign node ID
                     try:
                         if 'name' in network.nodes[list(network.nodes)[0]]:
@@ -251,7 +251,7 @@ def main():
                     networks[os.path.basename(location)].append((os.path.basename(file), nx.to_undirected(network)))
                 except Exception:
                     logger.error('Could not import network file!', exc_info=True)
-                    exit()
+                    sys.exit()
     elif args['graph'] == ['demo']:
         networks = {'demo': list()}
         path = os.path.dirname(anuran.__file__)
@@ -290,7 +290,7 @@ def model_calcs(networks, args):
                                        prev=args['prev'])
     except Exception:
         logger.error('Could not generate null models!', exc_info=True)
-        exit()
+        sys.exit()
     set_sizes = None
     try:
         set_sizes = generate_sizes(networks, random, degree, core=args['core'],
@@ -303,7 +303,7 @@ def model_calcs(networks, args):
         logger.info('Set sizes exported to: ' + args['fp'] + '_sets.csv')
     except Exception:
         logger.error('Failed to calculate set sizes!', exc_info=True)
-        exit()
+        sys.exit()
     if args['centrality']:
         try:
             centralities = generate_ci_frame(networks, random, degree,
@@ -313,7 +313,7 @@ def model_calcs(networks, args):
             logger.info('Centralities exported to: ' + args['fp'] + '_centralities.csv')
         except Exception:
             logger.error('Could not rank centralities!', exc_info=True)
-            exit()
+            sys.exit()
     if args['network']:
         try:
             graph_properties = generate_graph_frame(networks, random, degree,
@@ -323,7 +323,7 @@ def model_calcs(networks, args):
             logger.info('Graph properties exported to: ' + args['fp'] + '_graph_properties.csv')
         except Exception:
             logger.error('Could not estimate graph properties!', exc_info=True)
-            exit()
+            sys.exit()
     samples = None
     if args['sample']:
         try:
@@ -335,7 +335,8 @@ def model_calcs(networks, args):
             logger.info('Subsampled set sizes exported to: ' + args['fp'] + '_subsampled_sets.csv')
         except Exception:
             logger.error('Failed to subsample networks!', exc_info=True)
-            exit()
+            sys.exit()
+    central_stats = None
     if args['stats']:
         if args['stats'] == 'True':
             args['stats'] = True
@@ -380,7 +381,7 @@ def model_calcs(networks, args):
                     draw_graphs(subset_graphs, args['fp'] + '_' + x)
         except Exception:
             logger.error('Could not draw data!', exc_info=True)
-            exit()
+            sys.exit()
     return central_stats
 
 
