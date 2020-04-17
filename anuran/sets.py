@@ -77,12 +77,12 @@ def generate_size_differences(data, sizes):
     """
     Since the intersections are nested,
     e.g. a 0.9 intersection is always nested inside a 0.5 intersection,
-    we can divide the intersections over a range.
+    we can extract differences of intersections to assess which intersections are relevant.
     So if we have the 0.9 and the 1 intersection, we know what number
     of edges belong to that range.
 
     This function takes the dataframe from the generate_sizes function,
-    and calculates the intersections associated with the intervals.
+    and calculates the sizes of set of sets (difference of intersections).
 
     For the null models, the median set size per interval is returned.
 
