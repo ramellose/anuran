@@ -382,7 +382,8 @@ def model_calcs(networks, args):
         except Exception:
             logger.error('Could not draw data!', exc_info=True)
             sys.exit()
-    return central_stats
+    if central_stats:
+        return central_stats
 
 
 if __name__ == '__main__':
