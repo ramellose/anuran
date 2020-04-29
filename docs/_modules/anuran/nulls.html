@@ -79,44 +79,53 @@
     <span class="c1"># firt generate list of network models that need to be generated</span>
     <span class="n">all_models</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">networks</span><span class="p">:</span>
-        <span class="n">all_models</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;networks&#39;</span><span class="p">:</span> <span class="n">networks</span><span class="p">[</span><span class="n">x</span><span class="p">],</span>
-                           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span>
-                           <span class="s1">&#39;fraction&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-                           <span class="s1">&#39;prev&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-                           <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span>
-                           <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;random&#39;</span><span class="p">})</span>
-        <span class="n">all_models</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;networks&#39;</span><span class="p">:</span> <span class="n">networks</span><span class="p">[</span><span class="n">x</span><span class="p">],</span>
-                           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span>
-                           <span class="s1">&#39;fraction&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-                           <span class="s1">&#39;prev&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-                           <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span>
-                           <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;degree&#39;</span><span class="p">})</span>
-        <span class="k">if</span> <span class="n">fraction</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">frac</span> <span class="ow">in</span> <span class="n">fraction</span><span class="p">:</span>
-                <span class="n">all_results</span><span class="p">[</span><span class="s1">&#39;random&#39;</span><span class="p">][</span><span class="n">x</span><span class="p">][</span><span class="s1">&#39;core&#39;</span><span class="p">][</span><span class="n">frac</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-                <span class="n">all_results</span><span class="p">[</span><span class="s1">&#39;degree&#39;</span><span class="p">][</span><span class="n">x</span><span class="p">][</span><span class="s1">&#39;core&#39;</span><span class="p">][</span><span class="n">frac</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-                <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">prev</span><span class="p">:</span>
-                    <span class="n">all_models</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;networks&#39;</span><span class="p">:</span> <span class="n">networks</span><span class="p">[</span><span class="n">x</span><span class="p">],</span>
-                                       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span>
-                                       <span class="s1">&#39;fraction&#39;</span><span class="p">:</span> <span class="n">frac</span><span class="p">,</span>
-                                       <span class="s1">&#39;prev&#39;</span><span class="p">:</span> <span class="n">p</span><span class="p">,</span>
-                                       <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span>
-                                       <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;random&#39;</span><span class="p">})</span>
-                    <span class="n">all_models</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;networks&#39;</span><span class="p">:</span> <span class="n">networks</span><span class="p">[</span><span class="n">x</span><span class="p">],</span>
-                                       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span>
-                                       <span class="s1">&#39;fraction&#39;</span><span class="p">:</span> <span class="n">frac</span><span class="p">,</span>
-                                       <span class="s1">&#39;prev&#39;</span><span class="p">:</span> <span class="n">p</span><span class="p">,</span>
-                                       <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span>
-                                       <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;degree&#39;</span><span class="p">})</span>
+        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">networks</span><span class="p">[</span><span class="n">x</span><span class="p">]:</span>
+            <span class="n">all_models</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;network&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span>
+                               <span class="s1">&#39;networks&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">networks</span><span class="p">[</span><span class="n">x</span><span class="p">]),</span>
+                               <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span>
+                               <span class="s1">&#39;fraction&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                               <span class="s1">&#39;prev&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                               <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span>
+                               <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;random&#39;</span><span class="p">})</span>
+            <span class="n">all_models</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;network&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span>
+                               <span class="s1">&#39;networks&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">networks</span><span class="p">[</span><span class="n">x</span><span class="p">]),</span>
+                               <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span>
+                               <span class="s1">&#39;fraction&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                               <span class="s1">&#39;prev&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                               <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span>
+                               <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;degree&#39;</span><span class="p">})</span>
+            <span class="k">if</span> <span class="n">fraction</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">frac</span> <span class="ow">in</span> <span class="n">fraction</span><span class="p">:</span>
+                    <span class="n">all_results</span><span class="p">[</span><span class="s1">&#39;random&#39;</span><span class="p">][</span><span class="n">x</span><span class="p">][</span><span class="s1">&#39;core&#39;</span><span class="p">][</span><span class="n">frac</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+                    <span class="n">all_results</span><span class="p">[</span><span class="s1">&#39;degree&#39;</span><span class="p">][</span><span class="n">x</span><span class="p">][</span><span class="s1">&#39;core&#39;</span><span class="p">][</span><span class="n">frac</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">prev</span><span class="p">:</span>
+                        <span class="n">all_results</span><span class="p">[</span><span class="s1">&#39;random&#39;</span><span class="p">][</span><span class="n">x</span><span class="p">][</span><span class="s1">&#39;core&#39;</span><span class="p">][</span><span class="n">frac</span><span class="p">][</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+                        <span class="n">all_results</span><span class="p">[</span><span class="s1">&#39;degree&#39;</span><span class="p">][</span><span class="n">x</span><span class="p">][</span><span class="s1">&#39;core&#39;</span><span class="p">][</span><span class="n">frac</span><span class="p">][</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+                        <span class="n">all_models</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;network&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span>
+                                           <span class="s1">&#39;networks&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">networks</span><span class="p">[</span><span class="n">x</span><span class="p">]),</span>
+                                           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span>
+                                           <span class="s1">&#39;fraction&#39;</span><span class="p">:</span> <span class="n">frac</span><span class="p">,</span>
+                                           <span class="s1">&#39;prev&#39;</span><span class="p">:</span> <span class="n">p</span><span class="p">,</span>
+                                           <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span>
+                                           <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;random&#39;</span><span class="p">})</span>
+                        <span class="n">all_models</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;network&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span>
+                                           <span class="s1">&#39;networks&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">networks</span><span class="p">[</span><span class="n">x</span><span class="p">]),</span>
+                                           <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span>
+                                           <span class="s1">&#39;fraction&#39;</span><span class="p">:</span> <span class="n">frac</span><span class="p">,</span>
+                                           <span class="s1">&#39;prev&#39;</span><span class="p">:</span> <span class="n">p</span><span class="p">,</span>
+                                           <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span>
+                                           <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;degree&#39;</span><span class="p">})</span>
     <span class="c1"># run size inference in parallel</span>
     <span class="n">pool</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">core</span><span class="p">)</span>
     <span class="n">results</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">_generate_null_parallel</span><span class="p">,</span> <span class="n">all_models</span><span class="p">)</span>
     <span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="n">all_results</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]][</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]][</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># dict: null model, group name, null type</span>
+            <span class="n">all_results</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]][</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]][</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">all_results</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]][</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]][</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]][</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">]][</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">]]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># dict: null model, group name, null type, frac, prev</span>
+            <span class="n">all_results</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]][</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]][</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]][</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">]][</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">all_results</span><span class="p">[</span><span class="s1">&#39;random&#39;</span><span class="p">],</span> <span class="n">all_results</span><span class="p">[</span><span class="s1">&#39;degree&#39;</span><span class="p">]</span></div>
 
 
@@ -164,7 +173,7 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019, Lisa Röttjers.
+      &copy;2020, Lisa Röttjers.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>

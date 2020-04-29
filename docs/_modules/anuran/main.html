@@ -66,8 +66,9 @@
 <span class="kn">import</span> <span class="nn">anuran</span>
 <span class="kn">from</span> <span class="nn">anuran.utils</span> <span class="k">import</span> <span class="n">_intersection</span><span class="p">,</span> <span class="n">_construct_intersection</span>
 <span class="kn">from</span> <span class="nn">anuran.nulls</span> <span class="k">import</span> <span class="n">generate_null</span>
-<span class="kn">from</span> <span class="nn">anuran.sets</span> <span class="k">import</span> <span class="n">generate_sizes</span><span class="p">,</span> <span class="n">generate_sample_sizes</span>
-<span class="kn">from</span> <span class="nn">anuran.draw</span> <span class="k">import</span> <span class="n">draw_sets</span><span class="p">,</span> <span class="n">draw_samples</span><span class="p">,</span> <span class="n">draw_centralities</span><span class="p">,</span> <span class="n">draw_graphs</span>
+<span class="kn">from</span> <span class="nn">anuran.sets</span> <span class="k">import</span> <span class="n">generate_sizes</span><span class="p">,</span> <span class="n">generate_sample_sizes</span><span class="p">,</span> <span class="n">generate_size_differences</span>
+<span class="kn">from</span> <span class="nn">anuran.draw</span> <span class="k">import</span> <span class="n">draw_sets</span><span class="p">,</span> <span class="n">draw_samples</span><span class="p">,</span> <span class="n">draw_centralities</span><span class="p">,</span> \
+    <span class="n">draw_graphs</span><span class="p">,</span> <span class="n">draw_set_differences</span>
 <span class="kn">from</span> <span class="nn">anuran.centrality</span> <span class="k">import</span> <span class="n">generate_ci_frame</span>
 <span class="kn">from</span> <span class="nn">anuran.graphvals</span> <span class="k">import</span> <span class="n">generate_graph_frame</span>
 <span class="kn">from</span> <span class="nn">anuran.stats</span> <span class="k">import</span> <span class="n">compare_set_sizes</span><span class="p">,</span> <span class="n">compare_centralities</span><span class="p">,</span> <span class="n">compare_graph_properties</span><span class="p">,</span> \
@@ -108,14 +109,6 @@
                         <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;fp&#39;</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Output filename. Specify full file path without extension.&#39;</span><span class="p">,</span>
                         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-set&#39;</span><span class="p">,</span> <span class="s1">&#39;--set_type&#39;</span><span class="p">,</span>
-                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;set&#39;</span><span class="p">,</span>
-                        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Types of sets to compare. </span><span class="se">\n</span><span class="s1">&#39;</span>
-                             <span class="s1">&#39;By default, both the difference and intersection are calculated.&#39;</span><span class="p">,</span>
-                        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;difference&#39;</span><span class="p">,</span> <span class="s1">&#39;intersection&#39;</span><span class="p">],</span>
-                        <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span>
-                        <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;difference&#39;</span><span class="p">,</span> <span class="s1">&#39;intersection&#39;</span><span class="p">])</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-size&#39;</span><span class="p">,</span> <span class="s1">&#39;--intersection_size&#39;</span><span class="p">,</span>
                         <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;size&#39;</span><span class="p">,</span>
                         <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -243,11 +236,25 @@
     <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]:</span>
         <span class="n">info</span> <span class="o">=</span> <span class="n">VersionInfo</span><span class="p">(</span><span class="s1">&#39;anuran&#39;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Version &#39;</span> <span class="o">+</span> <span class="n">info</span><span class="o">.</span><span class="n">version_string</span><span class="p">())</span>
-        <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;graph&#39;</span><span class="p">]:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Please give an input location.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;No file path given, writing to current directory.&#39;</span><span class="p">)</span>
+        <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span>
     <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;graph&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="p">[</span><span class="s1">&#39;demo&#39;</span><span class="p">]:</span>
         <span class="n">networks</span> <span class="o">=</span> <span class="p">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="nb">list</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;graph&#39;</span><span class="p">]}</span>
+        <span class="n">new_graph</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;graph&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">location</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">location</span><span class="p">):</span>
+                    <span class="n">new_graph</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">location</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not find the specified directory. Is your file path correct?&#39;</span><span class="p">)</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_graph</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+        <span class="n">args</span><span class="p">[</span><span class="s1">&#39;graph&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_graph</span>
         <span class="c1"># code for importing from multiple folders</span>
         <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;graph&#39;</span><span class="p">]:</span>
             <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">location</span> <span class="o">+</span> <span class="s2">&quot;**/*.graphml&quot;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
@@ -266,7 +273,7 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Format not accepted. &#39;</span>
                                        <span class="s1">&#39;Please specify the filename including extension (e.g. test.graphml).&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                        <span class="n">exit</span><span class="p">()</span>
+                        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
                     <span class="c1"># need to make sure the graphml function does not arbitrarily assign node ID</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">nodes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]:</span>
@@ -277,7 +284,7 @@
                     <span class="n">networks</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">location</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file</span><span class="p">),</span> <span class="n">nx</span><span class="o">.</span><span class="n">to_undirected</span><span class="p">(</span><span class="n">network</span><span class="p">)))</span>
                 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not import network file!&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                    <span class="n">exit</span><span class="p">()</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
     <span class="k">elif</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;graph&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;demo&#39;</span><span class="p">]:</span>
         <span class="n">networks</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;demo&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">()}</span>
         <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">anuran</span><span class="o">.</span><span class="vm">__file__</span><span class="p">)</span>
@@ -292,6 +299,18 @@
                            <span class="s1">&#39;to generate robust tests for centralities or set sizes. </span><span class="se">\n</span><span class="s1">&#39;</span>
                            <span class="s1">&#39;Suppressing warnings, but please be careful with the statistics! </span><span class="se">\n</span><span class="s1">&#39;</span>
                            <span class="s1">&#39;Preferably use groups with at least 20 networks. &#39;</span><span class="p">)</span>
+    <span class="n">model_calcs</span><span class="p">(</span><span class="n">networks</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;anuran completed all tasks.&#39;</span><span class="p">)</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="model_calcs"><a class="viewcode-back" href="../../index.html#anuran.main.model_calcs">[docs]</a><span class="k">def</span> <span class="nf">model_calcs</span><span class="p">(</span><span class="n">networks</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function for generating null models and carrying out calculations.</span>
+<span class="sd">    :param networks: Dictionary with folder name as key and values as tuples (name, network object).</span>
+<span class="sd">    :param args: Settings for running anuran</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># export intersections</span>
     <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]:</span>
         <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">networks</span><span class="p">:</span>
@@ -304,18 +323,20 @@
                                        <span class="n">prev</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;prev&#39;</span><span class="p">])</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not generate null models!&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">exit</span><span class="p">()</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
     <span class="n">set_sizes</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">set_sizes</span> <span class="o">=</span> <span class="n">generate_sizes</span><span class="p">(</span><span class="n">networks</span><span class="p">,</span> <span class="n">random</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">core</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;core&#39;</span><span class="p">],</span>
-                                   <span class="n">sign</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;sign&#39;</span><span class="p">],</span> <span class="n">set_operation</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;set&#39;</span><span class="p">],</span>
+                                   <span class="n">sign</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;sign&#39;</span><span class="p">],</span>
                                    <span class="n">fractions</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;cs&#39;</span><span class="p">],</span> <span class="n">prev</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;prev&#39;</span><span class="p">],</span>
                                    <span class="n">perm</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;nperm&#39;</span><span class="p">],</span> <span class="n">sizes</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">])</span>
         <span class="n">set_sizes</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_sets.csv&#39;</span><span class="p">)</span>
+        <span class="n">set_differences</span> <span class="o">=</span> <span class="n">generate_size_differences</span><span class="p">(</span><span class="n">set_sizes</span><span class="p">,</span> <span class="n">sizes</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">])</span>
+        <span class="n">set_differences</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_set_differences.csv&#39;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Set sizes exported to: &#39;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_sets.csv&#39;</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to calculate set sizes!&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">exit</span><span class="p">()</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;centrality&#39;</span><span class="p">]:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">centralities</span> <span class="o">=</span> <span class="n">generate_ci_frame</span><span class="p">(</span><span class="n">networks</span><span class="p">,</span> <span class="n">random</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span>
@@ -325,35 +346,38 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Centralities exported to: &#39;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_centralities.csv&#39;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not rank centralities!&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">exit</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;network&#39;</span><span class="p">]:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">graph_properties</span> <span class="o">=</span> <span class="n">generate_graph_frame</span><span class="p">(</span><span class="n">networks</span><span class="p">,</span> <span class="n">random</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span>
                                                     <span class="n">fractions</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;cs&#39;</span><span class="p">],</span> <span class="n">core</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;prev&#39;</span><span class="p">],</span>
                                                     <span class="n">perm</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;nperm&#39;</span><span class="p">])</span>
-            <span class="n">graph_properties</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;graph_properties.csv&#39;</span><span class="p">)</span>
+            <span class="n">graph_properties</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_graph_properties.csv&#39;</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Graph properties exported to: &#39;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_graph_properties.csv&#39;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not estimate graph properties!&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">exit</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
     <span class="n">samples</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;sample&#39;</span><span class="p">]:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">samples</span> <span class="o">=</span> <span class="n">generate_sample_sizes</span><span class="p">(</span><span class="n">networks</span><span class="p">,</span> <span class="n">random</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span>
-                                            <span class="n">sign</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;sign&#39;</span><span class="p">],</span> <span class="n">set_operation</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;set&#39;</span><span class="p">],</span> <span class="n">core</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;core&#39;</span><span class="p">],</span>
+                                            <span class="n">sign</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;sign&#39;</span><span class="p">],</span> <span class="n">core</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;core&#39;</span><span class="p">],</span>
                                             <span class="n">fractions</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;cs&#39;</span><span class="p">],</span> <span class="n">perm</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;nperm&#39;</span><span class="p">],</span> <span class="n">prev</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;prev&#39;</span><span class="p">],</span>
                                             <span class="n">sizes</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">],</span> <span class="n">limit</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;sample&#39;</span><span class="p">],</span> <span class="n">number</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;number&#39;</span><span class="p">])</span>
             <span class="n">samples</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_subsampled_sets.csv&#39;</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Subsampled set sizes exported to: &#39;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_subsampled_sets.csv&#39;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to subsample networks!&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">exit</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+    <span class="n">central_stats</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;True&#39;</span><span class="p">:</span>
             <span class="n">args</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="c1"># add code for pvalue estimation</span>
         <span class="n">set_stats</span> <span class="o">=</span> <span class="n">compare_set_sizes</span><span class="p">(</span><span class="n">set_sizes</span><span class="p">,</span> <span class="n">mc</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">])</span>
         <span class="n">set_stats</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_set_stats.csv&#39;</span><span class="p">)</span>
+        <span class="n">difference_stats</span> <span class="o">=</span> <span class="n">compare_set_sizes</span><span class="p">(</span><span class="n">set_differences</span><span class="p">,</span> <span class="n">mc</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">])</span>
+        <span class="n">difference_stats</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_difference_stats.csv&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;centrality&#39;</span><span class="p">]:</span>
             <span class="n">central_stats</span> <span class="o">=</span> <span class="n">compare_centralities</span><span class="p">(</span><span class="n">centralities</span><span class="p">,</span> <span class="n">mc</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;stats&#39;</span><span class="p">])</span>
             <span class="n">central_stats</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_centrality_stats.csv&#39;</span><span class="p">)</span>
@@ -377,6 +401,8 @@
             <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">networks</span><span class="p">:</span>
                 <span class="n">subset_sizes</span> <span class="o">=</span> <span class="n">set_sizes</span><span class="p">[</span><span class="n">set_sizes</span><span class="p">[</span><span class="s1">&#39;Group&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">]</span>
                 <span class="n">draw_sets</span><span class="p">(</span><span class="n">subset_sizes</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
+                <span class="n">subset_differences</span> <span class="o">=</span> <span class="n">set_differences</span><span class="p">[</span><span class="n">set_differences</span><span class="p">[</span><span class="s1">&#39;Group&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">]</span>
+                <span class="n">draw_set_differences</span><span class="p">(</span><span class="n">subset_differences</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;centrality&#39;</span><span class="p">]:</span>
                     <span class="n">subset_centralities</span> <span class="o">=</span> <span class="n">centralities</span><span class="p">[</span><span class="n">centralities</span><span class="p">[</span><span class="s1">&#39;Group&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">]</span>
                     <span class="n">draw_centralities</span><span class="p">(</span><span class="n">subset_centralities</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
@@ -388,9 +414,9 @@
                     <span class="n">draw_graphs</span><span class="p">(</span><span class="n">subset_graphs</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;fp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not draw data!&#39;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">exit</span><span class="p">()</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;anuran completed all tasks.&#39;</span><span class="p">)</span>
-    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">central_stats</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">central_stats</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
@@ -439,7 +465,7 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019, Lisa Röttjers.
+      &copy;2020, Lisa Röttjers.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
