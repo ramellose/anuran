@@ -83,6 +83,7 @@ def generate_size_differences(data, sizes):
 
     This function takes the dataframe from the generate_sizes function,
     and calculates the sizes of set of sets (difference of intersections).
+    The difference of intersections is also referred to as the interval.
 
     For the null models, the median set size per interval is returned.
 

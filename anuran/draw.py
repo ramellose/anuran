@@ -40,6 +40,7 @@ def draw_set_differences(data, fp):
     """
     This function accepts a pandas dataframe with 4 columns:
     Interval, Set size, Group, Network.
+    The interval is the difference of the intersections.
 
     The interval is the median for the null model networks.
 

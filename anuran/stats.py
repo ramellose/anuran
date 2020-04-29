@@ -267,6 +267,8 @@ def compare_set_sizes(set_sizes, mc):
     the p-value is computed by assessing how many standard deviations the set size is outside
     the distribution calculated from the null models.
 
+    The Interval property is the difference of intersections (e.g. Intersection 4 subtracted from Intersection 2).
+
     Only the random and degree models, without a core,
     are likely to follow a normal distribution and therefore meet conditions for this test.
 
