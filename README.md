@@ -10,11 +10,11 @@ there is a chance that the outcome of the set operation was caused by random ove
 _anuran_ helps you identify if your biological networks have set operations that have different outcomes than would be expected by chance.
 The simulated case study included with _anuran_ can also help you design your experiments. The paper describing this case study is currently in preparation.
 Contact the author at lisa.rottjers (at) kuleuven.be. Your feedback is much appreciated!
-This version is still in early alpha and has been tested for Python 3.6.
+This version is still in development and has been tested for Python 3.6.
 
 ## Getting Started
 
-First set up a [virtual environment](https://docs.python-guide.org/dev/virtualenvs/):
+First set up a [virtual environment](https://docs.python-guide.org/dev/virtualenvs/).
 ```
 virtualenv venv
 # Linux
@@ -32,7 +32,10 @@ To install _anuran_, run:
 pip install git+https://github.com/ramellose/anuran.git
 ```
 
-
+If you have Python 2.7 installed as your default Python, please ensure you are installing and running anuran on your Python 3 version.
+```
+python3 -m pip install git+https://github.com/ramellose/anuran.git
+```
 For a quick demo, run _anuran_ as follows, with the output filepath changed to something suitable for your system.
 When specifying the filepath, include the full path and a prefix for naming files.
 For example, _anuran_ will save a csv file to anuran_demo_sets.csv with the command below.
