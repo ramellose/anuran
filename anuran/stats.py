@@ -157,7 +157,7 @@ def compare_centralities(centralities, mc):
                                     simplefilter("ignore")
                                     utest.append(mannwhitneyu(range_1, range_2)[1])
                         if len(utest) > 0:
-                            p = 1 - (1/len(utest) * (len([x for x in utest if x < 0.05])))
+                            p = 1 - (1 / (len(utest)+1) * (len([x for x in utest if x < 0.05]))+1)
                             statsframe = _generate_stat_rows(statsframe, node=node, group=group, comparison=nulltype,
                                                              operation=op, p=p, ptype='Mann-Whitney')
     combos = combinations(set(centralities['Group']), 2)
@@ -230,7 +230,7 @@ def compare_graph_properties(graph_properties, mc):
                             simplefilter("ignore")
                             utest.append(mannwhitneyu(range_1, range_2)[1])
                 if len(utest) > 0:
-                    p = 1 - (1 / (len(utest)+1) * (len([x for x in utest if x < 0.01]))+1)
+                    p = 1 - (1 / (len(utest)+1) * (len([x for x in utest if x < 0.05]))+1)
                     statsframe = _generate_stat_rows(statsframe, group=group, comparison=nulltype,
                                                      operation=op, p=p, ptype='Mann-Whitney')
     combos = combinations(set(graph_properties['Group']), 2)
