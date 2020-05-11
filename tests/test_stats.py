@@ -82,7 +82,7 @@ class TestMain(unittest.TestCase):
         centralities = generate_ci_frame(networks, random, degree, fractions=None, prev=None, perm=10)
         results = compare_centralities(centralities, mc=None)
         otu_1 = results[results['Node'] == 'OTU_1']
-        self.assertGreater(otu_1[otu_1['Comparison'] == 'Random']['P'].iloc[0], 0.01)
+        self.assertGreater(0.01, otu_1[otu_1['Comparison'] == 'Random']['P'].iloc[0])
 
     def test_compare_graph_properties(self):
         """
@@ -94,7 +94,7 @@ class TestMain(unittest.TestCase):
         graph_values = graph_values[graph_values['Property'] == 'Assortativity']
         graph_values = graph_values[graph_values['Network'] != 'Degree']
         results = compare_graph_properties(graph_values, mc=None)
-        self.assertGreater(results['P'].iloc[0], 0.01)
+        self.assertGreater(0.8, results['P'].iloc[0])
 
     def test_compare_set_sizes(self):
         """
