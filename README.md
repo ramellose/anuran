@@ -93,16 +93,13 @@ anuran -cs 0.3 0.5        # core size
 anuran -prev 1            # core prevalence
 ```
 
-The set sizes are calculated for the difference set and the intersection set by default.
+The set sizes are calculated for an intersection of 1 (all networks) by default.
 You can also choose to calculate the set sizes for all possible intersections of a number of the networks, i.e. each edge that was present on 2 out of 5 networks.
-If you flag the sign option, signs of edge weights are taken into account.
-For this, the input networks need to have weight as an edge property.
-The set difference can then have edges that have a unique edge sign in one network but a different edge sign in all others.
-In contrast, the set intersection will only include edges that have the same sign across the networks.
+If you flag the sign option, signs of edge weights are not taken into account.
+Normally, sets can have edges that have a unique edge sign in one network but a different edge sign in all others. If the sign option is flagged, this is not the case. 
 ```
-anuran -set difference intersection       # Default calculates sizes of difference and intersection sets
 anuran -size 0.2 0.4 0.6                  # Calculates null models for edges present in partial intersections
-anuran -sign                              # Includes edge sign in set calculation
+anuran -sign                              # Ignores edge sign in set calculation
 ```
 
 If you want to know how the set sizes change when you increase the number of replicates,
