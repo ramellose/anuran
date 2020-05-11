@@ -47,7 +47,7 @@ Why do microbes exhibit weak biogeographic patterns?. The ISME journal, 12(6), 1
 For a more elaborate demo analysis, please check out [the vignette](https://ramellose.github.io/anuran/demo_anuran.html).
 
 To run the script, only two arguments are required: input and output filepaths.
-The script recognizes gml, graphml and txt files by their extension.
+The script recognizes gml, graphml and txt files (without headers) by their extension.
 The text files should be edge lists, with the third column containing edge weight.
 ```
 anuran -i folder_with_networks -o filepath_to_output
