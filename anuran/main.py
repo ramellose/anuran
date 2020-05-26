@@ -310,7 +310,7 @@ def model_calcs(networks, args):
         try:
             centralities = generate_ci_frame(networks, random, degree,
                                              fractions=args['cs'], prev=args['prev'],
-                                             perm=args['nperm'])
+                                             perm=args['nperm'], core=args['core'])
             centralities.to_csv(args['fp'] + '_centralities.csv')
             logger.info('Centralities exported to: ' + args['fp'] + '_centralities.csv')
         except Exception:

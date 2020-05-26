@@ -115,7 +115,7 @@ def _generate_ci_rows(data, name, group, networks, fraction, prev):
                                 'Upper limit': ci[node][1],
                                 'Lower limit': ci[node][0],
                                 'Values': [(x[0], _catch(x[1], node)) for
-                                           x in properties[centrality] if _catch(x[1], node)]},
+                                           x in centrality_scores if _catch(x[1], node)]},
                                ignore_index=True)
     return data
 

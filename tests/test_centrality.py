@@ -13,7 +13,8 @@ import unittest
 import networkx as nx
 import numpy as np
 from anuran.centrality import generate_ci_frame, generate_confidence_interval, \
-    generate_centralities, _generate_ci_rows, centrality_percentile
+    _generate_ci_rows
+from anuran.utils import _generate_centralities_parallel, _centrality_percentile
 import pandas as pd
 
 
@@ -73,7 +74,8 @@ class TestMain(unittest.TestCase):
         """
         random = {x: {'random': [], 'core': {}} for x in networks}
         degree = {x: {'degree': [], 'core': {}} for x in networks}
-        results = generate_ci_frame(networks, random=random, degree=degree, fractions=None, prev=None, perm=3)
+        results = generate_ci_frame(networks, random=random, degree=degree,
+                                    fractions=None, prev=None, perm=0, core=1)
         totalnodes = np.sum([len(networks[x][0][1].nodes) for x in networks])
         self.assertEqual(len(results), totalnodes*3)
 
@@ -82,17 +84,18 @@ class TestMain(unittest.TestCase):
         Tests whether the generate_centralities function returns a ranking of centralities.
         """
         new = {'a': [networks['a'][0], networks['b'][0], networks['c'][0]]}
-        ranking = generate_centralities(new['a'])
-        self.assertEqual(len(ranking['Betweenness']), 3)
+        ranking = _generate_centralities_parallel(new['a'])
+        self.assertEqual(len(ranking), 3)
 
     def test_generate_confidence_interval(self):
         """
         Since there are only 3 networks, this function should
         return confidence intervals of (0, 1).
         """
-        new = {'a': [networks['a'][0], networks['b'][0], networks['c'][0]]}
-        ranking = generate_centralities(new['a'])
-        CI = generate_confidence_interval(ranking['Betweenness'])
+        new = [networks['a'][0], networks['b'][0], networks['c'][0]]
+        ranking = _generate_centralities_parallel(new)
+        centrality_scores = [(ranking[i][0], ranking[i][2]['Betweenness']) for i in range(len(ranking))]
+        CI = generate_confidence_interval(centrality_scores)
         self.assertEqual(CI['OTU_1'], (0, 1))
 
     def test__generate_ci_rows(self):
@@ -107,7 +110,8 @@ class TestMain(unittest.TestCase):
         results = pd.DataFrame(columns=['Node', 'Network', 'Group', 'Network type', 'Conserved fraction',
                                         'Prevalence of conserved fraction',
                                         'Centrality', 'Upper limit', 'Lower limit', 'Values'])
-        results = _generate_ci_rows(data=results, name='a', group='a', networks=new['a'], fraction=None, prev=None)
+        central_new = _generate_centralities_parallel(new['a'])
+        results = _generate_ci_rows(data=results, name='a', group='a', networks=central_new, fraction=None, prev=None)
         nodes = np.sum(len(x[1].nodes) for x in networks['a'])
         self.assertEqual(nodes*3, len(results))
 
@@ -116,7 +120,7 @@ class TestMain(unittest.TestCase):
         When given centrality scores, this function should return a ranking from 0 to 1.
         """
         deg = nx.degree_centrality(networks['a'][0])
-        ranking = centrality_percentile(deg)
+        ranking = _centrality_percentile(deg)
         self.assertEqual(np.max(list(ranking.values())), 1)
 
 
