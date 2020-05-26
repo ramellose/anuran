@@ -79,7 +79,7 @@ class TestMain(unittest.TestCase):
         Given a pandas dataframe with centralities for different nodes in groups of networks,
         this function should return a dataframe with statistics on these centralities.
         """
-        centralities = generate_ci_frame(networks, random, degree, fractions=None, prev=None, perm=10)
+        centralities = generate_ci_frame(networks, random, degree, fractions=None, prev=None, perm=10, core=2)
         results = compare_centralities(centralities, mc=None)
         otu_1 = results[results['Node'] == 'OTU_1']
         self.assertGreater(0.01, otu_1[otu_1['Comparison'] == 'Random']['P'].iloc[0])

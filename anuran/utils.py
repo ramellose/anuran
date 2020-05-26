@@ -9,7 +9,7 @@ __status__ = 'Development'
 __license__ = 'Apache 2.0'
 
 import networkx as nx
-from scipy.special import binom
+import pandas as pd
 from random import sample
 import numpy as np
 import logging.handlers
@@ -77,6 +77,40 @@ def _generate_null_parallel(values):
     else:
         params = (mode, name, mode)
     return params, nulls
+
+
+def _generate_centralities_parallel(model_list):
+    """
+    This function takes a list of null models,
+    where each item in the list is another list containing all null models for a single network.
+
+    :param model_list: List of list of networks, with networks given as a tuple (name and networkX object)
+    :return:
+    """
+    centrality_list = []
+    for network in model_list:
+        centrality_list.append((network[0], network[1],
+                                {'Degree': _centrality_percentile(nx.degree_centrality(network[1])),
+                                 'Closeness': _centrality_percentile(nx.closeness_centrality(network[1])),
+                                 'Betweenness': _centrality_percentile(nx.betweenness_centrality(network[1]))}))
+    return centrality_list
+
+
+def _centrality_percentile(centrality):
+    """
+    Given a dictionary of centralities, this function returns the percentile score of
+    nodes in a graph.
+
+    :param centrality: Dictionary with nodes as keys and centralities as values.
+    :return:
+    """
+    if len(centrality) > 0:
+        ranking = pd.DataFrame.from_dict(centrality, orient='index')
+        ranking['rank'] = ranking[0].rank(pct=True)
+        ranking = ranking['rank'].to_dict()
+    else:
+        ranking = None
+    return ranking
 
 
 def _randomize_network(network, keep):
