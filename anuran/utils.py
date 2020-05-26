@@ -81,8 +81,10 @@ def _generate_null_parallel(values):
 
 def _generate_centralities_parallel(model_list):
     """
-    This function takes a list of null models,
-    where each item in the list is another list containing all null models for a single network.
+    This function takes a list of null models or networks,
+    where each item in the list is a tuple.
+    The tuple contains the network name and the NetworkX object.
+    This function adds centrality rankings to the tuple.
 
     :param model_list: List of list of networks, with networks given as a tuple (name and networkX object)
     :return:
