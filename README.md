@@ -122,6 +122,7 @@ The Mann-Whitney _U_-test does not require equal _n_; this is important since no
 this test may give strange results. Hence. if you want to carry out these statistical tests, make sure that prevalence of most nodes is high across networks.
 For comparing graph properties, the p-value is computed using [the standard score](https://en.wikipedia.org/wiki/Standard_score). This assumes that graph properties are normally distributed.
 
+Note that calculations of centralities can take a long time, especially for large numbers of permutations.
 To compute centralities and graph properties and the associated test (with Bonferroni multiple-testing correction), add the following parameters:
 ```
 anuran -c -net -stats bonferroni

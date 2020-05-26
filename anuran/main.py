@@ -149,7 +149,9 @@ def set_anuran():
                         required=False,
                         action='store_true',
                         help='If true, extracts centrality ranking from networks \n'
-                             'and compares these to rankings extracted from null models. ',
+                             'and compares these to rankings extracted from null models. \n'
+                             'WARNING: For larger numbers of permutations, the centrality calculations can \n'
+                             'become very slow! ',
                         default=False)
     parser.add_argument('-net', '--network',
                         dest='network',

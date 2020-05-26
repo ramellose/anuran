@@ -10,14 +10,15 @@ __status__ = 'Development'
 __license__ = 'Apache 2.0'
 
 import pandas as pd
-import networkx as nx
 from random import sample
 from scipy.stats import sem, t
 import numpy as np
 import os
+import multiprocessing as mp
+from anuran.utils import _generate_centralities_parallel
 
 
-def generate_ci_frame(networks, random, degree, fractions, prev, perm):
+def generate_ci_frame(networks, random, degree, fractions, prev, perm, core):
     """
     This function estimates centralities from all networks provided in
     the network, random and degree lists.
@@ -42,6 +43,7 @@ def generate_ci_frame(networks, random, degree, fractions, prev, perm):
     :param fractions: List with fractions of shared interactions
     :param prev: List with prevalence of shared interactions
     :param perm: Number of sets to take from null models
+    :param core: Number of processor cores
     :return: List of lists with set sizes
     """
     # Create empty pandas dataframe
@@ -50,14 +52,23 @@ def generate_ci_frame(networks, random, degree, fractions, prev, perm):
                                     'Centrality', 'Upper limit', 'Lower limit', 'Values'])
     for x in networks:
         group = os.path.basename(x)
+        obs_networks = _generate_centralities_parallel(networks[x])
         results = _generate_ci_rows(name='Input', data=results, group=group,
-                                    networks=networks[x], fraction=None, prev=None)
-        # construct the subsampled model sets nperm times
+                                    networks=obs_networks, fraction=None, prev=None)
+        # to reduce computational time, use lookup table for centralities
+        # we add a third value to the tuple: centrality scores for the networks
+        # run centrality calculations in parallel
+        pool = mp.Pool(core)
+        degree_centralities = pool.map(_generate_centralities_parallel, degree[x]['degree'])
+        pool.close()
+        pool = mp.Pool(core)
+        random_centralities = pool.map(_generate_centralities_parallel, random[x]['random'])
+        pool.close()
         for i in range(perm):
-            degreeperm = [sample(degree[x]['degree'][r], 1)[0] for r in range(len(degree[x]['degree']))]
+            degreeperm = [sample(degree_centralities[r], 1)[0] for r in range(len(degree_centralities))]
             results = _generate_ci_rows(name='Degree', data=results, group=group,
                                         networks=degreeperm, fraction=None, prev=None)
-            randomperm = [sample(random[x]['random'][r], 1)[0] for r in range(len(random[x]['random']))]
+            randomperm = [sample(random_centralities[r], 1)[0] for r in range(len(random_centralities))]
             results = _generate_ci_rows(name='Random', data=results, group=group,
                                         networks=randomperm, fraction=None, prev=None)
         if fractions:
@@ -80,7 +91,8 @@ def _generate_ci_rows(data, name, group, networks, fraction, prev):
     :param data: Pandas dataframe
     :param name: Name for the list of NetworkX objects
     :param group: Name for grouping NetworkX objects
-    :param networks: List of NetworkX objects
+    :param networks: List of NetworkX objects as tuples:
+    first item is network name, second NetworkX, third centrality dictionary
     :param fraction: If a null model with core is provided, adds the core fraction to the row
     :param prev: If a null model with core is provided, adds the core prevalence to the row
     :return: Pandas dataframe with added rows
@@ -88,9 +100,10 @@ def _generate_ci_rows(data, name, group, networks, fraction, prev):
     full_name = name + ' networks'
     if fraction:
         name += ' size: ' + str(fraction) + ' prev:' + str(prev)
-    properties = generate_centralities(networks)
+    properties = networks[0][2].keys() # gets all centrality names
     for centrality in properties:
-        ci = generate_confidence_interval(properties[centrality])
+        centrality_scores = [(networks[i][0], networks[i][2][centrality]) for i in range(len(networks))]
+        ci = generate_confidence_interval(centrality_scores)
         for node in ci:
             data = data.append({'Node': node,
                                 'Network': name,
@@ -136,38 +149,6 @@ def generate_confidence_interval(ranking):
             ci[node] = interval
     return ci
 
-
-def generate_centralities(networks):
-    """
-    This function constructs lists with centrality rankings of nodes in multiple networks.
-    Instead of using the absolute degree or betweenness centrality, this takes metric bias into account.
-
-    :param networks: List of input networks
-    :return: Pandas dataframe with rankings
-    """
-    properties = {x: list() for x in ['Degree', 'Closeness', 'Betweenness']}
-    for network in networks:
-        properties['Degree'].append((network[0], centrality_percentile(nx.degree_centrality(network[1]))))
-        properties['Closeness'].append((network[0], centrality_percentile(nx.closeness_centrality(network[1]))))
-        properties['Betweenness'].append((network[0], centrality_percentile(nx.betweenness_centrality(network[1]))))
-    return properties
-
-
-def centrality_percentile(centrality):
-    """
-    Given a dictionary of centralities, this function returns the percentile score of
-    nodes in a graph.
-
-    :param centrality: Dictionary with nodes as keys and centralities as values.
-    :return:
-    """
-    if len(centrality) > 0:
-        ranking = pd.DataFrame.from_dict(centrality, orient='index')
-        ranking['rank'] = ranking[0].rank(pct=True)
-        ranking = ranking['rank'].to_dict()
-    else:
-        ranking = None
-    return ranking
 
 
 def _catch(dictionary, key):
