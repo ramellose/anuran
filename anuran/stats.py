@@ -376,7 +376,11 @@ def _mc_correction(data, mc):
     newframe = pd.DataFrame(columns=list(data.columns) + ['P.adj'])
     for property in set(data['Measure']):
         subframe = data[data['Measure'] == property].copy()
-        p_adjusted = multipletests(subframe['P'], method=mc)[1]
-        subframe['P.adj'] = p_adjusted
-        newframe = newframe.append(subframe, ignore_index=True)
+        # also separate per null model
+        for model in set(data['Comparison']):
+            if not (model == 'Degree' and property == 'Degree'):
+                subsubframe = subframe[subframe['Comparison'] == model].copy()
+                p_adjusted = multipletests(subsubframe['P'], method=mc)[1]
+                subsubframe['P.adj'] = p_adjusted
+                newframe = newframe.append(subsubframe, ignore_index=True)
     return newframe
