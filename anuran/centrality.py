@@ -76,7 +76,9 @@ def generate_ci_frame(networks, random, degree, fractions, prev, perm, core):
                 for c in prev:
                     for network in range(len(networks)):
                         degreeperm = degree[x]['core'][frac][c][network]
+                        degreeperm = _generate_centralities_parallel(degreeperm)
                         randomperm = random[x]['core'][frac][c][network]
+                        randomperm = _generate_centralities_parallel(randomperm)
                         results = _generate_ci_rows(name='Degree', data=results, group=group,
                                                     networks=degreeperm, fraction=frac, prev=c)
                         results = _generate_ci_rows(name='Random', data=results, group=group,
