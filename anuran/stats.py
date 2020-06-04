@@ -66,7 +66,7 @@ def correlate_centralities(group, centralities, mc):
     return statsframe
 
 
-def correlate_graph_properties(group, graph_properties, mc):
+def correlate_graph_properties(group, graph_properties):
     """
     Returns correlations for ordered networks and compares these to the null model correlations.
     The function returns a dataframe comparing correlations in the ordered networks
@@ -78,7 +78,6 @@ def correlate_graph_properties(group, graph_properties, mc):
 
     :param group: name of grouped networks
     :param graph_properties: Dataframe with graph properties
-    :param mc: multiple-testing correction
     :return: Dataframe of correlations
     """
     statsframe = pd.DataFrame(columns=['Network', 'Group', 'Measure', 'Spearman rho', 'P'])
@@ -97,10 +96,6 @@ def correlate_graph_properties(group, graph_properties, mc):
                      'Spearman rho': rho,
                      'P': p}
             statsframe = statsframe.append(stats, ignore_index=True)
-    # multiple testing correction
-    if type(mc) == str and len(statsframe) > 0:
-        # first separate statsframe
-        statsframe = _mc_correction(statsframe, mc)
     statsframe = statsframe.sort_values('P')
     return statsframe
 
@@ -192,7 +187,7 @@ def compare_centralities(centralities, mc):
     return statsframe
 
 
-def compare_graph_properties(graph_properties, mc):
+def compare_graph_properties(graph_properties):
     """
     This function takes a dataframe of graph properties.
     Each graph property is compared to other groups with the Mann-Whitney test.
@@ -202,7 +197,6 @@ def compare_graph_properties(graph_properties, mc):
     Property, Value.
 
     :param graph_properties: Dataframe with graph properties
-    :param mc: Method for multiple-testing correction
     :return: pandas dataframe with p-values for comparisons
     """
     statsframe = pd.DataFrame(columns=['Group', 'Comparison', 'Measure', 'P', 'P.type'])
@@ -252,15 +246,11 @@ def compare_graph_properties(graph_properties, mc):
                     p = mannwhitneyu(range_1, range_2)
                 statsframe = _generate_stat_rows(statsframe, group=combo[0], comparison=combo[1],
                                                  operation=op, p=p[1], ptype='Mann-Whitney')
-    # multiple testing correction
-    if type(mc) == str and len(statsframe) > 0:
-        # first separate statsframe
-        statsframe = _mc_correction(statsframe, mc)
     statsframe = statsframe.sort_values('P')
     return statsframe
 
 
-def compare_set_sizes(set_sizes, mc):
+def compare_set_sizes(set_sizes):
     """
     This function takes a dataframe of set sizes.
     Each set size is compared against a group (generated from null models);
@@ -279,7 +269,6 @@ def compare_set_sizes(set_sizes, mc):
 
     The
     :param set_sizes: Dataframe with set sizes
-    :param mc: Method for multiple-testing correction
     :return: pandas dataframe with p-values for comparisons
     """
     statsframe = pd.DataFrame(columns=['Group', 'Comparison', 'Measure', 'P', 'P.type'])
@@ -315,10 +304,6 @@ def compare_set_sizes(set_sizes, mc):
                     p = _value_outside_range(size, vals)
                     statsframe = _generate_stat_rows(statsframe, group=group, comparison=nulltype,
                                                      operation=op, p=p, ptype='Set sizes')
-    # multiple testing correction
-    if type(mc) == str and len(statsframe) > 0:
-        # first separate statsframe
-        statsframe = _mc_correction(statsframe, mc)
     statsframe = statsframe.sort_values('P')
     return statsframe
 
