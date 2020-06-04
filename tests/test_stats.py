@@ -93,7 +93,7 @@ class TestMain(unittest.TestCase):
         # values are identical for most properties
         graph_values = graph_values[graph_values['Property'] == 'Assortativity']
         graph_values = graph_values[graph_values['Network'] != 'Degree']
-        results = compare_graph_properties(graph_values, mc=None)
+        results = compare_graph_properties(graph_values)
         self.assertGreater(0.8, results['P'].iloc[0])
 
     def test_compare_set_sizes(self):
@@ -103,7 +103,7 @@ class TestMain(unittest.TestCase):
         """
         set_values = generate_sizes(networks, random, degree, fractions=None, prev=None, core=2,
                                     sign=True, perm=10, sizes=[0.6, 1])
-        results = compare_set_sizes(set_values, mc=None)
+        results = compare_set_sizes(set_values)
         results = results[results['Comparison'] == 'Random']
         results = results[results['Measure'] == 'Intersection 0.6']
         self.assertGreater(0.1, results['P'].iloc[0])
@@ -114,7 +114,7 @@ class TestMain(unittest.TestCase):
         """
         set_values = generate_sizes(networks, random, degree, fractions=None, prev=None, core=2,
                                     sign=True, perm=10, sizes=[0.6, 1])
-        results = compare_set_sizes(set_values, mc=None)
+        results = compare_set_sizes(set_values)
         new_results = _generate_stat_rows(results, group='b', comparison='test',
                                           operation='test', p='0.05', ptype='test', node=None)
         self.assertGreater(len(new_results), len(results))
