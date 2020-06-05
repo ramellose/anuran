@@ -300,7 +300,8 @@ def compare_set_sizes(set_sizes):
                                            'Please change the nperm parameter to a larger value for this test.')
                         test = normaltest(vals)
                         if test[1] < 0.05:
-                            logger.warning('The values do not appear to follow a normal distribution for: ' + nulltype)
+                            logger.warning('The values do not appear to follow a normal distribution '
+                                           'for model: ' + nulltype + ' and set size: ' + size)
                     p = _value_outside_range(size, vals)
                     statsframe = _generate_stat_rows(statsframe, group=group, comparison=nulltype,
                                                      operation=op, p=p, ptype='Set sizes')
