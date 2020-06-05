@@ -343,15 +343,15 @@ def model_calcs(networks, args):
         if args['stats'] == 'True':
             args['stats'] = True
         # add code for pvalue estimation
-        set_stats = compare_set_sizes(set_sizes, mc=args['stats'])
+        set_stats = compare_set_sizes(set_sizes)
         set_stats.to_csv(args['fp'] + '_set_stats.csv')
-        difference_stats = compare_set_sizes(set_differences, mc=args['stats'])
+        difference_stats = compare_set_sizes(set_differences)
         difference_stats.to_csv(args['fp'] + '_difference_stats.csv')
         if args['centrality']:
             central_stats = compare_centralities(centralities, mc=args['stats'])
             central_stats.to_csv(args['fp'] + '_centrality_stats.csv')
         if args['network']:
-            graph_stats = compare_graph_properties(graph_properties, mc=args['stats'])
+            graph_stats = compare_graph_properties(graph_properties)
             graph_stats.to_csv(args['fp'] + '_graph_stats.csv')
     # check if there is an order in the filenames
     for group in networks:
@@ -363,7 +363,7 @@ def model_calcs(networks, args):
         if all(isinstance(x, int) for x in prefixes):
             centrality_correlation = correlate_centralities(group, centralities, mc=args['stats'])
             centrality_correlation.to_csv(args['fp'] + '_centrality_correlation.csv')
-            graph_correlation = correlate_graph_properties(group, graph_properties, mc=args['stats'])
+            graph_correlation = correlate_graph_properties(group, graph_properties)
             graph_correlation.to_csv(args['fp'] + '_centrality_correlation.csv')
     if args['draw']:
         try:
