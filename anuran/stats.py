@@ -131,7 +131,7 @@ def compare_centralities(centralities, mc):
             orig_values = orig[orig['Centrality'] == op]
             all_null_values = nulls[nulls['Centrality'] == op]
             # we construct a value range from each network type
-            for nulltype in set(all_null_values['Network']):
+            for nulltype in ['Random', 'Degree']:
                 null_values = all_null_values[all_null_values['Network'] == nulltype]
                 for node in orig_values['Node']:
                     range_1 = [x[1] for x in orig_values[orig_values['Node'] == node]['Values'].iloc[0] if x]
@@ -152,7 +152,7 @@ def compare_centralities(centralities, mc):
                                     simplefilter("ignore")
                                     utest.append(mannwhitneyu(range_1, range_2)[1])
                         if len(utest) > 0:
-                            p = 1 - (1 / (len(utest)+1) * (len([x for x in utest if x < 0.05]))+1)
+                            p = 1 - (1 / (len(utest)+1) * (len([x for x in utest if x < 0.05])+1))
                             statsframe = _generate_stat_rows(statsframe, node=node, group=group, comparison=nulltype,
                                                              operation=op, p=p, ptype='Mann-Whitney')
     combos = combinations(set(centralities['Group']), 2)
@@ -224,7 +224,7 @@ def compare_graph_properties(graph_properties):
                             simplefilter("ignore")
                             utest.append(mannwhitneyu(range_1, range_2)[1])
                 if len(utest) > 0:
-                    p = 1 - (1 / (len(utest)+1) * (len([x for x in utest if x < 0.05]))+1)
+                    p = 1 - (1 / (len(utest) + 1) * (len([x for x in utest if x < 0.05]) + 1))
                     statsframe = _generate_stat_rows(statsframe, group=group, comparison=nulltype,
                                                      operation=op, p=p, ptype='Mann-Whitney')
     combos = combinations(set(graph_properties['Group']), 2)
