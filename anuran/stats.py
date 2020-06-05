@@ -301,7 +301,7 @@ def compare_set_sizes(set_sizes):
                         test = normaltest(vals)
                         if test[1] < 0.05:
                             logger.warning('The values do not appear to follow a normal distribution '
-                                           'for model: ' + nulltype + ' and set size: ' + size)
+                                           'for model: ' + nulltype + ' and set size: ' + str(size))
                     p = _value_outside_range(size, vals)
                     statsframe = _generate_stat_rows(statsframe, group=group, comparison=nulltype,
                                                      operation=op, p=p, ptype='Set sizes')
