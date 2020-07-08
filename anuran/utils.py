@@ -306,8 +306,12 @@ def _intersection(networks, size, sign, edgelist=False):
     # remove swapped edges
     edges = set(matches)
     for edge in set(matches):
-        if (edge[1], edge[0]) in edges:
-            edges.remove((edge[1], edge[0]))
+        if sign:
+            if (edge[1], edge[0], edge[2]) in edges:
+                edges.remove((edge[1], edge[0], edge[2]))
+        else:
+            if (edge[1], edge[0]) in edges:
+                edges.remove((edge[1], edge[0]))
     for edge in edges:
         if sign:
             count = matches.count(edge) + matches.count((edge[1], edge[0], edge[2]))
