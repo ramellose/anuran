@@ -108,8 +108,12 @@ def _generate_positive_control(networks, fraction, prev, n, mode):
             deg = _randomize_dyads(network[1], keep_subsets[j], timeout=timeout)
             nulls.append((network[0], deg[0]))
             timeout = deg[1]
+            preserve_deg = deg[2]
     if timeout:
         logger.warning('Could not create good degree-preserving core models for network ' + str(j))
+    if not preserve_deg:
+        logger.warning('Deleting random edge instead of preserving\n'
+                       'degree distribution for positive control ' + str[j])
     return nulls
 
 
@@ -241,16 +245,59 @@ def _randomize_dyads(network, keep, timeout):
                 # if there is a triplet, we can't swap since once node would gain an edge
                 count += 1
                 continue
-            elif dyad[0] in keep or dyad[1] in keep:
-                count += 1
-                continue
             else:
                 null.add_edge(dyad[0][0], dyad[1][0], weight=null.edges[dyad[0]]['weight'])
                 null.add_edge(dyad[0][1], dyad[1][1], weight=null.edges[dyad[1]]['weight'])
                 null.remove_edge(dyad[0][0], dyad[0][1])
                 null.remove_edge(dyad[1][0], dyad[1][1])
                 success = True
-    return null, timeout
+    if keep:
+        preserve_deg = True
+        # add targeted swaps so edges are preserved across networks
+        for edge in keep:
+            if (edge[0], edge[1]) in null.edges:
+                if len(edge) == 3:
+                    # if the edge already exists, only update weight
+                    null.edges[(edge[0], edge[1])]['weight'] = edge[2]
+            else:
+                neighbour1 = sample(list(nx.neighbors(null, edge[0])), 1)
+                neighbour2 = sample(list(nx.neighbors(null, edge[1])), 1)
+                if len(neighbour1) == 0 or len(neighbour2) == 0:
+                    # it is not possible to preserve degree perfectly
+                    # if the new core node has no other edges to delete.
+                    # next-best thing:
+                    # when adding one edge,
+                    # also remove one edge
+                    preserve_deg = False
+                    # make sure not to delete edges in core
+                    del_edges = null.edges
+                    for edge in keep:
+                        del_edges = [x for x in del_edges if x != (edge[0], edge[1])]
+                    null.remove_edge(sample(del_edges, 1)[0])
+                elif:
+                    # sample neighbouring edges not in keep core
+                    # currently, it is possible that a core edge is deleted
+                    # if that core edge is edge[0], neighbour1 or the other
+                    # need to resample neighbour if this happens
+                else:
+                    # add core edge,
+                    # remove 2 other edges,
+                    # reconnect other nodes
+                    # -> preserve degree in positive control model
+                    weight = null.edges[(edge[0], neighbour1[0])]['weight']
+                    null.remove_edge(edge[0], neighbour1[0])
+                    null.remove_edge(edge[1], neighbour2[0])
+                    null.add_edge(neighbour1[0], neighbour2[0])
+                    if weight:
+                        null.edges[(neighbour1[0], neighbour2[0])]['weight'] = weight
+                null.add_edge(edge[0], edge[1])
+                if len(edge) == 3:
+                    null.edges[(edge[0], edge[1])]['weight'] = edge[2]
+        if len(keep[0]) == 3:
+            null.add_weighted_edges_from(keep)
+        else:
+            null.add_edges_from(keep)
+    return null, timeout, preserve_deg
 
 
 def _generate_rows(values):
