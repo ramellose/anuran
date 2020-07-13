@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-def generate_null(networks, n, core, fraction=False, prev=False):
+def generate_null(networks, n, npos, core, fraction=False, prev=False):
     """
     This function takes a list of networks.
     For each network, a list with length n is generated,
@@ -34,8 +34,16 @@ def generate_null(networks, n, core, fraction=False, prev=False):
     This is returned as a list of lists with this structure:
     ---List corresponding to each original network (length networks)
         ---List of permutations per original network (length n)
+    For the positive controls, this list is inverted:
+    ---List of permutations across networks (length n)
+        ---List corresponding to a single permuted group of networks
+    To generate the list through multiprocessing,
+    a dictionary with arguments is generated
+    and provided to a utility function.
+
     :param networks: List of input NetworkX objects
     :param n: Number of randomized networks per input network
+    :param npos: Number of positive control randomized networks per group
     :param core: Number of processor cores
     :param fraction: Fraction of conserved interactions
     :param prev: Prevalence of core. If provided, null models have conserved interactions.
@@ -61,27 +69,27 @@ def generate_null(networks, n, core, fraction=False, prev=False):
                                'prev': None,
                                'n': n,
                                'mode': 'degree'})
-            if fraction:
-                for frac in fraction:
-                    all_results['random'][x]['core'][frac] = dict()
-                    all_results['degree'][x]['core'][frac] = dict()
-                    for p in prev:
-                        all_results['random'][x]['core'][frac][p] = list()
-                        all_results['degree'][x]['core'][frac][p] = list()
-                        all_models.append({'network': y,
-                                           'networks': len(networks[x]),
-                                           'name': x,
-                                           'fraction': frac,
-                                           'prev': p,
-                                           'n': n,
-                                           'mode': 'random'})
-                        all_models.append({'network': y,
-                                           'networks': len(networks[x]),
-                                           'name': x,
-                                           'fraction': frac,
-                                           'prev': p,
-                                           'n': n,
-                                           'mode': 'degree'})
+        if fraction:
+            for frac in fraction:
+                all_results['random'][x]['core'][frac] = dict()
+                all_results['degree'][x]['core'][frac] = dict()
+                for p in prev:
+                    all_results['random'][x]['core'][frac][p] = list()
+                    all_results['degree'][x]['core'][frac][p] = list()
+                    all_models.append({'networks': networks[x],
+                                       'network': None,
+                                       'name': x,
+                                       'fraction': frac,
+                                       'prev': p,
+                                       'n': npos,
+                                       'mode': 'random'})
+                    all_models.append({'networks': networks[x],
+                                       'network': None,
+                                       'name': x,
+                                       'fraction': frac,
+                                       'prev': p,
+                                       'n': npos,
+                                       'mode': 'degree'})
     # run size inference in parallel
     pool = mp.Pool(core)
     results = pool.map(_generate_null_parallel, all_models)

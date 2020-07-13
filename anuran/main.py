@@ -131,7 +131,14 @@ def set_anuran():
                         dest='perm',
                         type=int,
                         required=False,
-                        help='Number of null models to generate for each input network. \n'
+                        help='Number of negative control networks to generate for each input network. \n'
+                             'Default: 10. ',
+                        default=10)
+    parser.add_argument('-gperm', '--group_permutations',
+                        dest='gperm',
+                        type=int,
+                        required=False,
+                        help='Number of positive control networks to generate for each group of networks. \n'
                              'Default: 10. ',
                         default=10)
     parser.add_argument('-nperm', '--permutationsets',
@@ -288,7 +295,7 @@ def model_calcs(networks, args):
             nx.write_graphml(g, args['fp'] + '_' + group + '_' + str(size) + '_intersection.graphml')
     # first generate null models
     try:
-        random, degree = generate_null(networks, n=args['perm'], core=args['core'], fraction=args['cs'],
+        random, degree = generate_null(networks, n=args['perm'], npos=args['gperm'], core=args['core'], fraction=args['cs'],
                                        prev=args['prev'])
     except Exception:
         logger.error('Could not generate null models!', exc_info=True)

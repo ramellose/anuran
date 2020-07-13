@@ -27,8 +27,9 @@ def _generate_null_parallel(values):
     ---List corresponding to each original network (length networks)
         ---List of permutations per original network (length n)
     :param values: Dictionary containing values for generating null models
-    :return: Dictionaries containing null models
+    :return: Tuples with settings and randomized networks
     """
+    network = networks = name = fraction = prev = n = mode = None
     try:
         network = values['network']
         networks = values['networks']
@@ -39,44 +40,92 @@ def _generate_null_parallel(values):
         mode = values['mode']
     except KeyError:
         logger.error('Could not unpack dictionary!', exc_info=True)
-    nulls = list()
-    if fraction:
-        # all null models need to preserve the same edges
-        keep = sample(network[1].edges, round(len(network[1].edges) * float(fraction)))
-        # create lists to distribute edges over according to core prevalence
-        keep_subsets = [[] for x in range(networks)]
-        occurrence = round(float(prev) * networks)
-        for edge in keep:
-            indices = sample(range(networks), occurrence)
-            for k in indices:
-                keep_subsets[k].append(edge)
-        timeout = False
-        for j in range(networks):
-            if mode == 'random':
-                nulls.append((network[0], _randomize_network(network[1], keep_subsets[j])))
-            elif mode == 'degree':
-                deg = _randomize_dyads(network[1], keep_subsets[j], timeout=timeout)
-                nulls.append((network[0], deg[0]))
-                timeout = deg[1]
-        if timeout:
-            logger.warning('Could not create good degree-preserving core models for network ' + str(j))
+    if network:
+        nulls = _generate_negative_control(network=network,
+                                           n=n,
+                                           mode=mode)
     else:
-        timeout = False
-        for j in range(n):
-            if mode == 'random':
-                nulls.append((network[0], _randomize_network(network[1], keep=[])))
-            elif mode == 'degree':
-                deg = _randomize_dyads(network[1], keep=[], timeout=timeout)
-                nulls.append((network[0], deg[0]))
-                timeout = deg[1]
-        if timeout:
-            logger.warning('Could not create good degree-preserving models for network ' + network[0])
-    # nested dict with a single entry can be combined into a dict after multiprocessing
+        nulls = _generate_positive_control(networks=networks,
+                                           fraction=fraction,
+                                           prev=prev,
+                                           n=n,
+                                           mode=mode)
     if fraction:
         params = (mode, name, 'core', fraction, prev)
     else:
         params = (mode, name, mode)
     return params, nulls
+
+
+def _generate_positive_control(networks, fraction, prev, n, mode):
+    """
+    Generates n positive control models across the group of supplied networks.
+    The core here is specified as a percentage of the union network size
+    and prevalence as the number of networks where edges should occur.
+    :param networks: List of tuples, each tuple (network name, networkx object)
+    :param fraction: Fraction of conserved edges in network union
+    :param prev: Prevalence of conserved edges across networks
+    :param n: Number of groups to generate
+    :param mode: Degree or random networks
+    :return: Tuples with randomized networks
+    """
+    nulls = list()
+    # all null models need to preserve the same edges
+    all_edges = list()
+    for network in networks:
+        weights = nx.get_edge_attributes(network[1], 'weight')
+        if weights:
+            # network has edge weight properties,
+            # need to be considered separate edges
+            for edge in weights:
+                if ((edge[0], edge[1], weights[edge]) in all_edges
+                        or (edge[1], edge[0], weights[edge]) in all_edges):
+                    pass
+                else:
+                    all_edges.append((edge[0], edge[1], weights[edge]))
+        else:
+            # network does not have edge properties
+            for edge in weights:
+                if ((edge[0], edge[1]) in all_edges
+                        or (edge[1], edge[0]) in all_edges):
+                    pass
+                else:
+                    all_edges.append((edge[0], edge[1]))
+    keep = sample(all_edges, round(len(all_edges) * float(fraction)))
+    # create lists to distribute edges over according to core prevalence
+    keep_subsets = [[] for x in range(len(networks))]
+    occurrence = round(float(prev) * len(networks))
+    for edge in keep:
+        indices = sample(range(len(networks)), occurrence)
+        for k in indices:
+            keep_subsets[k].append(edge)
+    timeout = False
+    for j in range(networks):
+        network = networks[j]
+        if mode == 'random':
+            nulls.append((network[0], _randomize_network(network[1], keep_subsets[j])))
+        elif mode == 'degree':
+            deg = _randomize_dyads(network[1], keep_subsets[j], timeout=timeout)
+            nulls.append((network[0], deg[0]))
+            timeout = deg[1]
+    if timeout:
+        logger.warning('Could not create good degree-preserving core models for network ' + str(j))
+    return nulls
+
+
+def _generate_negative_control(network, n, mode):
+    nulls = list()
+    timeout = False
+    for j in range(n):
+        if mode == 'random':
+            nulls.append((network[0], _randomize_network(network[1], keep=[])))
+        elif mode == 'degree':
+            deg = _randomize_dyads(network[1], keep=[], timeout=timeout)
+            nulls.append((network[0], deg[0]))
+            timeout = deg[1]
+    if timeout:
+        logger.warning('Could not create good degree-preserving models for network ' + network[0])
+    return nulls
 
 
 def _generate_centralities_parallel(model_list):
@@ -127,8 +176,10 @@ def _randomize_network(network, keep):
     null = nx.Graph().to_undirected()
     null.add_nodes_from(network.nodes)
     if keep:
-        null.add_edges_from(keep)
-        nx.set_edge_attributes(null, nx.get_edge_attributes(network, 'weight'), 'weight')
+        if len(keep[0]) == 3:
+            null.add_weighted_edges_from(keep)
+        else:
+            null.add_edges_from(keep)
     num = len(network.edges) - len(null.edges)
     randomized_weights = nx.get_edge_attributes(network, 'weight')
     if len(randomized_weights) > 0:
