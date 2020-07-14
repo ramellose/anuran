@@ -270,7 +270,7 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
         subrandom['core'] = {}
         subdegree['core'] = {}
         if fractions:
-            num_models = len(random_models['a']['core'][fractions[0]][prev[0]])
+            num_models = len(random_models[group]['core'][fractions[0]][prev[0]])
             for frac in fractions:
                 subrandom['core'][frac] = dict()
                 subdegree['core'][frac] = dict()
