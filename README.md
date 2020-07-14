@@ -91,7 +91,7 @@ Then, the algorithm tries to find edges it can swap so the core edge is created 
 This requires the nodes in the core edge to have another edge that is not part of the core.
 If those edges do not exist, it is not always possible to include a core edge while
 preserving node degree and a random edge is deleted instead to preserve edge number. For sparse or very small networks, the degree distribution may therefore
-change a little for positive control networks.
+change a little for positive control networks. If the core network is much larger than one of the observed networks, the degree distribution may also be affected.
 
 If you want to simulate networks where a certain number of edges is conserved across networks,
 you can add the parameters below. Note that you can fill in more than one value.

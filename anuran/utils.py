@@ -106,8 +106,8 @@ def _generate_positive_control(networks, fraction, prev, n, mode):
             logger.warning('Could not create good degree-preserving core models for network ' + key)
     if len(preserve_deg) > 0:
         for key in preserve_deg:
-            logger.warning('Deleting random edge instead of preserving\n'
-                           'degree distribution for positive control ' + key)
+            logger.info('Deleting random edge instead of preserving '
+                           'degree distribution for positive control ' + key + '.')
     return nulls
 
 
