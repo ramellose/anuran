@@ -267,8 +267,10 @@ def _randomize_dyads(network, keep, timeout):
                 try:
                     neighbour1 = sample(list(nx.neighbors(removed_core, edge[0])), 1)
                     neighbour2 = sample(list(nx.neighbors(removed_core, edge[1])), 1)
-                except ValueError:
-                    # possible no neighbours exist to sample from
+                except (ValueError, nx.NetworkXError):
+                    # 2 possibilities:
+                    # node is not connected in this specific graph
+                    # or node has no neighbours beyond core edges
                     neighbour1 = []
                     neighbour2 = []
                 if len(neighbour1) == 0 or len(neighbour2) == 0:
