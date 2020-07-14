@@ -79,26 +79,7 @@ def _generate_positive_control(networks, fraction, prev, n, mode):
     """
     nulls = list()
     # all null models need to preserve the same edges
-    all_edges = list()
-    for network in networks:
-        weights = nx.get_edge_attributes(network[1], 'weight')
-        if weights:
-            # network has edge weight properties,
-            # need to be considered separate edges
-            for edge in weights:
-                if ((edge[0], edge[1], weights[edge]) in all_edges
-                        or (edge[1], edge[0], weights[edge]) in all_edges):
-                    pass
-                else:
-                    all_edges.append((edge[0], edge[1], weights[edge]))
-        else:
-            # network does not have edge properties
-            for edge in weights:
-                if ((edge[0], edge[1]) in all_edges
-                        or (edge[1], edge[0]) in all_edges):
-                    pass
-                else:
-                    all_edges.append((edge[0], edge[1]))
+    all_edges = _get_union(networks)
     timeout = {}
     preserve_deg = {}
     for i in range(n):
@@ -496,3 +477,32 @@ def _construct_intersection(networks, shared_edges):
                 for val in data:
                     g.nodes[node][val] = data[val]
     return g
+
+
+def _get_union(networks):
+    """
+    Returns the union of all edges for list of network tuples.
+    :param networks: List of network tuples, with first part being the name, second the Networkx object.
+    :return:
+    """
+    all_edges = list()
+    for network in networks:
+        weights = nx.get_edge_attributes(network[1], 'weight')
+        if weights:
+            # network has edge weight properties,
+            # need to be considered separate edges
+            for edge in weights:
+                if ((edge[0], edge[1], weights[edge]) in all_edges
+                        or (edge[1], edge[0], weights[edge]) in all_edges):
+                    pass
+                else:
+                    all_edges.append((edge[0], edge[1], weights[edge]))
+        else:
+            # network does not have edge properties
+            for edge in weights:
+                if ((edge[0], edge[1]) in all_edges
+                        or (edge[1], edge[0]) in all_edges):
+                    pass
+                else:
+                    all_edges.append((edge[0], edge[1]))
+    return all_edges

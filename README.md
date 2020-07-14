@@ -64,7 +64,7 @@ anuran -compare
 
 _anuran_ can also calculate gradients for ordered networks.
 If you have ordered networks, for example by constructing networks along a spatial or temporal gradient, _anuran_ will test whether
-there is a correlation in network properties compared to the null models.
+there is a correlation in network properties compared to the randomized networks.
 To use this feature, you need to use a naming convention for your networks.
 Within a folder, order the networks with a number and underscore, like below.
 ```
@@ -72,25 +72,36 @@ Within a folder, order the networks with a number and underscore, like below.
 2_networkname.extension
 ```
 
-_anuran_ generates null models with permutations of the original network.
-By default, two models are generated: one that changes the degree distribution
+_anuran_ generates randomized networks with permutations of the original network.
+By default, two types of randomized networks are generated: one that changes the degree distribution
 and one that does not.
 Note that the model changing the degree distribution may not have a major effect
 on the network structure as most smaller networks will not have enough dyad pairs to swap, especially if degree assortativity is large.
-You can specify the number of null models with the parameter below.
+You can specify the number of randomized networks with the parameter below.
 ```
 anuran -perm              # number of randomized networks
 ```
 
 It is possible to generate randomized networks with a specific core.
-Since we do not know the true core, multiple randomizations (equal to the total number of networks) are generated from each input network,
-and these are then used in comparisons.
+Since we do not know the true core, the software generates a list of edges from the union of edges across all networks.
+A fraction of these edges is then included in randomized networks.
+For fully randomized networks, the core edges are added, then random edges are added until the original edge number is achieved.
+For the degree-preserving networks, edges in the network are first swapped.
+Then, the algorithm tries to find edges it can swap so the core edge is created without changing the degree of a node.
+This requires the nodes in the core edge to have another edge that is not part of the core.
+If those edges do not exist, it is not always possible to include a core edge while
+preserving node degree and a random edge is deleted instead to preserve edge number. For sparse or very small networks, the degree distribution may therefore
+change a little for positive control networks.
 
-If you want to simulate networks where 30% or 50% of the associations is shared across half of the networks,
+If you want to simulate networks where a certain number of edges is conserved across networks,
 you can add the parameters below. Note that you can fill in more than one value.
+In this case, the cs parameter is the percentage of edges (of the total union of edges) that is conserved.
+The prev parameter defines the minimum number of networks, as a fraction of total networks, where these edges are found.
+
 ```
 anuran -cs 0.3 0.5        # core size
 anuran -prev 1            # core prevalence
+anuran -gperm 10          # number of permutations
 ```
 
 The set sizes are calculated for an intersection of 1 (all networks) by default.
@@ -98,7 +109,7 @@ You can also choose to calculate the set sizes for all possible intersections of
 If you flag the sign option, signs of edge weights are not taken into account.
 Normally, sets can have edges that have a unique edge sign in one network but a different edge sign in all others. If the sign option is flagged, this is not the case. 
 ```
-anuran -size 0.2 0.4 0.6                  # Calculates null models for edges present in partial intersections
+anuran -size 0.2 0.4 0.6                  # Calculates set sizes for edges present in partial intersections
 anuran -sign                              # Ignores edge sign in set calculation
 ```
 
@@ -114,7 +125,7 @@ anuran -n 5 10 20
 ```
 
 In addition to set sizes, you can compute centrality scores (degree, betweenness and closeness centrality) and graph properties (assortativity, average shortest path length, connectivity, diameter and radius).
-If you want to know whether the set sizes, centralities or graph properties are different from the null models,
+If you want to know whether the set sizes, centralities or graph properties are different from randomized networks,
 you can run some statistics on these values. Note that the statistics are not reliable if you have fewer than 20 networks!
 
 The centrality scores and graph properties are compared across networks using a [Mann-Whitney _U_-test](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test).

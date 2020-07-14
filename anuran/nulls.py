@@ -17,7 +17,7 @@ __email__ = 'lisa.rottjers@kuleuven.be'
 __status__ = 'Development'
 __license__ = 'Apache 2.0'
 
-from anuran.utils import _generate_null_parallel
+from anuran.utils import _generate_null_parallel, _get_union
 import multiprocessing as mp
 
 import logging.handlers
@@ -73,6 +73,11 @@ def generate_null(networks, n, npos, core, fraction=False, prev=False):
             for frac in fraction:
                 all_results['random'][x]['core'][frac] = dict()
                 all_results['degree'][x]['core'][frac] = dict()
+                # report in logger the edge numbers
+                all_edges = _get_union(networks[x])
+                core_num = round(len(all_edges) * float(fraction))
+                logger.info("The " + str(frac) + "core for network group " + x +
+                            " contains " + str(core_num) + " core edges out of " + str(all_edges) + "total.")
                 for p in prev:
                     all_results['random'][x]['core'][frac][p] = list()
                     all_results['degree'][x]['core'][frac][p] = list()
