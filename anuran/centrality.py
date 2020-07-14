@@ -72,12 +72,13 @@ def generate_ci_frame(networks, random, degree, fractions, prev, perm, core):
             results = _generate_ci_rows(name='Random', data=results, group=group,
                                         networks=randomperm, fraction=None, prev=None)
         if fractions:
+            num_models = len(random['a']['core'][fractions[0]][prev[0]])
             for frac in fractions:
                 for c in prev:
-                    for network in range(len(networks)):
-                        degreeperm = degree[x]['core'][frac][c][network]
+                    for i in range(num_models):
+                        degreeperm = degree[x]['core'][frac][c][i]
                         degreeperm = _generate_centralities_parallel(degreeperm)
-                        randomperm = random[x]['core'][frac][c][network]
+                        randomperm = random[x]['core'][frac][c][i]
                         randomperm = _generate_centralities_parallel(randomperm)
                         results = _generate_ci_rows(name='Degree', data=results, group=group,
                                                     networks=degreeperm, fraction=frac, prev=c)

@@ -279,6 +279,7 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
                     subdegree['core'][frac][c] = list()
                     for n in range(num_models):
                         degreeperm = degree_models[group]['core'][frac][c][n]
+                        degreeperm = [degreeperm[y] for y in item]
                         all_networks.append({'networks': degreeperm,
                                              'name': 'Degree',
                                              'group': group,
@@ -287,6 +288,7 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
                                              'fraction': frac,
                                              'prev': c})
                         randomperm = random_models[group]['core'][frac][c][n]
+                        randomperm = [randomperm[y] for y in item]
                         all_networks.append({'networks': randomperm,
                                              'name': 'Random',
                                              'group': group,

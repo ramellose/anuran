@@ -58,11 +58,12 @@ def generate_graph_frame(networks, random, degree, fractions, core, perm):
             results = _generate_graph_rows(name='Random', data=results, group=group,
                                            networks=randomperm, fraction=None, prev=None, perm=i)
         if fractions:
+            num_models = len(random['a']['core'][fractions[0]][core[0]])
             for frac in fractions:
                 for c in core:
-                    for network in range(len(networks)):
-                        degreeperm = degree[x]['core'][frac][c][network]
-                        randomperm = random[x]['core'][frac][c][network]
+                    for i in range(num_models):
+                        degreeperm = degree[x]['core'][frac][c][i]
+                        randomperm = random[x]['core'][frac][c][i]
                         results = _generate_graph_rows(name='Degree', data=results, group=group,
                                                        networks=degreeperm, fraction=frac, prev=c, perm=None)
                         results = _generate_graph_rows(name='Random', data=results, group=group,
