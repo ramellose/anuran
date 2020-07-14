@@ -75,7 +75,7 @@ def generate_null(networks, n, npos, core, fraction=False, prev=False):
                 all_results['degree'][x]['core'][frac] = dict()
                 # report in logger the edge numbers
                 all_edges = _get_union(networks[x])
-                core_num = round(len(all_edges) * float(fraction))
+                core_num = round(len(all_edges) * float(frac))
                 logger.info("The " + str(frac) + "core for network group " + x +
                             " contains " + str(core_num) + " core edges out of " + str(all_edges) + "total.")
                 for p in prev:
