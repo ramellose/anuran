@@ -72,7 +72,7 @@ def generate_ci_frame(networks, random, degree, fractions, prev, perm, core):
             results = _generate_ci_rows(name='Random', data=results, group=group,
                                         networks=randomperm, fraction=None, prev=None)
         if fractions:
-            num_models = len(random['a']['core'][fractions[0]][prev[0]])
+            num_models = len(random[group]['core'][fractions[0]][prev[0]])
             for frac in fractions:
                 for c in prev:
                     for i in range(num_models):

@@ -58,7 +58,7 @@ def generate_graph_frame(networks, random, degree, fractions, core, perm):
             results = _generate_graph_rows(name='Random', data=results, group=group,
                                            networks=randomperm, fraction=None, prev=None, perm=i)
         if fractions:
-            num_models = len(random['a']['core'][fractions[0]][core[0]])
+            num_models = len(random[group]['core'][fractions[0]][core[0]])
             for frac in fractions:
                 for c in core:
                     for i in range(num_models):
