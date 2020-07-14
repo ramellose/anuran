@@ -72,7 +72,7 @@ class TestMain(unittest.TestCase):
         containing all permuted networks for one original network.
         """
         perm = 10
-        random, degree = generate_null(networks, n=perm, core=2)
+        random, degree = generate_null(networks, n=perm, npos=10, core=2)
         self.assertEqual(len(random['a']['random'][0]), perm)
         self.assertEqual(len(random['a']['random']), len(networks['a']))
 
@@ -81,8 +81,8 @@ class TestMain(unittest.TestCase):
         Checks whether the specified number of randomized models is returned.
         generate_core should generate null models with fractions conserved.
         """
-        a_core = generate_null(networks, n=1, core=2, fraction=[1], prev=[1])[0]['a']['core'][1][1][0]
-        b_core = generate_null(networks, n=1, core=2, fraction=[1], prev=[1])[0]['a']['core'][1][1][0]
+        a_core = generate_null(networks, n=1, core=2, fraction=[1], prev=[1], npos=10)[0]['a']['core'][1][1][0]
+        b_core = generate_null(networks, n=1, core=2, fraction=[1], prev=[1], npos=10)[0]['a']['core'][1][1][0]
         a = list(a_core[0][1].edges)
         a.sort()
         b = list(b_core[0][1].edges)
@@ -113,7 +113,7 @@ class TestMain(unittest.TestCase):
         a certain number of times given a core size and prevalence.
         """
         nets = {'a': [('a', a), ('b', b), ('c', c)]}  # at least 5 nodes necessary for most tests
-        random, degree = generate_null(nets, n=1, core=2, fraction=[0.3], prev=[0.6])
+        random, degree = generate_null(nets, n=1, core=2, fraction=[0.3], prev=[0.6], npos=10)
         core = random['a']['core'][0.3][0.6][0]
         all_edges = list()
         for network in core:

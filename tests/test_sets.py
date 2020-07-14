@@ -70,7 +70,7 @@ class TestMain(unittest.TestCase):
         """Checks whether the set sizes are correctly returned. """
         perm = 10
         nperm = 10
-        random, degree = generate_null(networks, core=2, n=perm)
+        random, degree = generate_null(networks, core=2, n=perm, npos=10)
         results = generate_sizes(networks, random_models=random, core=2,
                                  degree_models=degree, prev=None, fractions=False,
                                  perm=nperm, sizes=[1], sign=True)
@@ -112,7 +112,7 @@ class TestMain(unittest.TestCase):
         perm = 10
         nperm = 10
         new = {'a': [networks['a'][0], networks['b'][0], networks['c'][0]]}
-        random, degree = generate_null(new, core=2, n=perm)
+        random, degree = generate_null(new, core=2, n=perm, npos=10)
         results = generate_sample_sizes(new, random_models=random, degree_models=degree,
                                         sign=True, prev=False, core=2,
                                         fractions=False, perm=perm, sizes=[1], limit=False,
@@ -124,14 +124,24 @@ class TestMain(unittest.TestCase):
         """Checks whether the subsampled set sizes are correctly returned. """
         perm = 10
         nperm = 10
+        npos = 10
         new = {'a': [networks['a'][0], networks['b'][0], networks['c'][0]]}
         fractions = [0.2, 0.6]
         prev = [1]
-        random, degree = generate_null(new, n=perm, core=2, fraction=fractions, prev=prev)
-        results = generate_sample_sizes(new, random_models=random, degree_models=degree,
+        random_models, degree_models = generate_null(new, n=perm, npos=npos, core=2, fraction=fractions, prev=prev)
+        results = generate_sample_sizes(new, random_models=random_models, degree_models=degree_models,
                                         sign=True, prev=[1], core=2,
-                                        fractions=[0.2, 0.6], perm=perm, sizes=[1], limit=False, number=[1, 2, 3])
-        num = 66 * binom(3, 3) + 66 * binom(3, 2) + 66 * binom(3, 1)
+                                        fractions=[0.2, 0.6], perm=nperm, sizes=[1], limit=False, number=[1, 2, 3])
+        # 1 network for original sample
+        # 10 * 2 for negative control models
+        # 10 * 2 * 2 for positive control models
+        # 61 networks total
+        # 7 combinations
+        # 2 sets (difference and intersection 1)
+        number_networks = 61*2
+        num = number_networks * binom(3, 3) + \
+              number_networks * binom(3, 2) + \
+              number_networks * binom(3, 1)
         self.assertEqual(int(len(results)), int(num))
 
     def test_generate_rows(self):
@@ -162,7 +172,7 @@ class TestMain(unittest.TestCase):
         perm = 10
         nperm = 10
         new = {'a': [networks['a'][0], networks['a'][0], networks['b'][0]]}
-        random, degree = generate_null(new, core=2, n=perm)
+        random, degree = generate_null(new, core=2, n=perm, npos=10)
         results = generate_sizes(new, random_models=random, core=2,
                                  degree_models=degree, prev=None, fractions=False,
                                  perm=nperm, sizes=[0.6, 1], sign=True)

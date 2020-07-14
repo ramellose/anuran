@@ -66,7 +66,7 @@ networks = {'a': [('a', a),
                   ('b', b),
                   ('c', c)]}
 
-random, degree = generate_null(networks, core=2, n=10)
+random, degree = generate_null(networks, core=2, n=10, npos=10)
 
 
 class TestMain(unittest.TestCase):
