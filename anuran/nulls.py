@@ -95,12 +95,15 @@ def generate_null(networks, n, npos, core, fraction=False, prev=False):
     results = pool.map(_generate_null_parallel, all_models)
     pool.close()
     for result in results:
+        # the first tuple in the result section
+        # contains the settings:
+        # model type, group name, core or not, prevalence and fraction of core
         if len(result[0]) == 3:
             # dict: null model, group name, null type
             all_results[result[0][0]][result[0][1]][result[0][2]].append(result[1])
         else:
             # dict: null model, group name, null type, frac, prev
-            all_results[result[0][0]][result[0][1]][result[0][2]][result[0][3]][result[0][4]].append(result[1])
+            all_results[result[0][0]][result[0][1]][result[0][2]][result[0][3]][result[0][4]] = result[1]
     return all_results['random'], all_results['degree']
 
 

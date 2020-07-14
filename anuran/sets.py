@@ -69,7 +69,7 @@ def generate_sizes(networks, random_models, degree_models, sign,
         results = pool.map(_generate_rows, combined_networks)
         pool.close()
         for result in results:
-            all_results = all_results.append(result, ignore_index=True)
+            all_results = all_results.append(result, ignore_index=True, sort=False)
     return all_results
 
 
@@ -270,14 +270,15 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
         subrandom['core'] = {}
         subdegree['core'] = {}
         if fractions:
+            num_models = len(random_models['a']['core'][fractions[0]][prev[0]])
             for frac in fractions:
                 subrandom['core'][frac] = dict()
                 subdegree['core'][frac] = dict()
                 for c in prev:
                     subrandom['core'][frac][c] = list()
                     subdegree['core'][frac][c] = list()
-                    for n in range(len(networks[group])):
-                        degreeperm = [degree_models[group]['core'][frac][c][n][y] for y in item]
+                    for n in range(num_models):
+                        degreeperm = degree_models[group]['core'][frac][c][n]
                         all_networks.append({'networks': degreeperm,
                                              'name': 'Degree',
                                              'group': group,
@@ -285,7 +286,7 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
                                              'sign': sign,
                                              'fraction': frac,
                                              'prev': c})
-                        randomperm = [random_models[group]['core'][frac][c][n][y] for y in item]
+                        randomperm = random_models[group]['core'][frac][c][n]
                         all_networks.append({'networks': randomperm,
                                              'name': 'Random',
                                              'group': group,
