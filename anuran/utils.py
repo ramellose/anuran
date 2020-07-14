@@ -13,6 +13,7 @@ import pandas as pd
 from random import sample
 import numpy as np
 import logging.handlers
+from copy import deepcopy
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -26,6 +27,13 @@ def _generate_null_parallel(values):
     This is returned as a list of lists with this structure:
     ---List corresponding to each original network (length networks)
         ---List of permutations per original network (length n)
+    For the positive controls, list structure is inverted.
+    The purpose of this is to keep networks together in a list
+    that share a synthetic core;
+    unlike the negative control models, these cannot be resampled from the list
+    to generate new groups.
+    ---List corresponding to each permutation per network group
+        ---List corresponding to each original network (length networks)
     :param values: Dictionary containing values for generating null models
     :return: Tuples with settings and randomized networks
     """
@@ -91,29 +99,32 @@ def _generate_positive_control(networks, fraction, prev, n, mode):
                     pass
                 else:
                     all_edges.append((edge[0], edge[1]))
-    keep = sample(all_edges, round(len(all_edges) * float(fraction)))
-    # create lists to distribute edges over according to core prevalence
-    keep_subsets = [[] for x in range(len(networks))]
-    occurrence = round(float(prev) * len(networks))
-    for edge in keep:
-        indices = sample(range(len(networks)), occurrence)
-        for k in indices:
-            keep_subsets[k].append(edge)
     timeout = False
-    for j in range(networks):
-        network = networks[j]
-        if mode == 'random':
-            nulls.append((network[0], _randomize_network(network[1], keep_subsets[j])))
-        elif mode == 'degree':
-            deg = _randomize_dyads(network[1], keep_subsets[j], timeout=timeout)
-            nulls.append((network[0], deg[0]))
-            timeout = deg[1]
-            preserve_deg = deg[2]
+    preserve_deg = True
+    for i in range(n):
+        nulls.append([])
+        keep = sample(all_edges, round(len(all_edges) * float(fraction)))
+        # create lists to distribute edges over according to core prevalence
+        keep_subsets = [[] for x in range(len(networks))]
+        occurrence = round(float(prev) * len(networks))
+        for edge in keep:
+            indices = sample(range(len(networks)), occurrence)
+            for k in indices:
+                keep_subsets[k].append(edge)
+        for j in range(len(networks)):
+            network = networks[j]
+            if mode == 'random':
+                nulls[i].append((network[0], _randomize_network(network[1], keep_subsets[j])))
+            elif mode == 'degree':
+                deg = _randomize_dyads(network[1], keep_subsets[j], timeout=timeout)
+                nulls[i].append((network[0], deg[0]))
+                timeout = deg[1]
+                preserve_deg = deg[2]
     if timeout:
         logger.warning('Could not create good degree-preserving core models for network ' + str(j))
     if not preserve_deg:
         logger.warning('Deleting random edge instead of preserving\n'
-                       'degree distribution for positive control ' + str[j])
+                       'degree distribution for positive control ' + str(j))
     return nulls
 
 
@@ -224,7 +235,7 @@ def _randomize_dyads(network, keep, timeout):
     if timeout or len(null) < 100:
         maxcount = 100
     else:
-        maxcount = 10000000 # large number, but should allow deg model
+        maxcount = 10000000  # large number, but should allow deg model
     timeout = False
     for swap in range(swaps):
         success = False
@@ -251,8 +262,14 @@ def _randomize_dyads(network, keep, timeout):
                 null.remove_edge(dyad[0][0], dyad[0][1])
                 null.remove_edge(dyad[1][0], dyad[1][1])
                 success = True
+    preserve_deg = True
     if keep:
-        preserve_deg = True
+        # need weightless_keep to check if neighbour
+        # is in core network
+        if len(keep[0]) == 3:
+            weightless_keep = [(edge[0], edge[1]) for edge in keep]
+        else:
+            weightless_keep = keep
         # add targeted swaps so edges are preserved across networks
         for edge in keep:
             if (edge[0], edge[1]) in null.edges:
@@ -260,8 +277,17 @@ def _randomize_dyads(network, keep, timeout):
                     # if the edge already exists, only update weight
                     null.edges[(edge[0], edge[1])]['weight'] = edge[2]
             else:
-                neighbour1 = sample(list(nx.neighbors(null, edge[0])), 1)
-                neighbour2 = sample(list(nx.neighbors(null, edge[1])), 1)
+                # generate list of neighbours where
+                # edge is not in core
+                removed_core = deepcopy(null)
+                removed_core.remove_edges_from(weightless_keep)
+                try:
+                    neighbour1 = sample(list(nx.neighbors(removed_core, edge[0])), 1)
+                    neighbour2 = sample(list(nx.neighbors(removed_core, edge[1])), 1)
+                except ValueError:
+                    # possible no neighbours exist to sample from
+                    neighbour1 = []
+                    neighbour2 = []
                 if len(neighbour1) == 0 or len(neighbour2) == 0:
                     # it is not possible to preserve degree perfectly
                     # if the new core node has no other edges to delete.
@@ -271,14 +297,17 @@ def _randomize_dyads(network, keep, timeout):
                     preserve_deg = False
                     # make sure not to delete edges in core
                     del_edges = null.edges
-                    for edge in keep:
-                        del_edges = [x for x in del_edges if x != (edge[0], edge[1])]
-                    null.remove_edge(sample(del_edges, 1)[0])
-                elif:
-                    # sample neighbouring edges not in keep core
-                    # currently, it is possible that a core edge is deleted
-                    # if that core edge is edge[0], neighbour1 or the other
-                    # need to resample neighbour if this happens
+                    for other_edge in keep:
+                        del_edges = [x for x in del_edges if x != (other_edge[0], other_edge[1])]
+                    try:
+                        del_edge = sample(del_edges, 1)[0]
+                        null.remove_edge(del_edge[0], del_edge[1])
+                    except ValueError:
+                        # in rare situations (e.g. network with 2 edges)
+                        # if the core adds 3 edges,
+                        # it is not possible to delete 3 edges not in the core.
+                        # in that case, the network has an extra edge added.
+                        pass
                 else:
                     # add core edge,
                     # remove 2 other edges,
@@ -309,6 +338,7 @@ def _generate_rows(values):
     :param values: Dictionary containing values for new pandas rows
     :return: Pandas dataframe with new rows
     """
+    name = networks = group = fraction = prev = sign = sizes = None
     try:
         name = values['name']
         networks = values['networks']
@@ -359,7 +389,6 @@ def _difference(networks, sign):
     for network in networks:
         for edge in network[1].edges:
             if sign:
-                weight = np.sign(network[1].edges[edge]['weight'])
                 diff.append(edge + (np.sign(network[1].edges[edge]['weight']),))
             else:
                 diff.append(edge)
