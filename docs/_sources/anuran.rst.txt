@@ -1,0 +1,78 @@
+anuran package
+==============
+
+Submodules
+----------
+
+anuran.centrality module
+------------------------
+
+.. automodule:: anuran.centrality
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anuran.draw module
+------------------
+
+.. automodule:: anuran.draw
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anuran.graphvals module
+-----------------------
+
+.. automodule:: anuran.graphvals
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anuran.main module
+------------------
+
+.. automodule:: anuran.main
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anuran.nulls module
+-------------------
+
+.. automodule:: anuran.nulls
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anuran.sets module
+------------------
+
+.. automodule:: anuran.sets
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anuran.stats module
+-------------------
+
+.. automodule:: anuran.stats
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anuran.utils module
+-------------------
+
+.. automodule:: anuran.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: anuran
+    :members:
+    :undoc-members:
+    :show-inheritance:
