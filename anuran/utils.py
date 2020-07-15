@@ -48,16 +48,25 @@ def _generate_null_parallel(values):
         mode = values['mode']
     except KeyError:
         logger.error('Could not unpack dictionary!', exc_info=True)
+    timeout = []
+    preserve_deg = []
     if network:
         nulls = _generate_negative_control(network=network,
                                            n=n,
                                            mode=mode)
     else:
-        nulls = _generate_positive_control(networks=networks,
+        nulls, timeout, preserve_deg = _generate_positive_control(networks=networks,
                                            fraction=fraction,
                                            prev=prev,
                                            n=n,
                                            mode=mode)
+    if len(timeout) > 0:
+        for key in timeout:
+            logger.warning('Could not create good degree-preserving core models for network ' + key)
+    if len(preserve_deg) > 0:
+        for key in preserve_deg:
+            logger.info('Deleting random edge instead of preserving '
+                        'degree distribution for positive control ' + key + '.')
     if fraction:
         params = (mode, name, 'core', fraction, prev)
     else:
@@ -101,14 +110,7 @@ def _generate_positive_control(networks, fraction, prev, n, mode):
                 nulls[i].append((network[0], deg[0]))
                 timeout.append(network[0])
                 preserve_deg.append(network[0])
-    if len(timeout) > 0:
-        for key in timeout:
-            logger.warning('Could not create good degree-preserving core models for network ' + key)
-    if len(preserve_deg) > 0:
-        for key in preserve_deg:
-            logger.info('Deleting random edge instead of preserving '
-                           'degree distribution for positive control ' + key + '.')
-    return nulls
+    return nulls, timeout, preserve_deg
 
 
 def _generate_negative_control(network, n, mode):
