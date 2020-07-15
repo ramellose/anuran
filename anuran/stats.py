@@ -288,8 +288,7 @@ def compare_set_sizes(set_sizes):
             # we construct a value range from each network type
             for nulltype in set(op_nulls['Network']):
                 vals = op_nulls[op_nulls['Network'] == nulltype]['Set size']
-                if all(np.isnan([float(x) for x in nulls[nulls['Network'] == nulltype]['Conserved fraction']])) \
-                        and not np.all(vals == 0)\
+                if not np.all(vals == 0)\
                         and not np.all([elem == list(vals)[0] for elem in vals]):
                     # usually, core models do not follow a normal distribution
                     # hence, the normal test does not check models with a core
