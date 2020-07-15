@@ -56,10 +56,10 @@ def _generate_null_parallel(values):
                                            mode=mode)
     else:
         nulls, timeout, preserve_deg = _generate_positive_control(networks=networks,
-                                           fraction=fraction,
-                                           prev=prev,
-                                           n=n,
-                                           mode=mode)
+                                                                  fraction=fraction,
+                                                                  prev=prev,
+                                                                  n=n,
+                                                                  mode=mode)
     if len(timeout) > 0:
         for key in timeout:
             logger.warning('Could not create good degree-preserving core models for network ' + key)
@@ -106,10 +106,17 @@ def _generate_positive_control(networks, fraction, prev, n, mode):
             if mode == 'random':
                 nulls[i].append((network[0], _randomize_network(network[1], keep_subsets[j])))
             elif mode == 'degree':
-                deg = _randomize_dyads(network[1], keep_subsets[j], timeout=timeout)
+                if network[0] in timeout:
+                    # if the network has timed out before,
+                    # reduce the number of tries.
+                    deg = _randomize_dyads(network[1], keep_subsets[j], timeout=True)
+                else:
+                    deg = _randomize_dyads(network[1], keep_subsets[j], timeout=False)
                 nulls[i].append((network[0], deg[0]))
-                timeout.append(network[0])
-                preserve_deg.append(network[0])
+                if deg[1]:
+                    timeout.append(network[0])
+                if deg[2]:
+                    preserve_deg.append(network[0])
     return nulls, timeout, preserve_deg
 
 
@@ -201,7 +208,7 @@ def _randomize_dyads(network, keep, timeout):
     This function returns a network with the same nodes and edge number as the input network.
     Each edge is swapped rather than moved, so the degree distribution is preserved.
 
-    :param network: NetworkX object
+    :param network: NetworkX object in tuple, with first item in tuple being network name
     :param keep: List of conserved edges
     :param timeout: If true, previous iterations of this function timed out.
     :return: Randomized network with preserved degree distribution
