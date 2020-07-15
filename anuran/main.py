@@ -133,7 +133,7 @@ def set_anuran():
                         required=False,
                         help='Number of negative control networks to generate for each input network. \n'
                              'Default: 10. ',
-                        default=10)
+                        default=20)
     parser.add_argument('-gperm', '--group_permutations',
                         dest='gperm',
                         type=int,
