@@ -246,8 +246,8 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
                              'group': group,
                              'sizes': sizes,
                              'sign': sign,
-                             'fraction': np.nan,
-                             'prev': np.nan})
+                             'fraction': None,
+                             'prev': None})
         subrandom = {'random': [random_models[group]['random'][y] for y in item]}
         subdegree = {'degree': [degree_models[group]['degree'][y] for y in item]}
         for j in range(perm):
@@ -257,7 +257,7 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
                                  'group': os.path.basename(group),
                                  'sizes': sizes,
                                  'sign': sign,
-                                 'fraction': np.nan,
+                                 'fraction': None,
                                  'prev': np.nan})
             randomperm = [random.sample(subrandom['random'][r], 1)[0] for r in range(len(subrandom['random']))]
             all_networks.append({'networks': randomperm,
@@ -265,7 +265,7 @@ def _sample_combinations(networks, random_models, degree_models, group, fraction
                                  'group': group,
                                  'sizes': sizes,
                                  'sign': sign,
-                                 'fraction': np.nan,
+                                 'fraction': None,
                                  'prev': np.nan})
         subrandom['core'] = {}
         subdegree['core'] = {}
