@@ -335,7 +335,7 @@ def _generate_rows(values):
     except KeyError:
         logger.error('Could not unpack dictionary!', exc_info=True)
     full_name = name + ' networks'
-    if fraction != None:
+    if fraction is not None:
         name += ' size: ' + str(fraction) + ' prev:' + str(prev)
     data = list()
     data.append({'Network': name,
