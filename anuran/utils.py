@@ -80,8 +80,8 @@ def _generate_positive_control(networks, fraction, prev, n, mode):
     nulls = list()
     # all null models need to preserve the same edges
     all_edges = _get_union(networks)
-    timeout = {}
-    preserve_deg = {}
+    timeout = []
+    preserve_deg = []
     for i in range(n):
         nulls.append([])
         keep = sample(all_edges, round(len(all_edges) * float(fraction)))
@@ -99,8 +99,8 @@ def _generate_positive_control(networks, fraction, prev, n, mode):
             elif mode == 'degree':
                 deg = _randomize_dyads(network[1], keep_subsets[j], timeout=timeout)
                 nulls[i].append((network[0], deg[0]))
-                timeout[network[0]] = deg[1]
-                preserve_deg[network[0]] = deg[2]
+                timeout.append(network[0])
+                preserve_deg.append(network[0])
     if len(timeout) > 0:
         for key in timeout:
             logger.warning('Could not create good degree-preserving core models for network ' + key)
