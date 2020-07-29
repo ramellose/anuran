@@ -247,17 +247,17 @@ def main():
                     elif extension == 'gml':
                         network = nx.read_gml(file)
                     else:
-                        logger.warning('Format not accepted. '
-                                       'Please specify the filename including extension (e.g. test.graphml).', exc_info=True)
-                        sys.exit()
+                        logger.warning('Ignoring file with wrong format.', exc_info=True)
+                        network = False
                     # need to make sure the graphml function does not arbitrarily assign node ID
-                    try:
-                        if 'name' in network.nodes[list(network.nodes)[0]]:
-                            if network.nodes[list(network.nodes)[0]]['name'] != list(network.nodes)[0]:
-                                network = nx.relabel_nodes(network, nx.get_node_attributes(network, 'name'))
-                    except IndexError:
-                        logger.warning('One of the imported networks contains no nodes.', exc_info=True)
-                    networks[os.path.basename(location)].append((os.path.basename(file), nx.to_undirected(network)))
+                    if network:
+                        try:
+                            if 'name' in network.nodes[list(network.nodes)[0]]:
+                                if network.nodes[list(network.nodes)[0]]['name'] != list(network.nodes)[0]:
+                                    network = nx.relabel_nodes(network, nx.get_node_attributes(network, 'name'))
+                        except IndexError:
+                            logger.warning('One of the imported networks contains no nodes.', exc_info=True)
+                        networks[os.path.basename(location)].append((os.path.basename(file), nx.to_undirected(network)))
                 except Exception:
                     logger.error('Could not import network file!', exc_info=True)
                     sys.exit()
