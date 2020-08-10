@@ -420,19 +420,12 @@ def _intersection(networks, size, sign, edgelist=False):
     for network in networks:
         for edge in network[1].edges:
             if sign:
-                matches.append(edge + (np.sign(network[1].edges[edge]['weight']),))
+                matches.append(tuple(sorted(edge)) + (np.sign(network[1].edges[edge]['weight']),))
             else:
-                matches.append(edge)
+                matches.append(tuple(sorted(edge)))
     shared_edges = 0
     # remove swapped edges
     edges = set(matches)
-    for edge in set(matches):
-        if sign:
-            if (edge[1], edge[0], edge[2]) in edges:
-                edges.remove((edge[1], edge[0], edge[2]))
-        else:
-            if (edge[1], edge[0]) in edges:
-                edges.remove((edge[1], edge[0]))
     for edge in edges:
         if sign:
             count = matches.count(edge) + matches.count((edge[1], edge[0], edge[2]))
