@@ -313,6 +313,7 @@ def model_calcs(networks, args):
     except Exception:
         logger.error('Failed to calculate set sizes!', exc_info=True)
         sys.exit()
+    centralities = None
     if args['centrality']:
         try:
             centralities = generate_ci_frame(networks, random, degree,
@@ -354,7 +355,7 @@ def model_calcs(networks, args):
         set_stats.to_csv(args['fp'] + '_set_stats.csv')
         difference_stats = compare_set_sizes(set_differences)
         difference_stats.to_csv(args['fp'] + '_difference_stats.csv')
-        if args['centrality']:
+        if args['centrality'] and centralities:
             central_stats = compare_centralities(centralities, mc=args['stats'])
             central_stats.to_csv(args['fp'] + '_centrality_stats.csv')
         if args['network']:
