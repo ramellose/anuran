@@ -355,7 +355,7 @@ def model_calcs(networks, args):
         set_stats.to_csv(args['fp'] + '_set_stats.csv')
         difference_stats = compare_set_sizes(set_differences)
         difference_stats.to_csv(args['fp'] + '_difference_stats.csv')
-        if args['centrality'] and centralities:
+        if args['centrality'] and centralities is not None:
             central_stats = compare_centralities(centralities, mc=args['stats'])
             central_stats.to_csv(args['fp'] + '_centrality_stats.csv')
         if args['network']:
