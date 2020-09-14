@@ -147,6 +147,19 @@ For a complete explanation of all the parameters, run:
 anuran -h
 ```
 
+If the _stats_ parameter is used, two files are  exported for each requested measure:
+the file containing the original observations, and the file containing statistics for those observations.
+The statistics file may be empty for fewer than 20 networks but the calculations can then be done manually
+with the observations file.
+The columns refer to the network groups (Group, Network type) and specify null model settings (conserved fraction).
+For centrality, the upper and lower limits of the 95% confidence interval of the centralities is given in addition to the raw values.
+The set sizes include a 'Set size' column that includes the number of edges contained in a set,
+while the 'Set type' column specifies the set properties. The 'Set type (absolute)' column contains the value for the intersection converted to an absolute network number.
+Set differences are formatted similarly except the 'Set type' column is replaced by an 'Interval' column.
+Statistics files for these properties contain the 'Group' name column, the name of the group compared against 'Comparison',
+the type of observation that is being compared 'Measure', the p-value and the type of statistic that is used.
+The 'P.adj' column is the multiple testing-corrected p-value.
+
 For documentation of specific functions, check out [the Sphinx documentation](https://ramellose.github.io/anuran/index.html).
 
 ### Contributions
