@@ -39,6 +39,9 @@ python3 -m pip install git+https://github.com/ramellose/anuran.git
 For a quick demo, run _anuran_ as follows, with the output filepath changed to something suitable for your system.
 When specifying the filepath, include the full path and a prefix for naming files.
 For example, _anuran_ will save a csv file to anuran_demo_sets.csv with the command below.
+The prefix is used to populate the **Group** column in the output and is used to identify a network group.
+For example, a suitable Windows filepath could look like _C://Users//user//Documents//sponge_networks//sponge_.
+The output will then be prefixed with _sponge_. If you specify no prefix, the default _anuran_ prefix will be used.
 
 ```
 anuran -i demo -o C://Documents//anuran_demo -draw -perm 10 -nperm 10
@@ -126,7 +129,7 @@ anuran -n 5 10 20
 
 In addition to set sizes, you can compute centrality scores (degree, betweenness and closeness centrality) and graph properties (assortativity, average shortest path length, connectivity, diameter and radius).
 If you want to know whether the set sizes, centralities or graph properties are different from randomized networks,
-you can run some statistics on these values. Note that the statistics are not reliable if you have fewer than 20 networks!
+you can run some statistics on these values. Note that the statistics are not reliable if you have fewer than 20 networks. **If you have fewer than 20 networks, some stats files may be empty and you will need to take the csv files and do statistical tests yourself.**
 
 The centrality scores and graph properties are compared across networks using a [Mann-Whitney _U_-test](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test).
 The Mann-Whitney _U_-test does not require equal _n_; this is important since not all networks contain the same nodes. If there are too many unique nodes across networks,

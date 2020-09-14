@@ -219,7 +219,13 @@ def main():
         logger.info('No file path given, writing to current directory.')
         args['fp'] = os.getcwd() + '/'
     if args['graph'] != ['demo']:
-        networks = {os.path.basename(x): list() for x in args['graph']}
+        networks = {}
+        for x in args['graph']:
+            if len(os.path.basename(x)) == 0:
+                name = 'anuran'
+            else:
+                name = os.path.basename(x)
+            networks[name] = list()
         new_graph = []
         for location in args['graph']:
             if not os.path.isdir(location):
