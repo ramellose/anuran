@@ -195,8 +195,8 @@ def set_anuran():
                         type=int,
                         required=False,
                         help='Number of processing cores to use. \n '
-                             'By default, CPU count - 2. ',
-                        default=cpu_count()-2)
+                             'By default, CPU count - 1. ',
+                        default=cpu_count()-1)
     parser.add_argument('-version', '--version',
                         dest='version',
                         required=False,
