@@ -295,6 +295,7 @@ def model_calcs(networks, args):
     """
     if args['core'] < 1:
         args['core'] = 1
+        logger.info("Setting cores for multiprocessing to 1.")
     # export intersections
     for size in args['size']:
         for group in networks:
