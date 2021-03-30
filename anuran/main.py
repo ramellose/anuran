@@ -293,6 +293,8 @@ def model_calcs(networks, args):
     :param args: Settings for running anuran
     :return:
     """
+    if args['core'] < 1:
+        args['core'] = 1
     # export intersections
     for size in args['size']:
         for group in networks:
