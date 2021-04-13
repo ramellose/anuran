@@ -15,28 +15,25 @@ This version is still in development and has been tested for Python 3.6.
 
 ## Getting Started
 
-First set up a [virtual environment](https://docs.python-guide.org/dev/virtualenvs/).
+You can use conda to install anuran. 
+First add the channel hosting anuran and its dependencies: 
 ```
-virtualenv venv
-# Linux
-source venv/bin/activate
-
-# Windows
-venv/Scripts/activate
-
-# Once you are done with anuran:
-deactivate
+conda config --add channels ramellose
 ```
 
-To install _anuran_, run:
+Then create a new environment containing anuran:
 ```
-pip install git+https://github.com/ramellose/anuran.git
+conda create -n myenv anuran 
+conda activate myenv
 ```
 
-If you have Python 2.7 installed as your default Python, please ensure you are installing and running anuran on your Python 3 version.
+You can then call the anuran command line tool from the conda environment. 
+
+To install _anuran_ locally, run:
 ```
 python3 -m pip install git+https://github.com/ramellose/anuran.git
 ```
+
 For a quick demo, run _anuran_ as follows, with the output filepath changed to something suitable for your system.
 When specifying the filepath, include the full path and a prefix for naming files.
 For example, _anuran_ will save a csv file to anuran_demo_sets.csv with the command below.
