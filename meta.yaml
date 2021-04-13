@@ -2,7 +2,7 @@
 
 package:
   name: anuran
-  version: {{ data.get('version') }}
+  version: 1.0
 
 source:
   git_url: https://github.com/ramellose/anuran
@@ -11,6 +11,7 @@ requirements:
   host:
     - python >=3.5
     - setuptools
+    - pbr
   run:
     - python >=3.5
     - numpy >=1.15.0
@@ -19,6 +20,7 @@ requirements:
     - pandas >=1.1.5
     - seaborn >=0.9.0
     - statsmodels >=0.8.0
+    - pbr
 
 about:
   home: https://github.com/ramellose/anuran
