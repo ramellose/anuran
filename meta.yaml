@@ -1,0 +1,31 @@
+{% set data = load_setup_py_data() %}
+{% set version = "v1.1.0" %}
+
+package:
+  name: anuran
+  version: "{{ version }}"
+
+source:
+  url: https://github.com/ramellose/anuran/archive/v1.1.0.tar.gz
+  sha256: c3bf1eb8b4c948cb0a2e71a4b726d547bee52e080f1ea7932e72ec2801ab69c7
+
+requirements:
+  host:
+    - python >=3.5
+    - setuptools
+    - pbr
+  run:
+    - python >=3.5
+    - numpy >=1.15.0
+    - scipy >=1.4.1
+    - networkx >=2.2
+    - pandas >=1.1.5
+    - seaborn >=0.9.0
+    - statsmodels >=0.8.0
+    - pbr
+
+about:
+  home: https://github.com/ramellose/anuran
+  license: Apache 2.0
+  license_file: LICENSE
+  summary: "Comparing microbial associations"
