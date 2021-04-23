@@ -6,8 +6,7 @@ package:
   version: "{{ version }}"
 
 source:
-  url: https://github.com/ramellose/anuran/archive/v1.1.0.tar.gz
-  sha256: c3bf1eb8b4c948cb0a2e71a4b726d547bee52e080f1ea7932e72ec2801ab69c7
+  git_url: https://github.com/ramellose/anuran.git
 
 requirements:
   host:
