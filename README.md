@@ -1,4 +1,4 @@
-# anuran ![numma](https://github.com/ramellose/anuran/blob/master/anuran.png)
+# anuran ![anuran](https://github.com/ramellose/anuran/blob/master/anuran.png)
 Toolbox for identification of non-random associations
 
 [![Build Status](https://travis-ci.com/ramellose/anuran.svg?token=9mhqeTh13MErxyrk5zR8&branch=master)](https://travis-ci.com/ramellose/anuran)
@@ -13,7 +13,7 @@ The simulated case study included with _anuran_ can also help you design your ex
 Contact the author at lisa.rottjers (at) kuleuven.be. Your feedback is much appreciated!
 This version is still in development and has been tested for Python 3.6.
 
-## Getting Started
+## Installation instructions
 
 You can use conda to install anuran. 
 First add the channel hosting anuran and its dependencies: 
@@ -29,26 +29,26 @@ conda activate myenv
 
 You can then call the anuran command line tool from the conda environment. 
 
-To install _anuran_ locally, run:
+Alternatively, to install _anuran_ locally, run:
 ```
 python3 -m pip install git+https://github.com/ramellose/anuran.git
 ```
 
-For a quick demo, run _anuran_ as follows, with the output filepath changed to something suitable for your system.
-When specifying the filepath, include the full path and a prefix for naming files.
-For example, _anuran_ will save a csv file to anuran_demo_sets.csv with the command below.
-The prefix is used to populate the **Group** column in the output and is used to identify a network group.
-For example, a suitable Windows filepath could look like _C://Users//user//Documents//sponge_networks//sponge_.
-The output will then be prefixed with _sponge_. If you specify no prefix, the default _anuran_ prefix will be used.
+## anuran demo 
+
+To run the demo, run _anuran_ as follows, with the output filepath changed to something suitable for your system.
+The software will generate several files, including anuran_demo_sets.csv, using the prefix specified in the command. 
 
 ```
-anuran -i demo -o C://Documents//anuran_demo -draw -perm 10 -nperm 10
+anuran -i demo -o output_filepath/anuran_demo -draw -perm 10 -nperm 10
 ```
 
 The demo data for _anuran_ was downloaded from the following publication: <br />
 Meyer, K. M., Memiaghe, H., Korte, L., Kenfack, D., Alonso, A., & Bohannan, B. J. (2018).
 Why do microbes exhibit weak biogeographic patterns?. The ISME journal, 12(6), 1404. <br />
 For a more elaborate demo analysis, please check out [the vignette](https://ramellose.github.io/anuran/demo_anuran.html).
+
+## Manual 
 
 To run the script, only two arguments are required: input and output filepaths.
 The script recognizes gml, graphml and txt files (without headers) by their extension.
@@ -162,7 +162,7 @@ For documentation of specific functions, check out [the Sphinx documentation](ht
 
 ### Contributions
 
-This software is still in early alpha. Any feedback or bug reports will be much appreciated!
+Any feedback or bug reports will be much appreciated! Please create an issue [here](https://github.com/ramellose/anuran/issues) to report any problems.  
 
 ## Authors
 
