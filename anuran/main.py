@@ -189,7 +189,7 @@ def set_anuran():
                         choices=['True', 'bonferroni', 'sidak', 'holm-sidak', 'holm',
                                  'simes-hochberg', 'hommel', 'fdr_bh', 'fdr_by',
                                  'fdr_tsbh', 'fdr_tsbky'],
-                        default=False)
+                        default='fdr_bh')
     parser.add_argument('-core', '-processor_cores',
                         dest='core',
                         type=int,
