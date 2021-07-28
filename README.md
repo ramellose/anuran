@@ -13,7 +13,7 @@ The simulated case study included with _anuran_ can also help you design your ex
 Please find the anuran manuscript at ISME Communications: [https://doi.org/10.1038/s43705-021-00036-w](https://doi.org/10.1038/s43705-021-00036-w )
 
 Contact the author at lisa.rottjers (at) kuleuven.be. Your feedback is much appreciated!
-This version is still in development and has been tested for Python 3.6.
+This version has been tested for Python 3.6.
 
 ## Installation instructions
 
