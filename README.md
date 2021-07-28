@@ -8,7 +8,7 @@ This toolbox is intended to identify conserved or unique patterns across multipl
 While carrying out set operations on such networks can help you find such associations,
 there is a chance that the outcome of the set operation was caused by random overlap between the networks.
 _anuran_ helps you identify if your biological networks have set operations that have different outcomes than would be expected by chance.
-The simulated case study included with _anuran_ can also help you design your experiments. Please find the anuran preprint on bioRxiv: [https://doi.org/10.1101/2020.10.05.325860](https://doi.org/10.1101/2020.10.05.325860 )
+The simulated case study included with _anuran_ can also help you design your experiments. Please find the anuran manuscript at ISME Communications: [https://doi.org/10.1038/s43705-021-00036-w](https://doi.org/10.1038/s43705-021-00036-w )
 
 Contact the author at lisa.rottjers (at) kuleuven.be. Your feedback is much appreciated!
 This version is still in development and has been tested for Python 3.6.
